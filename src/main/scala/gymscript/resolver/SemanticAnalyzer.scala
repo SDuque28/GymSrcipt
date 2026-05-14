@@ -13,158 +13,290 @@ final case class SemanticError(message: String, position: Position, context: Opt
   }
 }
 
-object SemanticAnalyzer {
-  sealed trait StaticType {
-    def displayName: String
-  }
-
-  object StaticType {
-    case object NumberType extends StaticType { val displayName = "numero" }
-    case object StringType extends StaticType { val displayName = "texto" }
-    case object BooleanType extends StaticType { val displayName = "booleano" }
-    case object NullType extends StaticType { val displayName = "nulo" }
-    case object RoutineType extends StaticType { val displayName = "rutina" }
-    case object UnknownType extends StaticType { val displayName = "desconocido" }
-    final case class ListType(elementType: Option[StaticType]) extends StaticType {
-      val displayName = elementType.map(t => s"lista de ${t.displayName}").getOrElse("lista vacia")
-    }
-  }
-
-  sealed trait SymbolKind
-  case object VariableSymbol extends SymbolKind
-  final case class RoutineSymbol(arity: Int) extends SymbolKind
-  final case class SymbolInfo(staticType: StaticType, kind: SymbolKind)
-}
-
 final class SemanticAnalyzer {
-  import SemanticAnalyzer._
-  import SemanticAnalyzer.StaticType._
+  import GymType._
 
   def analyze(program: Program): Either[List[SemanticError], Program] = {
     new Analyzer(program).run()
   }
 
   private final class Analyzer(program: Program) {
+    private final class RoutineSignature(
+        val declaration: RoutineDeclaration,
+        val parameterTypes: List[GymType],
+        val declaredReturnType: Option[GymType],
+        var inferredReturnType: Option[GymType] = None,
+        var analyzing: Boolean = false,
+        var analyzed: Boolean = false
+    ) {
+      def name: String = declaration.name
+
+      def effectiveReturnType: GymType =
+        inferredReturnType
+          .orElse(declaredReturnType)
+          .getOrElse(UnknownType)
+    }
+
+    private final class RoutineContext(val name: String, val expectedReturnType: Option[GymType])
+    private final class FlowInfo(val returnTypes: List[GymType], val mayFallThrough: Boolean)
+
     private val errors = mutable.ListBuffer.empty[SemanticError]
-    private val scopes = mutable.ArrayBuffer(mutable.LinkedHashMap.empty[String, SymbolInfo])
-    private var routineDepth = 0
+    private val scopes = mutable.ArrayBuffer(mutable.LinkedHashMap.empty[String, GymType])
+    private val routineSignatures = mutable.LinkedHashMap.empty[String, RoutineSignature]
+    private var currentRoutine: Option[RoutineContext] = None
 
     def run(): Either[List[SemanticError], Program] = {
-      analyzeStatements(program.statements)
+      collectTopLevelRoutineSignatures(program.statements)
+      routineSignatures.keys.foreach(ensureRoutineAnalyzed)
+      analyzeTopLevelStatements(program.statements)
       if (errors.nonEmpty) Left(errors.toList) else Right(program)
     }
 
-    private def analyzeStatements(statements: List[Statement]): Unit = {
-      statements.foreach(analyzeStatement)
+    private def collectTopLevelRoutineSignatures(statements: List[Statement]): Unit = {
+      statements.foreach {
+        case declaration: RoutineDeclaration =>
+          if (routineSignatures.contains(declaration.name) || currentScope.contains(declaration.name)) {
+            error(declaration.position, s"La rutina '${declaration.name}' ya fue declarada en este alcance.", Some(declaration.name))
+          } else {
+            val parameterTypes = declaration.parameters.map { parameter =>
+              parameter.typeAnnotation.map(resolveTypeAnnotation).getOrElse(UnknownType)
+            }
+            val declaredReturnType = declaration.returnType.map(resolveTypeAnnotation)
+            routineSignatures.update(declaration.name, new RoutineSignature(declaration, parameterTypes, declaredReturnType))
+          }
+        case _ => ()
+      }
     }
 
-    private def analyzeStatement(statement: Statement): Unit = {
+    private def analyzeTopLevelStatements(statements: List[Statement]): Unit = {
+      statements.foreach {
+        case declaration: RoutineDeclaration =>
+          ensureRoutineAnalyzed(declaration.name)
+        case statement =>
+          analyzeStatement(statement, topLevel = true)
+      }
+    }
+
+    private def ensureRoutineAnalyzed(name: String): GymType = {
+      routineSignatures.get(name) match {
+        case Some(signature) if signature.analyzed =>
+          signature.effectiveReturnType
+
+        case Some(signature) if signature.analyzing =>
+          signature.declaredReturnType.getOrElse(signature.effectiveReturnType)
+
+        case Some(signature) =>
+          signature.analyzing = true
+          val flow = withScope {
+            withRoutineContext(new RoutineContext(signature.name, signature.declaredReturnType)) {
+              registerParameters(signature.declaration, signature.parameterTypes)
+              analyzeStatements(signature.declaration.body.statements, topLevel = false)
+            }
+          }
+
+          val inferredReturn = inferRoutineReturnType(signature, flow)
+          signature.inferredReturnType = Some(inferredReturn)
+          signature.analyzing = false
+          signature.analyzed = true
+          inferredReturn
+
+        case None =>
+          UnknownType
+      }
+    }
+
+    private def registerParameters(declaration: RoutineDeclaration, parameterTypes: List[GymType]): Unit = {
+      declaration.parameters.zip(parameterTypes).foreach {
+        case (parameter, parameterType) =>
+          if (currentScope.contains(parameter.name)) {
+            error(
+              parameter.position,
+              s"El parametro '${parameter.name}' esta repetido en la rutina '${declaration.name}'.",
+              Some(parameter.name)
+            )
+          } else {
+            currentScope.update(parameter.name, parameterType)
+          }
+      }
+    }
+
+    private def inferRoutineReturnType(signature: RoutineSignature, flow: FlowInfo): GymType = {
+      val actualReturnType =
+        if (flow.returnTypes.isEmpty) {
+          NullType
+        } else {
+          unifyReturnTypes(flow.returnTypes, signature.declaration.position, signature.name)
+        }
+
+      signature.declaredReturnType match {
+        case Some(expected) =>
+          if (expected != NullType && flow.returnTypes.isEmpty) {
+            error(
+              signature.declaration.position,
+              s"La rutina '${signature.name}' declara retorno ${expected.displayName}, pero no entrega ningun resultado.",
+              Some(signature.name)
+            )
+          }
+
+          if (expected != NullType && flow.mayFallThrough) {
+            error(
+              signature.declaration.position,
+              s"La rutina '${signature.name}' puede finalizar sin 'entregar_resultado', pero declara retorno ${expected.displayName}.",
+              Some(signature.name)
+            )
+          }
+          expected
+
+        case None if flow.returnTypes.isEmpty =>
+          NullType
+
+        case None if flow.mayFallThrough =>
+          error(
+            signature.declaration.position,
+            s"La rutina '${signature.name}' mezcla caminos con y sin 'entregar_resultado'. Declara 'entrega ...' o retorna en todos los caminos.",
+            Some(signature.name)
+          )
+          actualReturnType
+
+        case None =>
+          actualReturnType
+      }
+    }
+
+    private def analyzeStatements(statements: List[Statement], topLevel: Boolean): FlowInfo = {
+      val returnTypes = mutable.ListBuffer.empty[GymType]
+      var mayFallThrough = true
+
+      statements.foreach { statement =>
+        val statementFlow = analyzeStatement(statement, topLevel)
+        returnTypes ++= statementFlow.returnTypes
+        if (mayFallThrough) {
+          mayFallThrough = statementFlow.mayFallThrough
+        }
+      }
+
+      new FlowInfo(returnTypes.toList, mayFallThrough)
+    }
+
+    private def analyzeStatement(statement: Statement, topLevel: Boolean): FlowInfo = {
       statement match {
         case VariableDeclaration(name, initializer, position) =>
-          if (currentScope.contains(name)) {
+          if (currentScope.contains(name) || routineSignatures.contains(name)) {
             error(position, s"La variable '$name' ya fue declarada en este alcance.", Some(name))
           } else {
             val inferredType = initializer.map(analyzeExpression).getOrElse(UnknownType)
-            currentScope.update(name, SymbolInfo(inferredType, VariableSymbol))
+            currentScope.update(name, inferredType)
           }
+          new FlowInfo(Nil, mayFallThrough = true)
 
         case Assignment(name, expression, position) =>
           val expressionType = analyzeExpression(expression)
-          resolveSymbol(name) match {
-            case Some((scope, info)) if info.kind == VariableSymbol =>
-              scope.update(name, info.copy(staticType = mergeTypes(info.staticType, expressionType)))
-            case Some((_, _)) =>
-              error(position, s"'$name' es una rutina y no puede reasignarse como variable.", Some(name))
+          resolveVariable(name) match {
+            case Some((scope, currentType)) =>
+              if (!isCompatible(expressionType, currentType)) {
+                error(
+                  position,
+                  s"La variable '$name' tiene tipo ${currentType.displayName}, pero recibio ${expressionType.displayName}.",
+                  Some(name)
+                )
+              }
+              scope.update(name, mergeVariableTypes(currentType, expressionType))
             case None =>
               error(position, s"La variable '$name' se uso antes de ser declarada.", Some(name))
           }
+          new FlowInfo(Nil, mayFallThrough = true)
 
         case PrintStatement(expression, _) =>
           analyzeExpression(expression)
+          new FlowInfo(Nil, mayFallThrough = true)
 
         case ReturnStatement(expression, position) =>
-          if (routineDepth <= 0) {
+          if (currentRoutine.isEmpty) {
             error(position, "'entregar_resultado' solo puede usarse dentro de una rutina.", None)
           }
-          expression.foreach(analyzeExpression)
+          val returnType = expression.map(analyzeExpression).getOrElse(NullType)
+          currentRoutine.flatMap(_.expectedReturnType).foreach { expected =>
+            if (!isCompatible(returnType, expected)) {
+              error(
+                position,
+                s"La rutina '${currentRoutine.get.name}' declara retorno ${expected.displayName}, pero entrega ${returnType.displayName}.",
+                Some(currentRoutine.get.name)
+              )
+            }
+          }
+          new FlowInfo(List(returnType), mayFallThrough = false)
 
         case AdjustWeightStatement(name, amount, isIncrease, position) =>
-          resolveSymbol(name) match {
-            case Some((scope, info)) if info.kind == VariableSymbol =>
+          resolveVariable(name) match {
+            case Some((scope, variableType)) =>
               requireType(
-                info.staticType,
+                variableType,
                 NumberType,
                 position,
                 s"La variable '$name' debe ser numerica para ${if (isIncrease) "subir_peso" else "bajar_peso"}."
               )
               amount.foreach { expression =>
-                val amountType = analyzeExpression(expression)
                 requireType(
-                  amountType,
+                  analyzeExpression(expression),
                   NumberType,
                   position,
                   s"La cantidad usada en '${if (isIncrease) "subir_peso" else "bajar_peso"}' debe ser numerica."
                 )
               }
-              scope.update(name, info.copy(staticType = NumberType))
-            case Some((_, _)) =>
-              error(position, s"'$name' es una rutina y no puede ajustarse con peso.", Some(name))
+              scope.update(name, NumberType)
             case None =>
               error(position, s"La variable '$name' se uso antes de ser declarada.", Some(name))
           }
+          new FlowInfo(Nil, mayFallThrough = true)
 
         case IfStatement(condition, thenBranch, elseBranch, _) =>
           validateBooleanCondition(condition, "si_fuerza")
-          withScope(analyzeStatements(thenBranch.statements))
-          elseBranch.foreach(block => withScope(analyzeStatements(block.statements)))
+          val thenFlow = withScope(analyzeStatements(thenBranch.statements, topLevel = false))
+          val elseFlow = elseBranch.map(block => withScope(analyzeStatements(block.statements, topLevel = false)))
+          new FlowInfo(
+            thenFlow.returnTypes ++ elseFlow.toList.flatMap(_.returnTypes),
+            mayFallThrough = elseFlow.forall(_.mayFallThrough) || thenFlow.mayFallThrough
+          )
 
         case WhileStatement(condition, body, _) =>
           validateBooleanCondition(condition, "mientras_entrenas")
-          withScope(analyzeStatements(body.statements))
+          val bodyFlow = withScope(analyzeStatements(body.statements, topLevel = false))
+          new FlowInfo(bodyFlow.returnTypes, mayFallThrough = true)
 
-        case RoutineDeclaration(name, parameters, body, position) =>
-          if (currentScope.contains(name)) {
-            error(position, s"La rutina '$name' ya fue declarada en este alcance.", Some(name))
+        case declaration: RoutineDeclaration =>
+          if (!topLevel) {
+            error(declaration.position, "GymScript solo permite declarar rutinas en el nivel superior del archivo.", Some(declaration.name))
           } else {
-            currentScope.update(name, SymbolInfo(RoutineType, RoutineSymbol(parameters.length)))
+            ensureRoutineAnalyzed(declaration.name)
           }
-          withScope {
-            routineDepth += 1
-            try {
-              parameters.foreach { parameter =>
-                if (currentScope.contains(parameter)) {
-                  error(position, s"El parametro '$parameter' esta repetido en la rutina '$name'.", Some(parameter))
-                } else {
-                  currentScope.update(parameter, SymbolInfo(UnknownType, VariableSymbol))
-                }
-              }
-              analyzeStatements(body.statements)
-            } finally {
-              routineDepth -= 1
-            }
-          }
+          new FlowInfo(Nil, mayFallThrough = true)
 
         case CallStatement(name, arguments, position) =>
-          validateCall(name, arguments, position)
+          analyzeCall(name, arguments, position)
+          new FlowInfo(Nil, mayFallThrough = true)
 
         case ChangeSetStatement(name, index, value, position) =>
-          validateListMutation(name, index, Some(value), position, expectsValue = true)
+          validateListMutation(name, index, Some(value), position)
+          new FlowInfo(Nil, mayFallThrough = true)
 
         case AddSetStatement(name, value, position) =>
-          validateListMutation(name, LiteralExpression(NumberLiteral(0), position), Some(value), position, expectsValue = true)
+          validateListMutation(name, LiteralExpression(NumberLiteral(0), position), Some(value), position)
+          new FlowInfo(Nil, mayFallThrough = true)
 
         case RemoveSetStatement(name, index, position) =>
-          validateListMutation(name, index, None, position, expectsValue = false)
+          validateListMutation(name, index, None, position)
+          new FlowInfo(Nil, mayFallThrough = true)
 
         case Block(statements, _) =>
-          withScope(analyzeStatements(statements))
+          withScope(analyzeStatements(statements, topLevel = false))
 
         case ExpressionStatement(expression, _) =>
           analyzeExpression(expression)
+          new FlowInfo(Nil, mayFallThrough = true)
       }
     }
 
-    private def analyzeExpression(expression: Expression): StaticType = {
+    private def analyzeExpression(expression: Expression): GymType = {
       expression match {
         case LiteralExpression(value, _) =>
           value match {
@@ -175,8 +307,8 @@ final class SemanticAnalyzer {
           }
 
         case VariableExpression(name, position) =>
-          resolveSymbol(name) match {
-            case Some((_, info)) => info.staticType
+          resolveVariable(name) match {
+            case Some((_, variableType)) => variableType
             case None =>
               error(position, s"La variable '$name' se uso antes de ser declarada.", Some(name))
               UnknownType
@@ -186,37 +318,36 @@ final class SemanticAnalyzer {
           analyzeExpression(inner)
 
         case CallExpression(name, arguments, position) =>
-          validateCall(name, arguments, position)
-          UnknownType
+          analyzeCall(name, arguments, position)
 
         case ListExpression(elements, position) =>
           inferListType(elements.map(analyzeExpression), position, None)
 
         case TakeExpression(collection, index, position) =>
           val collectionType = analyzeExpression(collection)
-          val indexType = analyzeExpression(index)
-          validateListType(collectionType, position, "La operacion 'tomar' requiere una lista.")
-          requireType(indexType, NumberType, position, "La posicion de 'tomar' debe ser numerica.")
+          requireType(analyzeExpression(index), NumberType, position, "La posicion de 'tomar' debe ser numerica.")
           collectionType match {
-            case ListType(Some(elementType)) => elementType
-            case _ => UnknownType
+            case ListType(elementType) => elementType
+            case UnknownType => UnknownType
+            case _ =>
+              error(position, "La operacion 'tomar' requiere una lista.", None)
+              UnknownType
           }
 
         case LengthExpression(collection, position) =>
-          val collectionType = analyzeExpression(collection)
-          validateListType(collectionType, position, "La operacion 'largo' requiere una lista.")
+          validateListExpression(analyzeExpression(collection), position, "La operacion 'largo' requiere una lista.")
           NumberType
 
         case RangeExpression(collection, start, end, position) =>
           val collectionType = analyzeExpression(collection)
-          val startType = analyzeExpression(start)
-          val endType = analyzeExpression(end)
-          validateListType(collectionType, position, "La operacion 'rango_set' requiere una lista.")
-          requireType(startType, NumberType, position, "El inicio de 'rango_set' debe ser numerico.")
-          requireType(endType, NumberType, position, "El fin de 'rango_set' debe ser numerico.")
+          requireType(analyzeExpression(start), NumberType, position, "El inicio de 'rango_set' debe ser numerico.")
+          requireType(analyzeExpression(end), NumberType, position, "El fin de 'rango_set' debe ser numerico.")
           collectionType match {
             case listType: ListType => listType
-            case _ => ListType(None)
+            case UnknownType => ListType(UnknownType)
+            case _ =>
+              error(position, "La operacion 'rango_set' requiere una lista.", None)
+              ListType(UnknownType)
           }
 
         case UnaryExpression(operator, inner, position) =>
@@ -233,67 +364,75 @@ final class SemanticAnalyzer {
           }
 
         case BinaryExpression(left, operator, right, position) =>
-          val leftType = analyzeExpression(left)
-          val rightType = analyzeExpression(right)
-          analyzeBinaryExpression(leftType, operator, rightType, position)
+          analyzeBinaryExpression(analyzeExpression(left), operator, analyzeExpression(right), position)
       }
     }
 
-    private def validateCall(name: String, arguments: List[Expression], position: Position): Unit = {
-      arguments.foreach(analyzeExpression)
-      resolveSymbol(name) match {
-        case Some((_, SymbolInfo(_, RoutineSymbol(arity)))) if arity == arguments.length =>
-          ()
-        case Some((_, SymbolInfo(_, RoutineSymbol(arity)))) =>
-          error(position, s"La rutina '$name' esperaba $arity argumento(s) y recibio ${arguments.length}.", Some(name))
-        case Some((_, SymbolInfo(_, VariableSymbol))) =>
-          error(position, s"'$name' es una variable y no puede invocarse como rutina.", Some(name))
+    private def analyzeCall(name: String, arguments: List[Expression], position: Position): GymType = {
+      val argumentTypes = arguments.map(analyzeExpression)
+      routineSignatures.get(name) match {
+        case Some(signature) =>
+          if (signature.parameterTypes.length != argumentTypes.length) {
+            error(
+              position,
+              s"La rutina '$name' esperaba ${signature.parameterTypes.length} argumento(s) y recibio ${argumentTypes.length}.",
+              Some(name)
+            )
+          }
+
+          signature.declaration.parameters.zip(signature.parameterTypes).zip(argumentTypes).foreach {
+            case ((parameter, expectedType), actualType) =>
+              if (!isCompatible(actualType, expectedType)) {
+                error(
+                  position,
+                  s"El parametro '${parameter.name}' de la rutina '$name' espera ${expectedType.displayName}, pero recibio ${actualType.displayName}.",
+                  Some(parameter.name)
+                )
+              }
+          }
+
+          ensureRoutineAnalyzed(name)
+
         case None =>
           error(position, s"La rutina '$name' se uso antes de ser declarada.", Some(name))
       }
+
+      routineSignatures.get(name).map(_.effectiveReturnType).getOrElse(UnknownType)
     }
 
     private def validateListMutation(
         name: String,
         index: Expression,
         value: Option[Expression],
-        position: Position,
-        expectsValue: Boolean
+        position: Position
     ): Unit = {
-      val indexType = analyzeExpression(index)
-      requireType(indexType, NumberType, position, "El indice de la operacion de lista debe ser numerico.")
+      requireType(analyzeExpression(index), NumberType, position, "El indice de la operacion de lista debe ser numerico.")
 
-      resolveSymbol(name) match {
-        case Some((scope, info)) if info.kind == VariableSymbol =>
-          validateListType(info.staticType, position, s"La variable '$name' debe ser una lista.")
-          val updatedListType = info.staticType match {
-            case listType: ListType =>
-              value match {
-                case Some(expression) =>
-                  val valueType = analyzeExpression(expression)
-                  ensureListElementType(listType, valueType, position, name)
-                case None => listType
-              }
-            case other => other
+      resolveVariable(name) match {
+        case Some((scope, listType @ ListType(elementType))) =>
+          value match {
+            case Some(expression) =>
+              val valueType = analyzeExpression(expression)
+              val updatedType = ensureListElementType(listType, valueType, position, name)
+              scope.update(name, updatedType)
+            case None =>
+              scope.update(name, ListType(elementType))
           }
-          scope.update(name, info.copy(staticType = updatedListType))
-        case Some((_, _)) =>
-          error(position, s"'$name' es una rutina y no puede operarse como lista.", Some(name))
+        case Some((_, UnknownType)) =>
+          value.foreach(analyzeExpression)
+        case Some((_, otherType)) =>
+          error(position, s"La variable '$name' debe ser una lista, pero es ${otherType.displayName}.", Some(name))
         case None =>
           error(position, s"La variable '$name' se uso antes de ser declarada.", Some(name))
-      }
-
-      if (!expectsValue && value.nonEmpty) {
-        error(position, "La operacion no esperaba un valor adicional.", None)
       }
     }
 
     private def analyzeBinaryExpression(
-        leftType: StaticType,
+        leftType: GymType,
         operator: TokenType,
-        rightType: StaticType,
+        rightType: GymType,
         position: Position
-    ): StaticType = {
+    ): GymType = {
       operator match {
         case TokenType.Plus =>
           (leftType, rightType) match {
@@ -302,7 +441,7 @@ final class SemanticAnalyzer {
             case (_, StringType) => StringType
             case (UnknownType, _) | (_, UnknownType) => UnknownType
             case _ =>
-              error(position, "La operacion 'mas_reps' solo admite numeros o concatenacion con strings.", None)
+              error(position, "La operacion 'mas_reps' solo admite numeros o concatenacion con texto.", None)
               UnknownType
           }
 
@@ -319,6 +458,13 @@ final class SemanticAnalyzer {
           BooleanType
 
         case TokenType.EqualEqual | TokenType.BangEqual =>
+          if (!areComparable(leftType, rightType)) {
+            error(
+              position,
+              s"La comparacion '${operator.lexemeName}' requiere operandos compatibles y recibio ${leftType.displayName} y ${rightType.displayName}.",
+              None
+            )
+          }
           BooleanType
 
         case _ =>
@@ -326,125 +472,157 @@ final class SemanticAnalyzer {
       }
     }
 
-    private def inferListType(elementTypes: List[StaticType], position: Position, listName: Option[String]): StaticType = {
+    private def validateBooleanCondition(expression: Expression, context: String): Unit = {
+      requireType(analyzeExpression(expression), BooleanType, expression.position, s"La condicion de '$context' debe ser booleana.")
+    }
+
+    private def validateNumericOperands(leftType: GymType, rightType: GymType, position: Position, operator: String): Unit = {
+      if (!isCompatible(leftType, NumberType) || !isCompatible(rightType, NumberType)) {
+        error(position, s"El operador '$operator' requiere operandos numericos.", None)
+      }
+    }
+
+    private def validateBooleanOperands(leftType: GymType, rightType: GymType, position: Position, operator: String): Unit = {
+      if (!isCompatible(leftType, BooleanType) || !isCompatible(rightType, BooleanType)) {
+        error(position, s"El operador '$operator' requiere operandos booleanos.", None)
+      }
+    }
+
+    private def validateListExpression(actualType: GymType, position: Position, message: String): Unit = {
+      actualType match {
+        case _: ListType | UnknownType => ()
+        case _ => error(position, message, None)
+      }
+    }
+
+    private def inferListType(elementTypes: List[GymType], position: Position, listName: Option[String]): GymType = {
       if (elementTypes.isEmpty) {
-        ListType(None)
+        ListType(UnknownType)
       } else {
-        val filtered = elementTypes.filterNot(_ == UnknownType)
-        filtered match {
-          case Nil => ListType(None)
-          case head :: tail if tail.forall(isSameType(_, head)) =>
-            ListType(Some(head))
-          case head :: tail =>
-            val other = tail.find(t => !isSameType(t, head)).getOrElse(head)
-            val prefix = listName.map(name => s"La lista '$name'").getOrElse("La lista")
-            error(position, s"$prefix mezcla tipos incompatibles: ${head.displayName} y ${other.displayName}.", None)
-            ListType(None)
+        val knownTypes = elementTypes.filterNot(_ == UnknownType)
+        if (knownTypes.isEmpty) {
+          ListType(UnknownType)
+        } else {
+          val head = knownTypes.head
+          val incompatible = knownTypes.find(other => !isCompatible(other, head) || !isCompatible(head, other))
+          incompatible match {
+            case Some(other) =>
+              val prefix = listName.map(name => s"La lista '$name'").getOrElse("La lista")
+              error(position, s"$prefix mezcla tipos incompatibles: ${head.displayName} y ${other.displayName}.", None)
+              ListType(UnknownType)
+            case None =>
+              ListType(head)
+          }
         }
       }
     }
 
     private def ensureListElementType(
         listType: ListType,
-        valueType: StaticType,
+        valueType: GymType,
         position: Position,
         name: String
     ): ListType = {
       listType.elementType match {
-        case Some(expected) if !isCompatible(valueType, expected) =>
-          error(position, s"La lista '$name' mezcla tipos incompatibles: ${expected.displayName} y ${valueType.displayName}.", Some(name))
+        case UnknownType =>
+          ListType(valueType)
+        case elementType if !isCompatible(valueType, elementType) =>
+          error(position, s"La lista '$name' mezcla tipos incompatibles: ${elementType.displayName} y ${valueType.displayName}.", Some(name))
           listType
-        case Some(_) =>
-          listType
-        case None =>
-          ListType(Some(valueType))
+        case elementType =>
+          ListType(elementType)
       }
     }
 
-    private def validateBooleanCondition(expression: Expression, context: String): Unit = {
-      val expressionType = analyzeExpression(expression)
-      if (expressionType != BooleanType && expressionType != UnknownType) {
-        error(expression.position, s"La condicion de '$context' debe ser booleana.", None)
+    private def resolveTypeAnnotation(annotation: TypeAnnotation): GymType = {
+      annotation match {
+        case SimpleTypeAnnotation("numero", _) => NumberType
+        case SimpleTypeAnnotation("texto", _) => StringType
+        case SimpleTypeAnnotation("booleano", _) => BooleanType
+        case SimpleTypeAnnotation("sin_resultado", _) => NullType
+        case ListTypeAnnotation(elementType, position) =>
+          val resolvedElementType = resolveTypeAnnotation(elementType)
+          if (resolvedElementType == NullType) {
+            error(position, "Una 'lista_de' no puede contener elementos 'sin_resultado'.", None)
+            ListType(UnknownType)
+          } else {
+            ListType(resolvedElementType)
+          }
+        case SimpleTypeAnnotation(other, position) =>
+          error(position, s"Tipo no reconocido en GymScript: '$other'.", Some(other))
+          UnknownType
       }
     }
 
-    private def validateNumericOperands(
-        leftType: StaticType,
-        rightType: StaticType,
-        position: Position,
-        operator: String
-    ): Unit = {
-      if (!isCompatible(leftType, NumberType) || !isCompatible(rightType, NumberType)) {
-        error(position, s"El operador '$operator' requiere operandos numericos.", None)
+    private def unifyReturnTypes(types: List[GymType], position: Position, routineName: String): GymType = {
+      types.foldLeft[GymType](UnknownType) { (acc, next) =>
+        unifyTypes(acc, next).getOrElse {
+          error(
+            position,
+            s"La rutina '$routineName' tiene retornos incompatibles: ${acc.displayName} y ${next.displayName}.",
+            Some(routineName)
+          )
+          UnknownType
+        }
       }
     }
 
-    private def validateBooleanOperands(
-        leftType: StaticType,
-        rightType: StaticType,
-        position: Position,
-        operator: String
-    ): Unit = {
-      if (!isCompatible(leftType, BooleanType) || !isCompatible(rightType, BooleanType)) {
-        error(position, s"El operador '$operator' requiere operandos booleanos.", None)
+    private def unifyTypes(left: GymType, right: GymType): Option[GymType] = {
+      (left, right) match {
+        case (UnknownType, other) => Some(other)
+        case (other, UnknownType) => Some(other)
+        case (a, b) if a == b => Some(a)
+        case (ListType(a), ListType(b)) =>
+          unifyTypes(a, b).map(ListType.apply)
+        case _ => None
       }
     }
 
-    private def validateListType(actual: StaticType, position: Position, message: String): Unit = {
-      actual match {
-        case _: ListType | UnknownType => ()
-        case _ => error(position, message, None)
-      }
-    }
-
-    private def requireType(actual: StaticType, expected: StaticType, position: Position, message: String): Unit = {
+    private def requireType(actual: GymType, expected: GymType, position: Position, message: String): Unit = {
       if (!isCompatible(actual, expected)) {
         error(position, message, None)
       }
     }
 
-    private def mergeTypes(previous: StaticType, next: StaticType): StaticType = {
-      (previous, next) match {
-        case (UnknownType, value) => value
-        case (value, UnknownType) => value
-        case (currentList: ListType, nextList: ListType) =>
-          ListType(currentList.elementType.orElse(nextList.elementType))
-        case (_, value) => value
-      }
+    private def mergeVariableTypes(previous: GymType, next: GymType): GymType = {
+      unifyTypes(previous, next).getOrElse(previous)
     }
 
-    private def isCompatible(actual: StaticType, expected: StaticType): Boolean = {
-      actual == expected ||
+    private def isCompatible(actual: GymType, expected: GymType): Boolean = {
       actual == UnknownType ||
+      expected == UnknownType ||
+      actual == expected ||
       ((actual, expected) match {
-        case (ListType(None), _: ListType) => true
-        case (ListType(Some(a)), ListType(Some(b))) => isSameType(a, b)
-        case (ListType(_), ListType(None)) => true
+        case (ListType(UnknownType), ListType(_)) => true
+        case (ListType(_), ListType(UnknownType)) => true
+        case (ListType(actualElementType), ListType(expectedElementType)) =>
+          isCompatible(actualElementType, expectedElementType)
         case _ => false
       })
     }
 
-    private def isSameType(left: StaticType, right: StaticType): Boolean = {
-      (left, right) match {
-        case (ListType(a), ListType(b)) => a == b
-        case _ => left == right
-      }
+    private def areComparable(left: GymType, right: GymType): Boolean = {
+      isCompatible(left, right) || isCompatible(right, left)
     }
 
-    private def withScope(block: => Unit): Unit = {
-      scopes.append(mutable.LinkedHashMap.empty[String, SymbolInfo])
+    private def withScope[A](block: => A): A = {
+      scopes.append(mutable.LinkedHashMap.empty[String, GymType])
       try block
       finally scopes.remove(scopes.length - 1)
     }
 
-    private def currentScope: mutable.LinkedHashMap[String, SymbolInfo] = scopes.last
-
-    private def resolveSymbol(name: String): Option[(mutable.LinkedHashMap[String, SymbolInfo], SymbolInfo)] = {
-      scopes.reverseIterator
-        .flatMap(scope => scope.get(name).map(info => scope -> info))
-        .toSeq
-        .headOption
+    private def withRoutineContext[A](context: RoutineContext)(block: => A): A = {
+      val previous = currentRoutine
+      currentRoutine = Some(context)
+      try block
+      finally currentRoutine = previous
     }
+
+    private def resolveVariable(name: String): Option[(mutable.LinkedHashMap[String, GymType], GymType)] = {
+      scopes.reverseIterator.flatMap(scope => scope.get(name).map(scope -> _)).toSeq.headOption
+    }
+
+    private def currentScope: mutable.LinkedHashMap[String, GymType] = scopes.last
 
     private def error(position: Position, message: String, context: Option[String]): Unit = {
       errors += SemanticError(message, position, context)

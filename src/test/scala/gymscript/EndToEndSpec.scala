@@ -3,7 +3,7 @@ package gymscript
 import gymscript.interpreter.Interpreter
 import gymscript.lexer.{ Lexer, LexerOptions }
 import gymscript.parser.Parser
-import gymscript.resolver.SemanticAnalyzer
+import gymscript.resolver.{ ModuleResolver, SemanticAnalyzer }
 import gymscript.util.SourceReader
 import org.scalatest.funsuite.AnyFunSuite
 
@@ -12,13 +12,15 @@ final class EndToEndSpec extends AnyFunSuite {
     val source = SourceReader.read(path).toOption.get
     val lexer = new Lexer(LexerOptions(allowLegacySyntax = legacy))
     val parser = new Parser()
+    val moduleResolver = new ModuleResolver(parser)
     val analyzer = new SemanticAnalyzer()
     val interpreter = new Interpreter()
 
     for {
       tokens <- lexer.tokenize(source)
       program <- parser.parse(tokens)
-      verified <- analyzer.analyze(program)
+      resolved <- moduleResolver.resolve(path, program, allowLegacySyntax = legacy)
+      verified <- analyzer.analyze(resolved)
       outputs <- interpreter.execute(verified)
     } yield outputs
   }
@@ -54,6 +56,14 @@ final class EndToEndSpec extends AnyFunSuite {
 
   test("advanced-routine") {
     assert(runFile("examples/advanced-routine.gym.txt") == Right(List("7", "12", "[press banca, sentadilla, dominadas]", "sentadilla", "3", "[press banca, sentadilla]", "Meta superada", "1", "2")))
+  }
+
+  test("modular-main") {
+    assert(runFile("examples/modular/main.gym") == Right(List("15", "Vamos con toda, Santiago", "Total listo")))
+  }
+
+  test("tail-recursion") {
+    assert(runFile("examples/tail-recursion.gym") == Right(List("0")))
   }
 
   test("legacy-example en modo legacy") {

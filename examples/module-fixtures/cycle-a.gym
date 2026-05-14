@@ -1,0 +1,5 @@
+importar_rutina "cycle-b.gym"
+
+rutina desde_a abre_set cierra_set entrega texto inicio_rutina
+  entregar_resultado "A"
+fin_rutina

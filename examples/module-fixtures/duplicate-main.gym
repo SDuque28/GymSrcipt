@@ -1,0 +1,4 @@
+importar_rutina "math.gym"
+importar_rutina "math.gym"
+
+mostrar abre_set "duplicado" cierra_set

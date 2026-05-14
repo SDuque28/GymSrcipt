@@ -12,9 +12,9 @@ final class ParserSpec extends AnyFunSuite {
     parser.parse(tokens)
   }
 
-  test("parsea rutina con retorno") {
+  test("parsea parametros con como y retorno con entrega") {
     val source =
-      """rutina sumar abre_set a separa b cierra_set inicio_rutina
+      """rutina sumar abre_set a como numero separa b como numero cierra_set entrega numero inicio_rutina
         |  entregar_resultado a mas_reps b
         |fin_rutina""".stripMargin
 
@@ -22,7 +22,9 @@ final class ParserSpec extends AnyFunSuite {
 
     assert(result.isRight)
     val routine = result.toOption.get.statements.head.asInstanceOf[RoutineDeclaration]
-    assert(routine.body.statements.head.isInstanceOf[ReturnStatement])
+    assert(routine.parameters.map(_.name) == List("a", "b"))
+    assert(routine.parameters.forall(_.typeAnnotation.nonEmpty))
+    assert(routine.returnType.contains(SimpleTypeAnnotation("numero", routine.returnType.get.position)))
   }
 
   test("parsea llamada como expresion") {
@@ -39,39 +41,38 @@ final class ParserSpec extends AnyFunSuite {
     assert(result.isRight)
   }
 
-  test("parsea subir_peso y bajar_peso") {
+  test("parsea importar_rutina al inicio") {
     val source =
-      """peso repeticiones cargar 0
-        |subir_peso repeticiones
-        |bajar_peso repeticiones por 2""".stripMargin
+      """importar_rutina "math.gym"
+        |rutina sumar abre_set a como numero separa b como numero cierra_set entrega numero inicio_rutina
+        |  entregar_resultado a mas_reps b
+        |fin_rutina""".stripMargin
 
     val result = parseSource(source)
 
     assert(result.isRight)
-    assert(result.toOption.get.statements(1).isInstanceOf[AdjustWeightStatement])
-    assert(result.toOption.get.statements(2).isInstanceOf[AdjustWeightStatement])
+    assert(result.toOption.get.imports.map(_.path) == List("math.gym"))
   }
 
-  test("parsea operaciones de lista") {
+  test("parsea tipos lista_de") {
     val source =
-      """peso ejercicios cargar lista abre_set "curl" separa "press" cierra_set
-        |cambiar_set abre_set ejercicios separa 0 separa "sentadilla" cierra_set
-        |agregar_set abre_set ejercicios separa "dominadas" cierra_set
-        |quitar_set abre_set ejercicios separa 1 cierra_set
-        |peso subset cargar rango_set abre_set ejercicios separa 0 separa 1 cierra_set""".stripMargin
+      """rutina primeros abre_set ejercicios como lista_de texto cierra_set entrega lista_de texto inicio_rutina
+        |  entregar_resultado rango_set abre_set ejercicios separa 0 separa 1 cierra_set
+        |fin_rutina""".stripMargin
 
     val result = parseSource(source)
 
     assert(result.isRight)
-    assert(result.toOption.get.statements.exists(_.isInstanceOf[ChangeSetStatement]))
-    assert(result.toOption.get.statements.exists(_.isInstanceOf[AddSetStatement]))
-    assert(result.toOption.get.statements.exists(_.isInstanceOf[RemoveSetStatement]))
+    val routine = result.toOption.get.statements.head.asInstanceOf[RoutineDeclaration]
+    assert(routine.parameters.head.typeAnnotation.exists(_.isInstanceOf[ListTypeAnnotation]))
+    assert(routine.returnType.exists(_.isInstanceOf[ListTypeAnnotation]))
   }
 
-  test("reporta error por argumentos faltantes") {
-    val result = parseSource("llamar sumar abre_set 1 separa cierra_set")
+  test("reporta error si falta inicio_rutina en rutina") {
+    val result = parseSource("rutina sumar abre_set a como numero cierra_set entrega numero entregar_resultado a")
 
     assert(result.isLeft)
+    assert(result.swap.toOption.get.exists(_.message.contains("inicio_rutina")))
   }
 
   test("reporta error por bloque mal cerrado") {

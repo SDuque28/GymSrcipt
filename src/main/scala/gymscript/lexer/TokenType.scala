@@ -14,7 +14,14 @@ object TokenType {
   case object FinRutina extends TokenType { val lexemeName = "fin_rutina" }
   case object Rutina extends TokenType { val lexemeName = "rutina" }
   case object Llamar extends TokenType { val lexemeName = "llamar" }
+  case object ImportarRutina extends TokenType { val lexemeName = "importar_rutina" }
   case object EntregarResultado extends TokenType { val lexemeName = "entregar_resultado" }
+  case object Como extends TokenType { val lexemeName = "como" }
+  case object Entrega extends TokenType { val lexemeName = "entrega" }
+  case object NumeroTipo extends TokenType { val lexemeName = "numero" }
+  case object TextoTipo extends TokenType { val lexemeName = "texto" }
+  case object BooleanoTipo extends TokenType { val lexemeName = "booleano" }
+  case object ListaDe extends TokenType { val lexemeName = "lista_de" }
   case object SubirPeso extends TokenType { val lexemeName = "subir_peso" }
   case object BajarPeso extends TokenType { val lexemeName = "bajar_peso" }
   case object Por extends TokenType { val lexemeName = "por" }
@@ -67,7 +74,14 @@ object TokenType {
     "fin_rutina" -> FinRutina,
     "rutina" -> Rutina,
     "llamar" -> Llamar,
+    "importar_rutina" -> ImportarRutina,
     "entregar_resultado" -> EntregarResultado,
+    "como" -> Como,
+    "entrega" -> Entrega,
+    "numero" -> NumeroTipo,
+    "texto" -> TextoTipo,
+    "booleano" -> BooleanoTipo,
+    "lista_de" -> ListaDe,
     "subir_peso" -> SubirPeso,
     "bajar_peso" -> BajarPeso,
     "por" -> Por,

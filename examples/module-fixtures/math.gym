@@ -1,0 +1,3 @@
+rutina sumar_local abre_set a como numero separa b como numero cierra_set entrega numero inicio_rutina
+  entregar_resultado a mas_reps b
+fin_rutina

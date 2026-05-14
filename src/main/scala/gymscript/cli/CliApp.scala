@@ -3,11 +3,12 @@ package gymscript.cli
 import gymscript.interpreter.Interpreter
 import gymscript.lexer.{ Lexer, LexerOptions, Token }
 import gymscript.parser.Parser
-import gymscript.resolver.SemanticAnalyzer
+import gymscript.resolver.{ ModuleResolver, SemanticAnalyzer }
 import gymscript.util.SourceReader
 
 final class CliApp(
     parser: Parser = new Parser(),
+    moduleResolver: ModuleResolver = new ModuleResolver(),
     semanticAnalyzer: SemanticAnalyzer = new SemanticAnalyzer(),
     interpreter: Interpreter = new Interpreter()
 ) {
@@ -51,23 +52,30 @@ final class CliApp(
                 1
 
               case Right(program) =>
-                if (config.showAst) {
-                  println(program)
-                }
-                semanticAnalyzer.analyze(program) match {
+                moduleResolver.resolve(config.path, program, config.allowLegacy) match {
                   case Left(errors) =>
-                    printLines(errors.map(_.render))
+                    printLines(errors)
                     1
 
-                  case Right(validProgram) =>
-                    interpreter.execute(validProgram) match {
-                      case Left(error) =>
-                        Console.err.println(error.render)
+                  case Right(resolvedProgram) =>
+                    if (config.showAst) {
+                      println(resolvedProgram)
+                    }
+                    semanticAnalyzer.analyze(resolvedProgram) match {
+                      case Left(errors) =>
+                        printLines(errors.map(_.render))
                         1
 
-                      case Right(outputs) =>
-                        outputs.foreach(println)
-                        0
+                      case Right(validProgram) =>
+                        interpreter.execute(validProgram) match {
+                          case Left(error) =>
+                            Console.err.println(error.render)
+                            1
+
+                          case Right(outputs) =>
+                            outputs.foreach(println)
+                            0
+                        }
                     }
                 }
             }

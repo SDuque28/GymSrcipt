@@ -12,7 +12,7 @@ final class Interpreter(
 ) {
   def execute(program: Program): Either[RuntimeError, List[String]] = {
     val context = new ExecutionContext
-    executeStatements(program.statements, new Environment(), context, insideRoutine = false)
+    executeStatements(program.statements, new Environment(), context, insideRoutine = false, currentRoutine = None)
       .map(_ => context.outputs.toList)
   }
 
@@ -24,18 +24,21 @@ final class Interpreter(
   private sealed trait ControlFlow
   private case object ContinueFlow extends ControlFlow
   private final class ReturnFlow(val value: Value) extends ControlFlow
+  private final class TailCallFlow(val arguments: List[Value]) extends ControlFlow
 
   private def executeStatements(
       statements: List[Statement],
       environment: Environment,
       context: ExecutionContext,
-      insideRoutine: Boolean
+      insideRoutine: Boolean,
+      currentRoutine: Option[RoutineValue]
   ): Either[RuntimeError, ControlFlow] = {
     var index = 0
     while (index < statements.length) {
-      executeStatement(statements(index), environment, context, insideRoutine) match {
+      executeStatement(statements(index), environment, context, insideRoutine, currentRoutine) match {
         case Left(error) => return Left(error)
         case Right(flow: ReturnFlow) => return Right(flow)
+        case Right(flow: TailCallFlow) => return Right(flow)
         case Right(ContinueFlow) =>
           index += 1
       }
@@ -47,7 +50,8 @@ final class Interpreter(
       statement: Statement,
       environment: Environment,
       context: ExecutionContext,
-      insideRoutine: Boolean
+      insideRoutine: Boolean,
+      currentRoutine: Option[RoutineValue]
   ): Either[RuntimeError, ControlFlow] = {
     statement match {
       case VariableDeclaration(name, initializer, position) =>
@@ -75,11 +79,15 @@ final class Interpreter(
         if (!insideRoutine) {
           Left(RuntimeError("'entregar_resultado' solo puede usarse dentro de una rutina.", position))
         } else {
-          val returnValueEither = expression match {
-            case Some(value) => evaluate(value, environment, context)
-            case None => Right(NullValue: Value)
+          val returnValueEither: Either[RuntimeError, ControlFlow] = expression match {
+            case Some(CallExpression(name, arguments, _)) if currentRoutine.exists(_.name == name) =>
+              evaluateAll(arguments, environment, context).map(values => new TailCallFlow(values): ControlFlow)
+            case Some(value) =>
+              evaluate(value, environment, context).map(result => new ReturnFlow(result): ControlFlow)
+            case None =>
+              Right(new ReturnFlow(NullValue): ControlFlow)
           }
-          returnValueEither.map(value => new ReturnFlow(value))
+          returnValueEither
         }
 
       case AdjustWeightStatement(name, amount, isIncrease, position) =>
@@ -88,15 +96,15 @@ final class Interpreter(
       case IfStatement(condition, thenBranch, elseBranch, _) =>
         evaluate(condition, environment, context).flatMap { value =>
           asBoolean(value, condition.position).flatMap { boolean =>
-            if (boolean) executeBlock(thenBranch, environment, context, insideRoutine)
-            else elseBranch.map(executeBlock(_, environment, context, insideRoutine)).getOrElse(Right(ContinueFlow))
+            if (boolean) executeBlock(thenBranch, environment, context, insideRoutine, currentRoutine)
+            else elseBranch.map(executeBlock(_, environment, context, insideRoutine, currentRoutine)).getOrElse(Right(ContinueFlow))
           }
         }
 
       case WhileStatement(condition, body, position) =>
-        executeWhile(condition, body, environment, context, insideRoutine, position)
+        executeWhile(condition, body, environment, context, insideRoutine, currentRoutine, position)
 
-      case RoutineDeclaration(name, parameters, body, _) =>
+      case RoutineDeclaration(name, parameters, _, body, _) =>
         val routine = RoutineValue(name, parameters, body, environment)
         environment.define(name, routine)
         Right(ContinueFlow)
@@ -129,7 +137,7 @@ final class Interpreter(
         }
 
       case block: Block =>
-        executeBlock(block, environment, context, insideRoutine)
+        executeBlock(block, environment, context, insideRoutine, currentRoutine)
 
       case ExpressionStatement(expression, _) =>
         evaluate(expression, environment, context).map(_ => ContinueFlow)
@@ -140,9 +148,10 @@ final class Interpreter(
       block: Block,
       environment: Environment,
       context: ExecutionContext,
-      insideRoutine: Boolean
+      insideRoutine: Boolean,
+      currentRoutine: Option[RoutineValue]
   ): Either[RuntimeError, ControlFlow] = {
-    executeStatements(block.statements, environment.child, context, insideRoutine)
+    executeStatements(block.statements, environment.child, context, insideRoutine, currentRoutine)
   }
 
   private def executeWhile(
@@ -151,6 +160,7 @@ final class Interpreter(
       environment: Environment,
       context: ExecutionContext,
       insideRoutine: Boolean,
+      currentRoutine: Option[RoutineValue],
       position: Position
   ): Either[RuntimeError, ControlFlow] = {
     var iterations = 0
@@ -167,9 +177,10 @@ final class Interpreter(
         case Left(error) => return Left(error)
         case Right(false) => return Right(ContinueFlow)
         case Right(true) =>
-          executeBlock(body, environment, context, insideRoutine) match {
+          executeBlock(body, environment, context, insideRoutine, currentRoutine) match {
             case Left(error) => return Left(error)
             case Right(flow: ReturnFlow) => return Right(flow)
+            case Right(flow: TailCallFlow) => return Right(flow)
             case Right(ContinueFlow) =>
               iterations += 1
           }
@@ -281,13 +292,49 @@ final class Interpreter(
         context.callDepth -= 1
         Left(RuntimeError(s"La rutina '${routine.name}' supero la profundidad maxima de llamadas ($maxCallDepth).", position))
       } else {
-        val localEnvironment = routine.parameters.zip(arguments).foldLeft(routine.closure.child) {
-          case (env, (parameter, argument)) => env.define(parameter, argument)
-        }
+        var currentArguments = arguments
+        var tailCalls = 0
+        var result: Either[RuntimeError, Value] = Right(NullValue)
+        var running = true
 
-        val result = executeStatements(routine.body.statements, localEnvironment, context, insideRoutine = true).map {
-          case flow: ReturnFlow => flow.value
-          case ContinueFlow => NullValue
+        while (running) {
+          val localEnvironment = routine.parameters.zip(currentArguments).foldLeft(routine.closure.child) {
+            case (env, (parameter, argument)) => env.define(parameter.name, argument)
+          }
+
+          executeStatements(
+            routine.body.statements,
+            localEnvironment,
+            context,
+            insideRoutine = true,
+            currentRoutine = Some(routine)
+          ) match {
+            case Left(error) =>
+              result = Left(error)
+              running = false
+
+            case Right(flow: ReturnFlow) =>
+              result = Right(flow.value)
+              running = false
+
+            case Right(flow: TailCallFlow) =>
+              tailCalls += 1
+              if (tailCalls > maxLoopIterations) {
+                result = Left(
+                  RuntimeError(
+                    s"La rutina '${routine.name}' excedio el limite de optimizacion tail-recursive ($maxLoopIterations).",
+                    position
+                  )
+                )
+                running = false
+              } else {
+                currentArguments = flow.arguments
+              }
+
+            case Right(ContinueFlow) =>
+              result = Right(NullValue)
+              running = false
+          }
         }
 
         context.callDepth -= 1

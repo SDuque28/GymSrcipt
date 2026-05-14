@@ -1,0 +1,3 @@
+rutina motivar abre_set nombre como texto cierra_set entrega texto inicio_rutina
+  entregar_resultado "Vamos con toda, " mas_reps nombre
+fin_rutina

@@ -1,13 +1,13 @@
 # GymScript avanzado con retornos, listas y mutaciones
-rutina sumar abre_set a separa b cierra_set inicio_rutina
+rutina sumar abre_set a como numero separa b como numero cierra_set entrega numero inicio_rutina
   entregar_resultado a mas_reps b
 fin_rutina
 
-rutina es_fuerte abre_set total cierra_set inicio_rutina
+rutina es_fuerte abre_set total como numero cierra_set entrega booleano inicio_rutina
   entregar_resultado total levanta_mas_que 5
 fin_rutina
 
-rutina ajustar_local abre_set base separa incremento cierra_set inicio_rutina
+rutina ajustar_local abre_set base como numero separa incremento como numero cierra_set entrega numero inicio_rutina
   peso temporal cargar base
   subir_peso temporal por incremento
   entregar_resultado temporal

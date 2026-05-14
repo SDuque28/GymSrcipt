@@ -16,19 +16,39 @@ final class Parser {
     private var current = 0
 
     def parseProgram(): Either[List[ParseError], Program] = {
+      val imports = ListBuffer.empty[ImportDirective]
       val statements = ListBuffer.empty[Statement]
+      var parsingImports = true
       skipNewLines()
 
       while (!isAtEnd) {
-        parseStatement(topLevel = true) match {
-          case Some(statement) => statements += statement
-          case None => synchronize()
+        if (parsingImports && check(TokenType.ImportarRutina)) {
+          parseImportDirective() match {
+            case Some(importDirective) => imports += importDirective
+            case None => synchronize()
+          }
+        } else {
+          parsingImports = false
+          parseStatement(topLevel = true) match {
+            case Some(statement) => statements += statement
+            case None => synchronize()
+          }
         }
         skipNewLines()
       }
 
       val position = tokens.headOption.map(_.position).getOrElse(Position.Start)
-      if (errors.nonEmpty) Left(errors.toList) else Right(Program(statements.toList, position))
+      if (errors.nonEmpty) Left(errors.toList) else Right(Program(statements.toList, position, imports.toList))
+    }
+
+    private def parseImportDirective(): Option[ImportDirective] = {
+      try {
+        val keyword = advance()
+        val pathToken = consume(TokenType.StringLiteral, "Se esperaba una ruta string despues de 'importar_rutina'.")
+        Some(ImportDirective(pathToken.literal.getOrElse(pathToken.lexeme), keyword.position))
+      } catch {
+        case ParserFailure => None
+      }
     }
 
     private def parseStatement(topLevel: Boolean): Option[Statement] = {
@@ -46,6 +66,9 @@ final class Parser {
           case TokenType.CambiarSet => Some(parseChangeSetStatement())
           case TokenType.AgregarSet => Some(parseAddSetStatement())
           case TokenType.QuitarSet => Some(parseRemoveSetStatement())
+          case TokenType.ImportarRutina if topLevel =>
+            reportAndAdvance("Los 'importar_rutina' deben declararse al inicio del archivo.")
+            None
           case TokenType.LeftBrace => Some(parseLegacyBraceBlock())
           case TokenType.Descanso if topLevel =>
             reportAndAdvance("Se encontro 'descanso' sin un bloque 'si_fuerza' activo.")
@@ -172,11 +195,14 @@ final class Parser {
     private def parseRoutineDeclaration(): Statement = {
       val keyword = advance()
       val nameToken = consume(TokenType.Identifier, "Se esperaba el nombre de la rutina.")
-      val parameters = parseIdentifierList("Se esperaba 'abre_set' despues del nombre de la rutina.")
+      val parameters = parseRoutineParameters("Se esperaba 'abre_set' despues del nombre de la rutina.")
+      val returnType =
+        if (matchType(TokenType.Entrega)) Some(parseTypeAnnotation("Se esperaba un tipo valido despues de 'entrega'."))
+        else None
       consumeBlockStart("Se esperaba 'inicio_rutina' despues de la firma de la rutina.")
       val bodyStatements = parseRequiredBlockStatements(Set(TokenType.FinRutina), s"rutina '${nameToken.lexeme}'")
       consume(TokenType.FinRutina, "Se esperaba 'fin_rutina' para cerrar la rutina.")
-      RoutineDeclaration(nameToken.lexeme, parameters, Block(bodyStatements, keyword.position), keyword.position)
+      RoutineDeclaration(nameToken.lexeme, parameters, returnType, Block(bodyStatements, keyword.position), keyword.position)
     }
 
     private def parseCallStatement(): Statement = {
@@ -371,19 +397,49 @@ final class Parser {
       CallExpression(nameToken.lexeme, arguments, keyword.position)
     }
 
-    private def parseIdentifierList(openingMessage: String): List[String] = {
+    private def parseRoutineParameters(openingMessage: String): List[RoutineParameter] = {
       consume(TokenType.LeftParen, openingMessage)
-      val parameters = ListBuffer.empty[String]
+      val parameters = ListBuffer.empty[RoutineParameter]
 
       if (!check(TokenType.RightParen)) {
         do {
           val parameter = consume(TokenType.Identifier, "Se esperaba el nombre de un parametro.")
-          parameters += parameter.lexeme
+          val typeAnnotation =
+            if (matchType(TokenType.Como)) Some(parseTypeAnnotation(s"Se esperaba un tipo valido para el parametro '${parameter.lexeme}'."))
+            else None
+          parameters += RoutineParameter(parameter.lexeme, typeAnnotation, parameter.position)
         } while (matchType(TokenType.Comma))
       }
 
       consume(TokenType.RightParen, "Se esperaba 'cierra_set' para cerrar la lista de parametros.")
       parameters.toList
+    }
+
+    private def parseTypeAnnotation(message: String): TypeAnnotation = {
+      peek.tokenType match {
+        case TokenType.NumeroTipo =>
+          val token = advance()
+          SimpleTypeAnnotation("numero", token.position)
+
+        case TokenType.TextoTipo =>
+          val token = advance()
+          SimpleTypeAnnotation("texto", token.position)
+
+        case TokenType.BooleanoTipo =>
+          val token = advance()
+          SimpleTypeAnnotation("booleano", token.position)
+
+        case TokenType.SinResultado =>
+          val token = advance()
+          SimpleTypeAnnotation("sin_resultado", token.position)
+
+        case TokenType.ListaDe =>
+          val token = advance()
+          ListTypeAnnotation(parseTypeAnnotation("Se esperaba el tipo de elemento despues de 'lista_de'."), token.position)
+
+        case _ =>
+          fail(message)
+      }
     }
 
     private def parseArgumentList(openingMessage: String): List[Expression] = {
@@ -441,6 +497,7 @@ final class Parser {
       TokenType.SiFuerza,
       TokenType.MientrasEntrenas,
       TokenType.Rutina,
+      TokenType.ImportarRutina,
       TokenType.Llamar,
       TokenType.EntregarResultado,
       TokenType.SubirPeso,

@@ -1,0 +1,88 @@
+[debug] > Exec(early(addDefaultCommands), None, None)
+[debug] > Exec(addDefaultCommands, None, None)
+[debug] > Exec(early(initialize), None, None)
+[debug] > Exec(initialize, None, None)
+[debug] > Exec(boot, None, None)
+[debug] > Exec(writeSbtVersion, None, None)
+[debug] > Exec(reload, None, None)
+[debug] > Exec(sbtStashOnFailure, None, None)
+[debug] > Exec(onFailure loadFailed, None, None)
+[debug] > Exec(loadp, None, None)
+[info] welcome to sbt 1.12.8 (Amazon.com Inc. Java 21.0.8)
+[debug] Load.defaultLoad until apply took 297.2816ms
+[debug]           Load.loadUnit: plugins took 258.3935ms
+[debug]           Load.loadUnit: defsScala took 0.615ms
+[debug] [Loading] Scanning directory C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\project
+[debug] [Loading] Found non-root projects 
+[debug] [Loading] Done in C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\project, returning: ()
+[debug] deducing auto plugins based on known facts Set(Atom(sbt.plugins.CorePlugin)) and clauses Clauses(Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.IvyPlugin)))
+[debug] Clause(Atom(sbt.ScriptedPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.SbtPlugin),Set(Atom(sbt.ScriptedPlugin)))
+[debug] Clause(Atom(sbt.plugins.SemanticdbPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.JUnitXmlReportPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.MiniDependencyTreePlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.CorePlugin),Set(Atom(sbt.plugins.IvyPlugin)))
+[debug] Clause(Atom(sbt.plugins.IvyPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.SemanticdbPlugin)))
+[debug] Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.JUnitXmlReportPlugin)))
+[debug] Clause(Atom(sbt.plugins.CorePlugin),Set(Atom(sbt.plugins.Giter8TemplatePlugin)))
+[debug] Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.MiniDependencyTreePlugin))))
+[debug]   :: deduced result: Matched(sbt.plugins.CorePlugin,sbt.plugins.Giter8TemplatePlugin,sbt.plugins.IvyPlugin,sbt.plugins.JvmPlugin,sbt.plugins.MiniDependencyTreePlugin,sbt.plugins.JUnitXmlReportPlugin,sbt.plugins.SemanticdbPlugin)
+[debug] Plugins.deducer#function took 97.4379 ms
+[debug]               Load.resolveProject(gymsript-build) took 101.2701ms
+[debug]             Load.loadTransitive: finalizeProject(Project(id gymsript-build, base: C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\project, plugins: List(<none>))) took 259.8755ms
+[debug] [Loading] Done in C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\project, returning: (gymsript-build)
+[debug]           Load.loadUnit: loadedProjectsRaw took 333.5975ms
+[debug]           Load.loadUnit: cleanEvalClasses took 0.4479ms
+[debug]         Load.loadUnit(file:/C:/Users/SANTIAGO%20DUQUE/Documents/Universidad/2026-1/procesadores/GymSript/project/, ...) took 612.5373ms
+[debug]       Load.apply: load took 1020.9014ms
+[debug]       Load.apply: resolveProjects took 14.4115ms
+[debug]       Load.apply: finalTransforms took 121.0835ms
+[debug]       Load.apply: config.delegates took 23.1706ms
+[debug]       Load.apply: Def.make(settings)... took 888.3194ms
+[debug]       Load.apply: structureIndex took 218.6074ms
+[debug]       Load.apply: mkStreams took 2.8038ms
+[info] loading project definition from C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\project
+[debug] Running task... Cancel: Signal, check cycles: false, forcegc: true
+[debug]     Load.loadUnit: plugins took 4183.031ms
+[debug]     Load.loadUnit: defsScala took 0.0095ms
+[debug] [Loading] Scanning directory C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript
+[debug]       Load.loadUnit: mkEval took 5.3661ms
+[debug] [Loading] Found root project root w/ remaining 
+[debug] deducing auto plugins based on known facts Set(Atom(sbt.plugins.CorePlugin)) and clauses Clauses(Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.IvyPlugin)))
+[debug] Clause(Atom(sbt.ScriptedPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.SbtPlugin),Set(Atom(sbt.ScriptedPlugin)))
+[debug] Clause(Atom(sbt.plugins.SemanticdbPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.JUnitXmlReportPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.MiniDependencyTreePlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.CorePlugin),Set(Atom(sbt.plugins.IvyPlugin)))
+[debug] Clause(Atom(sbt.plugins.IvyPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.SemanticdbPlugin)))
+[debug] Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.JUnitXmlReportPlugin)))
+[debug] Clause(Atom(sbt.plugins.CorePlugin),Set(Atom(sbt.plugins.Giter8TemplatePlugin)))
+[debug] Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.MiniDependencyTreePlugin))))
+[debug]   :: deduced result: Matched(sbt.plugins.CorePlugin,sbt.plugins.Giter8TemplatePlugin,sbt.plugins.IvyPlugin,sbt.plugins.JvmPlugin,sbt.plugins.MiniDependencyTreePlugin,sbt.plugins.JUnitXmlReportPlugin,sbt.plugins.SemanticdbPlugin)
+[debug] Plugins.deducer#function took 3.6515 ms
+[info] loading settings for project root from build.sbt...
+[debug]         Load.resolveProject(root) took 5.2855ms
+[debug]       Load.loadTransitive: finalizeProject(Project(id root, base: C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript, plugins: List(<none>))) took 10.6619ms
+[debug] [Loading] Done in C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript, returning: (root)
+[debug]     Load.loadUnit: loadedProjectsRaw took 271.239ms
+[debug]     Load.loadUnit: cleanEvalClasses took 24.2441ms
+[debug]   Load.loadUnit(file:/C:/Users/SANTIAGO%20DUQUE/Documents/Universidad/2026-1/procesadores/GymSript/, ...) took 4483.1542ms
+[debug] Load.apply: load took 4560.6396ms
+[debug] Load.apply: resolveProjects took 0.2955ms
+[debug] Load.apply: finalTransforms took 29.4984ms
+[debug] Load.apply: config.delegates took 0.8353ms
+[debug] Load.apply: Def.make(settings)... took 252.2651ms
+[debug] Load.apply: structureIndex took 78.6631ms
+[debug] Load.apply: mkStreams took 0.0039ms
+[info] set current project to gym-script (in build file:/C:/Users/SANTIAGO%20DUQUE/Documents/Universidad/2026-1/procesadores/GymSript/)
+[debug] Running task... Cancel: Signal, check cycles: false, forcegc: true
+[debug] > Exec(sbtPopOnFailure, None, None)
+[debug] > Exec(resumeFromFailure, None, None)
+[debug] > Exec(notifyUsersAboutShell, None, None)
+[debug] > Exec(iflast shell, None, None)
+[debug] > Exec(run examples/type-errors/invalid-return.gym, None, None)
+[debug] Evaluating tasks: Compile / run
+[debug] Running task... Cancel: Signal, check cycles: false, forcegc: true

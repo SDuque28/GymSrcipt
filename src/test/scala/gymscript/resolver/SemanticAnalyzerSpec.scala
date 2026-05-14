@@ -22,50 +22,76 @@ final class SemanticAnalyzerSpec extends AnyFunSuite {
     assert(result.swap.toOption.get.exists(_.message.contains("entregar_resultado")))
   }
 
-  test("detecta rutina no declarada") {
-    val result = analyze("peso total cargar llamar sumar abre_set 1 separa 2 cierra_set")
+  test("valida condicion booleana en si_fuerza") {
+    val result = analyze("si_fuerza 3 inicio_rutina\n  mostrar abre_set \"x\" cierra_set\nfin_rutina")
 
     assert(result.isLeft)
-    assert(result.swap.toOption.get.exists(_.message.contains("rutina 'sumar'")))
+    assert(result.swap.toOption.get.exists(_.message.contains("booleana")))
   }
 
-  test("detecta numero incorrecto de argumentos") {
+  test("valida retorno declarado numero") {
     val source =
-      """rutina sumar abre_set a separa b cierra_set inicio_rutina
+      """rutina sumar abre_set a como numero separa b como numero cierra_set entrega numero inicio_rutina
         |  entregar_resultado a mas_reps b
-        |fin_rutina
-        |peso total cargar llamar sumar abre_set 1 cierra_set""".stripMargin
+        |fin_rutina""".stripMargin
 
-    val result = analyze(source)
-
-    assert(result.isLeft)
-    assert(result.swap.toOption.get.exists(_.message.contains("esperaba 2 argumento")))
+    assert(analyze(source).isRight)
   }
 
-  test("detecta parametros duplicados") {
+  test("detecta retorno inconsistente") {
     val source =
-      """rutina sumar abre_set a separa a cierra_set inicio_rutina
-        |  entregar_resultado a
+      """rutina raro abre_set valor como numero cierra_set entrega numero inicio_rutina
+        |  si_fuerza valor levanta_mas_que 0 inicio_rutina
+        |    entregar_resultado valor
+        |  descanso inicio_rutina
+        |    entregar_resultado "texto"
+        |  fin_rutina
         |fin_rutina""".stripMargin
 
     val result = analyze(source)
 
     assert(result.isLeft)
-    assert(result.swap.toOption.get.exists(_.message.contains("parametro")))
+    assert(result.swap.toOption.get.exists(_.message.contains("declara retorno numero")))
   }
 
-  test("detecta variable no declarada") {
-    val result = analyze("mostrar abre_set meta cierra_set")
+  test("detecta rutina que declara retorno pero no retorna") {
+    val source =
+      """rutina imprimir abre_set mensaje como texto cierra_set entrega texto inicio_rutina
+        |  mostrar abre_set mensaje cierra_set
+        |fin_rutina""".stripMargin
+
+    val result = analyze(source)
 
     assert(result.isLeft)
-    assert(result.swap.toOption.get.exists(_.message.contains("meta")))
+    assert(result.swap.toOption.get.exists(_.message.contains("no entrega ningun resultado")))
   }
 
-  test("detecta redeclaracion") {
-    val result = analyze("peso meta cargar 1\npeso meta cargar 2")
+  test("valida tipos de argumentos") {
+    val source =
+      """rutina saludar abre_set nombre como texto cierra_set entrega texto inicio_rutina
+        |  entregar_resultado "Hola " mas_reps nombre
+        |fin_rutina
+        |peso total cargar llamar saludar abre_set 1 cierra_set""".stripMargin
+
+    val result = analyze(source)
 
     assert(result.isLeft)
-    assert(result.swap.toOption.get.exists(_.message.contains("ya fue declarada")))
+    assert(result.swap.toOption.get.exists(_.message.contains("espera texto")))
+  }
+
+  test("valida tipo de retorno usado en condicion") {
+    val source =
+      """rutina sumar abre_set a como numero separa b como numero cierra_set entrega numero inicio_rutina
+        |  entregar_resultado a mas_reps b
+        |fin_rutina
+        |si_fuerza llamar sumar abre_set 1 separa 2 cierra_set inicio_rutina
+        |  mostrar abre_set "ok" cierra_set
+        |fin_rutina""".stripMargin
+
+    val result = analyze(source)
+
+    assert(result.isLeft)
+    assert(result.swap.toOption.get.exists(_.message.contains("condicion de 'si_fuerza' debe ser booleana")))
   }
 
   test("detecta lista con tipos incompatibles") {
@@ -75,10 +101,17 @@ final class SemanticAnalyzerSpec extends AnyFunSuite {
     assert(result.swap.toOption.get.exists(_.message.contains("mezcla tipos incompatibles")))
   }
 
-  test("detecta operaciones invalidas sobre no listas") {
-    val result = analyze("peso ejercicios cargar 1\nmostrar abre_set largo abre_set ejercicios cierra_set cierra_set")
+  test("valida tomar largo rango_set agregar_set y cambiar_set") {
+    val source =
+      """peso ejercicios cargar lista abre_set "curl" separa "press" cierra_set
+        |agregar_set abre_set ejercicios separa "dominadas" cierra_set
+        |cambiar_set abre_set ejercicios separa 0 separa "sentadilla" cierra_set
+        |peso primero cargar tomar abre_set ejercicios separa 0 cierra_set
+        |peso tamano cargar largo abre_set ejercicios cierra_set
+        |peso subset cargar rango_set abre_set ejercicios separa 0 separa 2 cierra_set
+        |mostrar abre_set primero mas_reps tamano cierra_set
+        |mostrar abre_set subset cierra_set""".stripMargin
 
-    assert(result.isLeft)
-    assert(result.swap.toOption.get.exists(_.message.contains("lista")))
+    assert(analyze(source).isRight)
   }
 }

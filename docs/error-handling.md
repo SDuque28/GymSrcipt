@@ -9,14 +9,18 @@ GymScript usa un formato uniforme:
 
 ## Casos cubiertos
 
-- Tokens legacy en modo estricto
-- Strings no cerrados
-- Argumentos faltantes
-- `entregar_resultado` fuera de rutina
-- Rutina inexistente
-- Aridad incorrecta
-- Variables no declaradas
-- Listas con tipos incompatibles
-- Indices fuera de rango
+- Token desconocido
+- String sin cierre
+- Numero decimal mal formado
+- Simbolos legacy en modo estricto
+- Falta de `inicio_rutina` o `fin_rutina`
+- `descanso` fuera de contexto
+- Variable no declarada
+- Rutina no declarada
+- Aridad invalida
+- Tipo de argumento invalido
+- Tipo de retorno invalido
+- Uso no valido de listas
 - Division por cero
-- Recursion o loops por encima de limites de seguridad
+- Indices fuera de rango
+- Imports inseguros, duplicados o ciclicos

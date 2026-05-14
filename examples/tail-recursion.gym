@@ -1,0 +1,9 @@
+rutina contar_abajo abre_set n como numero cierra_set entrega numero inicio_rutina
+  si_fuerza n levanta_igual_que 0 inicio_rutina
+    entregar_resultado 0
+  descanso inicio_rutina
+    entregar_resultado llamar contar_abajo abre_set n menos_reps 1 cierra_set
+  fin_rutina
+fin_rutina
+
+mostrar abre_set llamar contar_abajo abre_set 50 cierra_set cierra_set

@@ -1,1 +1,413 @@
-[debug] Jar uptodate: C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\gym-script_2.13-0.1.0-SNAPSHOT.jar
+[debug] Packaging C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\gym-script_2.13-0.1.0-SNAPSHOT.jar ...
+[debug] Input file mappings:
+[debug] 	gymscript
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript
+[debug] 	gymscript\cli
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\cli
+[debug] 	gymscript\cli\CliApp$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\cli\CliApp$.class
+[debug] 	gymscript\cli\CliApp.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\cli\CliApp.class
+[debug] 	gymscript\cli\CliConfig$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\cli\CliConfig$.class
+[debug] 	gymscript\cli\CliConfig.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\cli\CliConfig.class
+[debug] 	gymscript\interpreter
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter
+[debug] 	gymscript\interpreter\BooleanValue$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\BooleanValue$.class
+[debug] 	gymscript\interpreter\BooleanValue.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\BooleanValue.class
+[debug] 	gymscript\interpreter\Environment$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\Environment$.class
+[debug] 	gymscript\interpreter\Environment.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\Environment.class
+[debug] 	gymscript\interpreter\Interpreter$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\Interpreter$.class
+[debug] 	gymscript\interpreter\Interpreter$ContinueFlow$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\Interpreter$ContinueFlow$.class
+[debug] 	gymscript\interpreter\Interpreter$ControlFlow.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\Interpreter$ControlFlow.class
+[debug] 	gymscript\interpreter\Interpreter$ExecutionContext.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\Interpreter$ExecutionContext.class
+[debug] 	gymscript\interpreter\Interpreter$ReturnFlow.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\Interpreter$ReturnFlow.class
+[debug] 	gymscript\interpreter\Interpreter$TailCallFlow.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\Interpreter$TailCallFlow.class
+[debug] 	gymscript\interpreter\Interpreter.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\Interpreter.class
+[debug] 	gymscript\interpreter\ListValue$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\ListValue$.class
+[debug] 	gymscript\interpreter\ListValue.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\ListValue.class
+[debug] 	gymscript\interpreter\NullValue$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\NullValue$.class
+[debug] 	gymscript\interpreter\NullValue.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\NullValue.class
+[debug] 	gymscript\interpreter\NumberValue$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\NumberValue$.class
+[debug] 	gymscript\interpreter\NumberValue.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\NumberValue.class
+[debug] 	gymscript\interpreter\RoutineValue$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\RoutineValue$.class
+[debug] 	gymscript\interpreter\RoutineValue.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\RoutineValue.class
+[debug] 	gymscript\interpreter\RuntimeError$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\RuntimeError$.class
+[debug] 	gymscript\interpreter\RuntimeError.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\RuntimeError.class
+[debug] 	gymscript\interpreter\StringValue$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\StringValue$.class
+[debug] 	gymscript\interpreter\StringValue.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\StringValue.class
+[debug] 	gymscript\interpreter\Value.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\Value.class
+[debug] 	gymscript\lexer
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer
+[debug] 	gymscript\lexer\Lexer$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\Lexer$.class
+[debug] 	gymscript\lexer\Lexer$IdentifierOutcome.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\Lexer$IdentifierOutcome.class
+[debug] 	gymscript\lexer\Lexer$ScanOutcome$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\Lexer$ScanOutcome$.class
+[debug] 	gymscript\lexer\Lexer$ScanOutcome.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\Lexer$ScanOutcome.class
+[debug] 	gymscript\lexer\Lexer.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\Lexer.class
+[debug] 	gymscript\lexer\LexerOptions$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\LexerOptions$.class
+[debug] 	gymscript\lexer\LexerOptions.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\LexerOptions.class
+[debug] 	gymscript\lexer\LexicalError$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\LexicalError$.class
+[debug] 	gymscript\lexer\LexicalError.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\LexicalError.class
+[debug] 	gymscript\lexer\Token$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\Token$.class
+[debug] 	gymscript\lexer\Token.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\Token.class
+[debug] 	gymscript\lexer\TokenType$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$.class
+[debug] 	gymscript\lexer\TokenType$AgregarSet$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$AgregarSet$.class
+[debug] 	gymscript\lexer\TokenType$And$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$And$.class
+[debug] 	gymscript\lexer\TokenType$Assign$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Assign$.class
+[debug] 	gymscript\lexer\TokenType$BajarPeso$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$BajarPeso$.class
+[debug] 	gymscript\lexer\TokenType$BangEqual$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$BangEqual$.class
+[debug] 	gymscript\lexer\TokenType$BooleanoTipo$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$BooleanoTipo$.class
+[debug] 	gymscript\lexer\TokenType$CambiarSet$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$CambiarSet$.class
+[debug] 	gymscript\lexer\TokenType$Comma$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Comma$.class
+[debug] 	gymscript\lexer\TokenType$Comment$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Comment$.class
+[debug] 	gymscript\lexer\TokenType$Como$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Como$.class
+[debug] 	gymscript\lexer\TokenType$Descanso$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Descanso$.class
+[debug] 	gymscript\lexer\TokenType$Entrega$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Entrega$.class
+[debug] 	gymscript\lexer\TokenType$EntregarResultado$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$EntregarResultado$.class
+[debug] 	gymscript\lexer\TokenType$EOF$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$EOF$.class
+[debug] 	gymscript\lexer\TokenType$EqualEqual$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$EqualEqual$.class
+[debug] 	gymscript\lexer\TokenType$Falso$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Falso$.class
+[debug] 	gymscript\lexer\TokenType$FinRutina$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$FinRutina$.class
+[debug] 	gymscript\lexer\TokenType$GreaterEqual$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$GreaterEqual$.class
+[debug] 	gymscript\lexer\TokenType$GreaterThan$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$GreaterThan$.class
+[debug] 	gymscript\lexer\TokenType$Identifier$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Identifier$.class
+[debug] 	gymscript\lexer\TokenType$ImportarRutina$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$ImportarRutina$.class
+[debug] 	gymscript\lexer\TokenType$InicioRutina$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$InicioRutina$.class
+[debug] 	gymscript\lexer\TokenType$Largo$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Largo$.class
+[debug] 	gymscript\lexer\TokenType$LeftBrace$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$LeftBrace$.class
+[debug] 	gymscript\lexer\TokenType$LeftParen$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$LeftParen$.class
+[debug] 	gymscript\lexer\TokenType$LessEqual$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$LessEqual$.class
+[debug] 	gymscript\lexer\TokenType$LessThan$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$LessThan$.class
+[debug] 	gymscript\lexer\TokenType$Lista$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Lista$.class
+[debug] 	gymscript\lexer\TokenType$ListaDe$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$ListaDe$.class
+[debug] 	gymscript\lexer\TokenType$Llamar$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Llamar$.class
+[debug] 	gymscript\lexer\TokenType$MientrasEntrenas$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$MientrasEntrenas$.class
+[debug] 	gymscript\lexer\TokenType$Minus$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Minus$.class
+[debug] 	gymscript\lexer\TokenType$Mostrar$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Mostrar$.class
+[debug] 	gymscript\lexer\TokenType$NewLine$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$NewLine$.class
+[debug] 	gymscript\lexer\TokenType$Not$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Not$.class
+[debug] 	gymscript\lexer\TokenType$Number$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Number$.class
+[debug] 	gymscript\lexer\TokenType$NumeroTipo$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$NumeroTipo$.class
+[debug] 	gymscript\lexer\TokenType$Or$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Or$.class
+[debug] 	gymscript\lexer\TokenType$Peso$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Peso$.class
+[debug] 	gymscript\lexer\TokenType$Plus$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Plus$.class
+[debug] 	gymscript\lexer\TokenType$Por$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Por$.class
+[debug] 	gymscript\lexer\TokenType$QuitarSet$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$QuitarSet$.class
+[debug] 	gymscript\lexer\TokenType$RangoSet$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$RangoSet$.class
+[debug] 	gymscript\lexer\TokenType$RightBrace$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$RightBrace$.class
+[debug] 	gymscript\lexer\TokenType$RightParen$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$RightParen$.class
+[debug] 	gymscript\lexer\TokenType$Rutina$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Rutina$.class
+[debug] 	gymscript\lexer\TokenType$SiFuerza$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$SiFuerza$.class
+[debug] 	gymscript\lexer\TokenType$SinResultado$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$SinResultado$.class
+[debug] 	gymscript\lexer\TokenType$Slash$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Slash$.class
+[debug] 	gymscript\lexer\TokenType$Star$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Star$.class
+[debug] 	gymscript\lexer\TokenType$StringLiteral$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$StringLiteral$.class
+[debug] 	gymscript\lexer\TokenType$SubirPeso$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$SubirPeso$.class
+[debug] 	gymscript\lexer\TokenType$TextoTipo$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$TextoTipo$.class
+[debug] 	gymscript\lexer\TokenType$Tomar$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Tomar$.class
+[debug] 	gymscript\lexer\TokenType$Verdadero$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Verdadero$.class
+[debug] 	gymscript\lexer\TokenType.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType.class
+[debug] 	gymscript\Main$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\Main$.class
+[debug] 	gymscript\Main.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\Main.class
+[debug] 	gymscript\parser
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser
+[debug] 	gymscript\parser\AddSetStatement$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\AddSetStatement$.class
+[debug] 	gymscript\parser\AddSetStatement.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\AddSetStatement.class
+[debug] 	gymscript\parser\AdjustWeightStatement$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\AdjustWeightStatement$.class
+[debug] 	gymscript\parser\AdjustWeightStatement.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\AdjustWeightStatement.class
+[debug] 	gymscript\parser\Assignment$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\Assignment$.class
+[debug] 	gymscript\parser\Assignment.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\Assignment.class
+[debug] 	gymscript\parser\BinaryExpression$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\BinaryExpression$.class
+[debug] 	gymscript\parser\BinaryExpression.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\BinaryExpression.class
+[debug] 	gymscript\parser\Block$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\Block$.class
+[debug] 	gymscript\parser\Block.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\Block.class
+[debug] 	gymscript\parser\BooleanLiteral$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\BooleanLiteral$.class
+[debug] 	gymscript\parser\BooleanLiteral.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\BooleanLiteral.class
+[debug] 	gymscript\parser\CallExpression$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\CallExpression$.class
+[debug] 	gymscript\parser\CallExpression.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\CallExpression.class
+[debug] 	gymscript\parser\CallStatement$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\CallStatement$.class
+[debug] 	gymscript\parser\CallStatement.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\CallStatement.class
+[debug] 	gymscript\parser\ChangeSetStatement$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\ChangeSetStatement$.class
+[debug] 	gymscript\parser\ChangeSetStatement.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\ChangeSetStatement.class
+[debug] 	gymscript\parser\Expression.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\Expression.class
+[debug] 	gymscript\parser\ExpressionStatement$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\ExpressionStatement$.class
+[debug] 	gymscript\parser\ExpressionStatement.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\ExpressionStatement.class
+[debug] 	gymscript\parser\GroupingExpression$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\GroupingExpression$.class
+[debug] 	gymscript\parser\GroupingExpression.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\GroupingExpression.class
+[debug] 	gymscript\parser\IfStatement$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\IfStatement$.class
+[debug] 	gymscript\parser\IfStatement.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\IfStatement.class
+[debug] 	gymscript\parser\ImportDirective$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\ImportDirective$.class
+[debug] 	gymscript\parser\ImportDirective.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\ImportDirective.class
+[debug] 	gymscript\parser\LengthExpression$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\LengthExpression$.class
+[debug] 	gymscript\parser\LengthExpression.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\LengthExpression.class
+[debug] 	gymscript\parser\ListExpression$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\ListExpression$.class
+[debug] 	gymscript\parser\ListExpression.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\ListExpression.class
+[debug] 	gymscript\parser\ListTypeAnnotation$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\ListTypeAnnotation$.class
+[debug] 	gymscript\parser\ListTypeAnnotation.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\ListTypeAnnotation.class
+[debug] 	gymscript\parser\LiteralExpression$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\LiteralExpression$.class
+[debug] 	gymscript\parser\LiteralExpression.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\LiteralExpression.class
+[debug] 	gymscript\parser\LiteralValue.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\LiteralValue.class
+[debug] 	gymscript\parser\NullLiteral$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\NullLiteral$.class
+[debug] 	gymscript\parser\NullLiteral.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\NullLiteral.class
+[debug] 	gymscript\parser\NumberLiteral$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\NumberLiteral$.class
+[debug] 	gymscript\parser\NumberLiteral.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\NumberLiteral.class
+[debug] 	gymscript\parser\ParseError$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\ParseError$.class
+[debug] 	gymscript\parser\ParseError.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\ParseError.class
+[debug] 	gymscript\parser\Parser$ParserState$ParserFailure$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\Parser$ParserState$ParserFailure$.class
+[debug] 	gymscript\parser\Parser$ParserState.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\Parser$ParserState.class
+[debug] 	gymscript\parser\Parser.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\Parser.class
+[debug] 	gymscript\parser\PrintStatement$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\PrintStatement$.class
+[debug] 	gymscript\parser\PrintStatement.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\PrintStatement.class
+[debug] 	gymscript\parser\Program$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\Program$.class
+[debug] 	gymscript\parser\Program.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\Program.class
+[debug] 	gymscript\parser\RangeExpression$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\RangeExpression$.class
+[debug] 	gymscript\parser\RangeExpression.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\RangeExpression.class
+[debug] 	gymscript\parser\RemoveSetStatement$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\RemoveSetStatement$.class
+[debug] 	gymscript\parser\RemoveSetStatement.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\RemoveSetStatement.class
+[debug] 	gymscript\parser\ReturnStatement$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\ReturnStatement$.class
+[debug] 	gymscript\parser\ReturnStatement.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\ReturnStatement.class
+[debug] 	gymscript\parser\RoutineDeclaration$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\RoutineDeclaration$.class
+[debug] 	gymscript\parser\RoutineDeclaration.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\RoutineDeclaration.class
+[debug] 	gymscript\parser\RoutineParameter$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\RoutineParameter$.class
+[debug] 	gymscript\parser\RoutineParameter.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\RoutineParameter.class
+[debug] 	gymscript\parser\SimpleTypeAnnotation$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\SimpleTypeAnnotation$.class
+[debug] 	gymscript\parser\SimpleTypeAnnotation.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\SimpleTypeAnnotation.class
+[debug] 	gymscript\parser\Statement.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\Statement.class
+[debug] 	gymscript\parser\StringLiteral$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\StringLiteral$.class
+[debug] 	gymscript\parser\StringLiteral.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\StringLiteral.class
+[debug] 	gymscript\parser\TakeExpression$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\TakeExpression$.class
+[debug] 	gymscript\parser\TakeExpression.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\TakeExpression.class
+[debug] 	gymscript\parser\TypeAnnotation.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\TypeAnnotation.class
+[debug] 	gymscript\parser\UnaryExpression$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\UnaryExpression$.class
+[debug] 	gymscript\parser\UnaryExpression.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\UnaryExpression.class
+[debug] 	gymscript\parser\VariableDeclaration$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\VariableDeclaration$.class
+[debug] 	gymscript\parser\VariableDeclaration.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\VariableDeclaration.class
+[debug] 	gymscript\parser\VariableExpression$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\VariableExpression$.class
+[debug] 	gymscript\parser\VariableExpression.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\VariableExpression.class
+[debug] 	gymscript\parser\WhileStatement$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\WhileStatement$.class
+[debug] 	gymscript\parser\WhileStatement.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\WhileStatement.class
+[debug] 	gymscript\resolver
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\resolver
+[debug] 	gymscript\resolver\GymType$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\resolver\GymType$.class
+[debug] 	gymscript\resolver\GymType$BooleanType$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\resolver\GymType$BooleanType$.class
+[debug] 	gymscript\resolver\GymType$ListType$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\resolver\GymType$ListType$.class
+[debug] 	gymscript\resolver\GymType$ListType.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\resolver\GymType$ListType.class
+[debug] 	gymscript\resolver\GymType$NullType$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\resolver\GymType$NullType$.class
+[debug] 	gymscript\resolver\GymType$NumberType$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\resolver\GymType$NumberType$.class
+[debug] 	gymscript\resolver\GymType$StringType$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\resolver\GymType$StringType$.class
+[debug] 	gymscript\resolver\GymType$UnknownType$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\resolver\GymType$UnknownType$.class
+[debug] 	gymscript\resolver\GymType.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\resolver\GymType.class
+[debug] 	gymscript\resolver\ModuleResolver$$anonfun$collectRoutines$1.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\resolver\ModuleResolver$$anonfun$collectRoutines$1.class
+[debug] 	gymscript\resolver\ModuleResolver$$anonfun$validateImportedStatements$1.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\resolver\ModuleResolver$$anonfun$validateImportedStatements$1.class
+[debug] 	gymscript\resolver\ModuleResolver$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\resolver\ModuleResolver$.class
+[debug] 	gymscript\resolver\ModuleResolver.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\resolver\ModuleResolver.class
+[debug] 	gymscript\resolver\SemanticAnalyzer$Analyzer$FlowInfo.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\resolver\SemanticAnalyzer$Analyzer$FlowInfo.class
+[debug] 	gymscript\resolver\SemanticAnalyzer$Analyzer$RoutineContext.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\resolver\SemanticAnalyzer$Analyzer$RoutineContext.class
+[debug] 	gymscript\resolver\SemanticAnalyzer$Analyzer$RoutineSignature$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\resolver\SemanticAnalyzer$Analyzer$RoutineSignature$.class
+[debug] 	gymscript\resolver\SemanticAnalyzer$Analyzer$RoutineSignature.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\resolver\SemanticAnalyzer$Analyzer$RoutineSignature.class
+[debug] 	gymscript\resolver\SemanticAnalyzer$Analyzer.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\resolver\SemanticAnalyzer$Analyzer.class
+[debug] 	gymscript\resolver\SemanticAnalyzer.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\resolver\SemanticAnalyzer.class
+[debug] 	gymscript\resolver\SemanticError$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\resolver\SemanticError$.class
+[debug] 	gymscript\resolver\SemanticError.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\resolver\SemanticError.class
+[debug] 	gymscript\util
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\util
+[debug] 	gymscript\util\Position$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\util\Position$.class
+[debug] 	gymscript\util\Position.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\util\Position.class
+[debug] 	gymscript\util\SourceReader$.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\util\SourceReader$.class
+[debug] 	gymscript\util\SourceReader.class
+[debug] 	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\util\SourceReader.class
+[debug] Done packaging.

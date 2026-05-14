@@ -1,34 +1,46 @@
-# GymScript: especificacion final
+# Especificacion de GymScript
 
-GymScript es un DSL tematico para expresar rutinas, metas y transformaciones de entrenamiento.
+GymScript modela programas como rutinas de entrenamiento. La sintaxis evita simbolos genericos en favor de verbos y palabras del dominio gimnasio.
 
-## Caracteristicas implementadas
+## Palabras clave principales
 
-- Variables y expresiones
-- Condicionales y ciclos
-- Rutinas con parametros
-- Retorno temprano con `entregar_resultado`
-- Llamadas como expresion
-- Listas homogeneas
-- Mutaciones seguras de listas
-- Ajustes numericos con `subir_peso` y `bajar_peso`
+- Variables: `peso`
+- Salida: `mostrar`
+- Condicional: `si_fuerza`, `descanso`
+- Ciclo: `mientras_entrenas`
+- Bloques: `inicio_rutina`, `fin_rutina`
+- Rutinas: `rutina`, `llamar`, `entregar_resultado`
+- Imports: `importar_rutina`
+- Tipos: `como`, `entrega`, `numero`, `texto`, `booleano`, `lista_de`, `sin_resultado`
+- Listas: `lista`, `tomar`, `largo`, `cambiar_set`, `agregar_set`, `quitar_set`, `rango_set`
 
-## Tipos de valor
+## Operadores tematicos
 
-- `numero`
-- `texto`
-- `booleano`
-- `lista`
-- `rutina`
-- `nulo`
+- `mas_reps`
+- `menos_reps`
+- `series_de`
+- `dividir_rutina`
+- `cargar`
+- `levanta_mas_que`
+- `levanta_menos_que`
+- `levanta_igual_que`
+- `no_levanta_igual`
+- `levanta_minimo`
+- `levanta_maximo`
+- `y_entrena`
+- `o_descansa`
+- `sin_energia`
 
-## Alcance
+## Delimitadores tematicos
 
-- Scope global para declaraciones top-level.
-- Scope por bloque en `si_fuerza`, `descanso` y `mientras_entrenas`.
-- Scope local por rutina.
-- Los parametros viven solo dentro de su rutina.
+- `abre_set`
+- `cierra_set`
+- `separa`
 
-## Legacy
+## Principios semanticos
 
-GymScript corre en modo estricto por defecto. El modo `legacy` es opcional y solo habilita compatibilidad con simbolos y aliases anteriores.
+- Las variables deben declararse antes de usarse.
+- Las rutinas pueden declararse en el nivel superior y ser importadas desde otros archivos.
+- Las condiciones de `si_fuerza` y `mientras_entrenas` deben ser booleanas.
+- Las listas son homogeneas.
+- El modo estricto es el modo por defecto.

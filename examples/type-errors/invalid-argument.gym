@@ -1,0 +1,5 @@
+rutina gritar abre_set mensaje como texto cierra_set entrega texto inicio_rutina
+  entregar_resultado mensaje mas_reps "!"
+fin_rutina
+
+mostrar abre_set llamar gritar abre_set 99 cierra_set cierra_set

@@ -1,0 +1,5 @@
+rutina sumar_mal abre_set a como numero separa b como numero cierra_set entrega numero inicio_rutina
+  entregar_resultado "error"
+fin_rutina
+
+mostrar abre_set llamar sumar_mal abre_set 1 separa 2 cierra_set cierra_set

@@ -1,0 +1,12 @@
+importar_rutina "math.gym"
+importar_rutina "messages.gym"
+
+peso total cargar llamar sumar abre_set 10 separa 5 cierra_set
+mostrar abre_set total cierra_set
+mostrar abre_set llamar motivar abre_set "Santiago" cierra_set cierra_set
+
+si_fuerza llamar supera_meta abre_set total separa 12 cierra_set inicio_rutina
+  mostrar abre_set "Total listo" cierra_set
+descanso inicio_rutina
+  mostrar abre_set "Total corto" cierra_set
+fin_rutina

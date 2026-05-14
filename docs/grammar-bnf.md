@@ -1,7 +1,9 @@
-# Gramatica final
+# Gramatica BNF
 
 ```bnf
-<programa> ::= <sentencia>* EOF
+<programa> ::= <import>* <sentencia>* EOF
+
+<import> ::= "importar_rutina" STRING
 
 <sentencia> ::= <declaracion>
               | <asignacion>
@@ -30,12 +32,21 @@
             <bloque>
             "fin_rutina"
 
-<rutina> ::= "rutina" IDENTIFICADOR "abre_set" [<parametros>] "cierra_set" "inicio_rutina"
+<rutina> ::= "rutina" IDENTIFICADOR "abre_set" [<parametros>] "cierra_set"
+             ["entrega" <tipo>]
+             "inicio_rutina"
              <bloque>
              "fin_rutina"
 
+<parametros> ::= <parametro> ("separa" <parametro>)*
+<parametro> ::= IDENTIFICADOR ["como" <tipo>]
+<tipo> ::= "numero"
+         | "texto"
+         | "booleano"
+         | "sin_resultado"
+         | "lista_de" <tipo>
+
 <llamada> ::= "llamar" IDENTIFICADOR "abre_set" [<argumentos>] "cierra_set"
-<parametros> ::= IDENTIFICADOR ("separa" IDENTIFICADOR)*
 <argumentos> ::= <expresion> ("separa" <expresion>)*
 
 <mutacion_lista> ::= "cambiar_set" "abre_set" IDENTIFICADOR "separa" <expresion> "separa" <expresion> "cierra_set"
@@ -58,7 +69,7 @@
              | "falso"
              | "sin_resultado"
              | IDENTIFICADOR
-             | "llamar" IDENTIFICADOR "abre_set" [<argumentos>] "cierra_set"
+             | <llamada>
              | "abre_set" <expresion> "cierra_set"
              | "lista" "abre_set" [<argumentos>] "cierra_set"
              | "tomar" "abre_set" <expresion> "separa" <expresion> "cierra_set"

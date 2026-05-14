@@ -30,7 +30,7 @@ final class InterpreterSpec extends AnyFunSuite {
 
   test("rutina retorna valor") {
     val source =
-      """rutina sumar abre_set a separa b cierra_set inicio_rutina
+      """rutina sumar abre_set a como numero separa b como numero cierra_set entrega numero inicio_rutina
         |  entregar_resultado a mas_reps b
         |fin_rutina
         |mostrar abre_set llamar sumar abre_set 2 separa 3 cierra_set cierra_set""".stripMargin
@@ -40,7 +40,7 @@ final class InterpreterSpec extends AnyFunSuite {
 
   test("llamada usada en asignacion") {
     val source =
-      """rutina sumar abre_set a separa b cierra_set inicio_rutina
+      """rutina sumar abre_set a como numero separa b como numero cierra_set entrega numero inicio_rutina
         |  entregar_resultado a mas_reps b
         |fin_rutina
         |peso total cargar llamar sumar abre_set 4 separa 5 cierra_set
@@ -51,7 +51,7 @@ final class InterpreterSpec extends AnyFunSuite {
 
   test("llamada usada dentro de expresion") {
     val source =
-      """rutina sumar abre_set a separa b cierra_set inicio_rutina
+      """rutina sumar abre_set a como numero separa b como numero cierra_set entrega numero inicio_rutina
         |  entregar_resultado a mas_reps b
         |fin_rutina
         |mostrar abre_set llamar sumar abre_set 1 separa 2 cierra_set mas_reps 5 cierra_set""".stripMargin
@@ -94,7 +94,7 @@ final class InterpreterSpec extends AnyFunSuite {
 
   test("scope local de rutinas") {
     val source =
-      """rutina crear abre_set cierra_set inicio_rutina
+      """rutina crear abre_set cierra_set entrega numero inicio_rutina
         |  peso interno cargar 1
         |  entregar_resultado interno
         |fin_rutina
@@ -121,11 +121,12 @@ final class InterpreterSpec extends AnyFunSuite {
   test("recursion basica") {
     val recursiveInterpreter = new Interpreter(maxCallDepth = 32)
     val source =
-      """rutina cuenta_regresiva abre_set n cierra_set inicio_rutina
+      """rutina cuenta_regresiva abre_set n como numero cierra_set entrega numero inicio_rutina
         |  si_fuerza n levanta_igual_que 0 inicio_rutina
         |    entregar_resultado 0
+        |  descanso inicio_rutina
+        |    entregar_resultado llamar cuenta_regresiva abre_set n menos_reps 1 cierra_set
         |  fin_rutina
-        |  entregar_resultado llamar cuenta_regresiva abre_set n menos_reps 1 cierra_set
         |fin_rutina
         |mostrar abre_set llamar cuenta_regresiva abre_set 3 cierra_set cierra_set""".stripMargin
 

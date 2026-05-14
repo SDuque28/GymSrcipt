@@ -1,66 +1,70 @@
-# Tabla lexica final
+# Tabla lexica
 
-## Palabras reservadas
+## Reservadas
 
-| Lexema | Token |
-| --- | --- |
-| `peso` | `Peso` |
-| `mostrar` | `Mostrar` |
-| `si_fuerza` | `SiFuerza` |
-| `descanso` | `Descanso` |
-| `mientras_entrenas` | `MientrasEntrenas` |
-| `inicio_rutina` | `InicioRutina` |
-| `fin_rutina` | `FinRutina` |
-| `rutina` | `Rutina` |
-| `llamar` | `Llamar` |
-| `entregar_resultado` | `EntregarResultado` |
-| `subir_peso` | `SubirPeso` |
-| `bajar_peso` | `BajarPeso` |
-| `por` | `Por` |
-| `lista` | `Lista` |
-| `tomar` | `Tomar` |
-| `largo` | `Largo` |
-| `cambiar_set` | `CambiarSet` |
-| `agregar_set` | `AgregarSet` |
-| `quitar_set` | `QuitarSet` |
-| `rango_set` | `RangoSet` |
-| `sin_resultado` | `SinResultado` |
-| `verdadero` | `Verdadero` |
-| `falso` | `Falso` |
+- `peso`
+- `mostrar`
+- `si_fuerza`
+- `descanso`
+- `mientras_entrenas`
+- `inicio_rutina`
+- `fin_rutina`
+- `rutina`
+- `llamar`
+- `importar_rutina`
+- `entregar_resultado`
+- `subir_peso`
+- `bajar_peso`
+- `por`
+- `lista`
+- `tomar`
+- `largo`
+- `cambiar_set`
+- `agregar_set`
+- `quitar_set`
+- `rango_set`
+- `como`
+- `entrega`
+- `numero`
+- `texto`
+- `booleano`
+- `lista_de`
+- `sin_resultado`
+- `verdadero`
+- `falso`
 
-## Operadores tematicos
+## Operadores
 
-| Lexema | Token |
-| --- | --- |
-| `mas_reps` | `Plus` |
-| `menos_reps` | `Minus` |
-| `series_de` | `Star` |
-| `dividir_rutina` | `Slash` |
-| `cargar` | `Assign` |
-| `levanta_mas_que` | `GreaterThan` |
-| `levanta_menos_que` | `LessThan` |
-| `levanta_igual_que` | `EqualEqual` |
-| `no_levanta_igual` | `BangEqual` |
-| `levanta_minimo` | `GreaterEqual` |
-| `levanta_maximo` | `LessEqual` |
-| `y_entrena` | `And` |
-| `o_descansa` | `Or` |
-| `sin_energia` | `Not` |
+- `mas_reps`
+- `menos_reps`
+- `series_de`
+- `dividir_rutina`
+- `cargar`
+- `levanta_mas_que`
+- `levanta_menos_que`
+- `levanta_igual_que`
+- `no_levanta_igual`
+- `levanta_minimo`
+- `levanta_maximo`
+- `y_entrena`
+- `o_descansa`
+- `sin_energia`
 
-## Delimitadores tematicos
+## Delimitadores
 
-| Lexema | Token |
-| --- | --- |
-| `abre_set` | `LeftParen` |
-| `cierra_set` | `RightParen` |
-| `separa` | `Comma` |
+- `abre_set`
+- `cierra_set`
+- `separa`
+- `\n`
+- `EOF`
 
-## Legacy opcional
+## Literales
 
-En modo `--legacy` tambien se aceptan:
+- Numeros enteros y decimales
+- Strings entre comillas dobles con escapes `\"`, `\\`, `\n`, `\t`
+- Booleanos `verdadero` y `falso`
+- Literal nulo `sin_resultado`
 
-- `+ - * /`
-- `= == != > < >= <=`
-- `(` `)` `,`
-- `mayor_que`, `menor_que`, `mayor_igual`, `menor_igual`
-- `y`, `o`, `no`
+## Comentarios
+
+- `# comentario de linea`

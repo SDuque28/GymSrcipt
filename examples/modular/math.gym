@@ -1,0 +1,7 @@
+rutina sumar abre_set a como numero separa b como numero cierra_set entrega numero inicio_rutina
+  entregar_resultado a mas_reps b
+fin_rutina
+
+rutina supera_meta abre_set valor como numero separa meta como numero cierra_set entrega booleano inicio_rutina
+  entregar_resultado valor levanta_mas_que meta
+fin_rutina

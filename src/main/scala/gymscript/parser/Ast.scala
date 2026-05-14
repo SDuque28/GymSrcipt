@@ -3,7 +3,26 @@ package gymscript.parser
 import gymscript.lexer.TokenType
 import gymscript.util.Position
 
-final case class Program(statements: List[Statement], position: Position)
+final case class Program(
+    statements: List[Statement],
+    position: Position,
+    imports: List[ImportDirective] = Nil
+)
+
+final case class ImportDirective(path: String, position: Position)
+
+sealed trait TypeAnnotation {
+  def position: Position
+}
+
+final case class SimpleTypeAnnotation(name: String, position: Position) extends TypeAnnotation
+final case class ListTypeAnnotation(elementType: TypeAnnotation, position: Position) extends TypeAnnotation
+
+final case class RoutineParameter(
+    name: String,
+    typeAnnotation: Option[TypeAnnotation],
+    position: Position
+)
 
 sealed trait Statement {
   def position: Position
@@ -26,7 +45,13 @@ final case class IfStatement(
     position: Position
 ) extends Statement
 final case class WhileStatement(condition: Expression, body: Block, position: Position) extends Statement
-final case class RoutineDeclaration(name: String, parameters: List[String], body: Block, position: Position) extends Statement
+final case class RoutineDeclaration(
+    name: String,
+    parameters: List[RoutineParameter],
+    returnType: Option[TypeAnnotation],
+    body: Block,
+    position: Position
+) extends Statement
 final case class CallStatement(name: String, arguments: List[Expression], position: Position) extends Statement
 final case class ChangeSetStatement(name: String, index: Expression, value: Expression, position: Position) extends Statement
 final case class AddSetStatement(name: String, value: Expression, position: Position) extends Statement

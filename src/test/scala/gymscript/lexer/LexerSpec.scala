@@ -7,22 +7,22 @@ final class LexerSpec extends AnyFunSuite {
   private val strictLexer = new Lexer()
   private val legacyLexer = new Lexer(LexerOptions(allowLegacySyntax = true))
 
-  test("reconoce nuevas palabras reservadas") {
+  test("reconoce palabras reservadas de tipos, retorno e imports") {
     val result = strictLexer.tokenize(
-      "entregar_resultado subir_peso bajar_peso tomar largo cambiar_set agregar_set quitar_set rango_set"
+      """importar_rutina "math.gym"
+        |rutina sumar abre_set a como numero separa b como texto cierra_set entrega lista_de texto inicio_rutina
+        |  entregar_resultado lista abre_set b cierra_set
+        |fin_rutina""".stripMargin
     )
 
     assert(result.isRight)
     val tokenTypes = result.toOption.get.map(_.tokenType)
-    assert(tokenTypes.contains(TokenType.EntregarResultado))
-    assert(tokenTypes.contains(TokenType.SubirPeso))
-    assert(tokenTypes.contains(TokenType.BajarPeso))
-    assert(tokenTypes.contains(TokenType.Tomar))
-    assert(tokenTypes.contains(TokenType.Largo))
-    assert(tokenTypes.contains(TokenType.CambiarSet))
-    assert(tokenTypes.contains(TokenType.AgregarSet))
-    assert(tokenTypes.contains(TokenType.QuitarSet))
-    assert(tokenTypes.contains(TokenType.RangoSet))
+    assert(tokenTypes.contains(TokenType.ImportarRutina))
+    assert(tokenTypes.contains(TokenType.Como))
+    assert(tokenTypes.contains(TokenType.Entrega))
+    assert(tokenTypes.contains(TokenType.NumeroTipo))
+    assert(tokenTypes.contains(TokenType.TextoTipo))
+    assert(tokenTypes.contains(TokenType.ListaDe))
   }
 
   test("reconoce operadores y delimitadores tematicos") {

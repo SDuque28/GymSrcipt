@@ -1,37 +1,47 @@
-[debug] Running TaskDef(gymscript.parser.ParserSpec, org.scalatest.tools.Framework$$anon$1@6cd59f27, false, [SuiteSelector])
-[debug] Running TaskDef(gymscript.resolver.SemanticAnalyzerSpec, org.scalatest.tools.Framework$$anon$1@6cd59f27, false, [SuiteSelector])
-[debug] Running TaskDef(gymscript.interpreter.InterpreterSpec, org.scalatest.tools.Framework$$anon$1@6cd59f27, false, [SuiteSelector])
-[debug] Running TaskDef(gymscript.lexer.LexerSpec, org.scalatest.tools.Framework$$anon$1@6cd59f27, false, [SuiteSelector])
-[debug] Running TaskDef(gymscript.EndToEndSpec, org.scalatest.tools.Framework$$anon$1@6cd59f27, false, [SuiteSelector])
+[debug] Running TaskDef(gymscript.lexer.LexerSpec, org.scalatest.tools.Framework$$anon$1@1b242df, false, [SuiteSelector])
+[debug] Running TaskDef(gymscript.resolver.SemanticAnalyzerSpec, org.scalatest.tools.Framework$$anon$1@1b242df, false, [SuiteSelector])
+[debug] Running TaskDef(gymscript.EndToEndSpec, org.scalatest.tools.Framework$$anon$1@1b242df, false, [SuiteSelector])
+[debug] Running TaskDef(gymscript.resolver.ModuleResolverSpec, org.scalatest.tools.Framework$$anon$1@1b242df, false, [SuiteSelector])
 [info] LexerSpec:
-[info] - reconoce nuevas palabras reservadas
+[info] - reconoce palabras reservadas de tipos, retorno e imports
 [info] - reconoce operadores y delimitadores tematicos
 [info] - rechaza simbolos legacy en modo estricto
 [info] - permite simbolos legacy en modo legacy
 [info] - ignora comentarios
 [info] - mantiene linea y columna con sintaxis tematica
-[info] ParserSpec:
-[info] - parsea rutina con retorno
-[info] - parsea llamada como expresion
-[info] - parsea llamada anidada
-[info] - parsea subir_peso y bajar_peso
-[info] - parsea operaciones de lista
-[info] - reporta error por argumentos faltantes
-[info] - reporta error por bloque mal cerrado
+[debug] Running TaskDef(gymscript.interpreter.InterpreterSpec, org.scalatest.tools.Framework$$anon$1@1b242df, false, [SuiteSelector])
+[debug] Running TaskDef(gymscript.parser.ParserSpec, org.scalatest.tools.Framework$$anon$1@1b242df, false, [SuiteSelector])
 [info] SemanticAnalyzerSpec:
 [info] - detecta return fuera de rutina
-[info] - detecta rutina no declarada
-[info] - detecta numero incorrecto de argumentos
-[info] - detecta parametros duplicados
-[info] - detecta variable no declarada
-[info] - detecta redeclaracion
+[info] - valida condicion booleana en si_fuerza
+[info] - valida retorno declarado numero
+[info] - detecta retorno inconsistente
+[info] - detecta rutina que declara retorno pero no retorna
+[info] - valida tipos de argumentos
+[info] - valida tipo de retorno usado en condicion
 [info] - detecta lista con tipos incompatibles
-[info] - detecta operaciones invalidas sobre no listas
+[info] - valida tomar largo rango_set agregar_set y cambiar_set
+[info] ModuleResolverSpec:
+[info] - importa archivo valido y combina rutinas
+[info] - rechaza archivo inexistente
+[info] - rechaza path traversal
+[info] - detecta import duplicado
+[info] - detecta ciclo de imports
 [info] EndToEndSpec:
 [info] - basic-routine
 [info] - exhaustive-routine
 [info] - advanced-routine
+[info] - modular-main
+[info] - tail-recursion
 [info] - legacy-example en modo legacy
+[info] ParserSpec:
+[info] - parsea parametros con como y retorno con entrega
+[info] - parsea llamada como expresion
+[info] - parsea llamada anidada
+[info] - parsea importar_rutina al inicio
+[info] - parsea tipos lista_de
+[info] - reporta error si falta inicio_rutina en rutina
+[info] - reporta error por bloque mal cerrado
 [info] InterpreterSpec:
 [info] - rutina retorna valor
 [info] - llamada usada en asignacion
@@ -45,14 +55,15 @@
 [info] - recursion basica
 [info] - ejecuta advanced-routine.gym.txt
 [info] - reporta operacion incompatible
-[info] Run completed in 1 second, 69 milliseconds.
-[info] Total number of tests run: 37
-[info] Suites: completed 5, aborted 0
-[info] Tests: succeeded 37, failed 0, canceled 0, ignored 0, pending 0
+[info] Run completed in 1 second, 198 milliseconds.
+[info] Total number of tests run: 45
+[info] Suites: completed 6, aborted 0
+[info] Tests: succeeded 45, failed 0, canceled 0, ignored 0, pending 0
 [info] All tests passed.
 [debug] Passed tests:
 [debug] 	gymscript.EndToEndSpec
 [debug] 	gymscript.lexer.LexerSpec
 [debug] 	gymscript.resolver.SemanticAnalyzerSpec
 [debug] 	gymscript.interpreter.InterpreterSpec
+[debug] 	gymscript.resolver.ModuleResolverSpec
 [debug] 	gymscript.parser.ParserSpec
