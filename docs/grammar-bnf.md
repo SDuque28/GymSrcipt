@@ -1,4 +1,4 @@
-# Gramatica implementada
+# Gramatica final
 
 ```bnf
 <programa> ::= <sentencia>* EOF
@@ -9,13 +9,17 @@
               | <condicional>
               | <ciclo>
               | <rutina>
+              | <retorno>
+              | <ajuste_peso>
+              | <mutacion_lista>
               | <llamada>
               | <expresion>
 
 <declaracion> ::= "peso" IDENTIFICADOR "cargar" <expresion>
 <asignacion> ::= IDENTIFICADOR "cargar" <expresion>
-
 <salida> ::= "mostrar" "abre_set" <expresion> "cierra_set"
+<retorno> ::= "entregar_resultado" [<expresion>]
+<ajuste_peso> ::= ("subir_peso" | "bajar_peso") IDENTIFICADOR ["por" <expresion>]
 
 <condicional> ::= "si_fuerza" <expresion> "inicio_rutina"
                   <bloque>
@@ -31,9 +35,13 @@
              "fin_rutina"
 
 <llamada> ::= "llamar" IDENTIFICADOR "abre_set" [<argumentos>] "cierra_set"
-
 <parametros> ::= IDENTIFICADOR ("separa" IDENTIFICADOR)*
 <argumentos> ::= <expresion> ("separa" <expresion>)*
+
+<mutacion_lista> ::= "cambiar_set" "abre_set" IDENTIFICADOR "separa" <expresion> "separa" <expresion> "cierra_set"
+                   | "agregar_set" "abre_set" IDENTIFICADOR "separa" <expresion> "cierra_set"
+                   | "quitar_set" "abre_set" IDENTIFICADOR "separa" <expresion> "cierra_set"
+
 <bloque> ::= <sentencia>+
 
 <expresion> ::= <or>
@@ -48,15 +56,12 @@
              | STRING
              | "verdadero"
              | "falso"
+             | "sin_resultado"
              | IDENTIFICADOR
+             | "llamar" IDENTIFICADOR "abre_set" [<argumentos>] "cierra_set"
              | "abre_set" <expresion> "cierra_set"
              | "lista" "abre_set" [<argumentos>] "cierra_set"
              | "tomar" "abre_set" <expresion> "separa" <expresion> "cierra_set"
              | "largo" "abre_set" <expresion> "cierra_set"
+             | "rango_set" "abre_set" <expresion> "separa" <expresion> "separa" <expresion> "cierra_set"
 ```
-
-## Notas
-
-- Los bloques de `si_fuerza`, `descanso`, `mientras_entrenas` y `rutina` exigen `inicio_rutina`.
-- Los bloques cierran con `fin_rutina`.
-- Se mantiene una compatibilidad legacy acotada solo para migracion.

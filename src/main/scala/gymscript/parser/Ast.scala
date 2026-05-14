@@ -12,6 +12,13 @@ sealed trait Statement {
 final case class VariableDeclaration(name: String, initializer: Option[Expression], position: Position) extends Statement
 final case class Assignment(name: String, expression: Expression, position: Position) extends Statement
 final case class PrintStatement(expression: Expression, position: Position) extends Statement
+final case class ReturnStatement(expression: Option[Expression], position: Position) extends Statement
+final case class AdjustWeightStatement(
+    name: String,
+    amount: Option[Expression],
+    isIncrease: Boolean,
+    position: Position
+) extends Statement
 final case class IfStatement(
     condition: Expression,
     thenBranch: Block,
@@ -21,6 +28,9 @@ final case class IfStatement(
 final case class WhileStatement(condition: Expression, body: Block, position: Position) extends Statement
 final case class RoutineDeclaration(name: String, parameters: List[String], body: Block, position: Position) extends Statement
 final case class CallStatement(name: String, arguments: List[Expression], position: Position) extends Statement
+final case class ChangeSetStatement(name: String, index: Expression, value: Expression, position: Position) extends Statement
+final case class AddSetStatement(name: String, value: Expression, position: Position) extends Statement
+final case class RemoveSetStatement(name: String, index: Expression, position: Position) extends Statement
 final case class Block(statements: List[Statement], position: Position) extends Statement
 final case class ExpressionStatement(expression: Expression, position: Position) extends Statement
 
@@ -38,9 +48,11 @@ final case class UnaryExpression(operator: TokenType, expression: Expression, po
 final case class LiteralExpression(value: LiteralValue, position: Position) extends Expression
 final case class VariableExpression(name: String, position: Position) extends Expression
 final case class GroupingExpression(expression: Expression, position: Position) extends Expression
+final case class CallExpression(name: String, arguments: List[Expression], position: Position) extends Expression
 final case class ListExpression(elements: List[Expression], position: Position) extends Expression
 final case class TakeExpression(collection: Expression, index: Expression, position: Position) extends Expression
 final case class LengthExpression(collection: Expression, position: Position) extends Expression
+final case class RangeExpression(collection: Expression, start: Expression, end: Expression, position: Position) extends Expression
 
 sealed trait LiteralValue
 final case class NumberLiteral(value: BigDecimal) extends LiteralValue

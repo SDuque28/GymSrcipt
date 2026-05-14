@@ -1,20 +1,20 @@
 package gymscript
 
 import gymscript.interpreter.Interpreter
-import gymscript.lexer.Lexer
+import gymscript.lexer.{ Lexer, LexerOptions }
 import gymscript.parser.Parser
 import gymscript.resolver.SemanticAnalyzer
 import gymscript.util.SourceReader
 import org.scalatest.funsuite.AnyFunSuite
 
 final class EndToEndSpec extends AnyFunSuite {
-  private val lexer = new Lexer()
-  private val parser = new Parser()
-  private val analyzer = new SemanticAnalyzer()
-  private val interpreter = new Interpreter()
-
-  private def runFile(path: String): Either[Any, List[String]] = {
+  private def runFile(path: String, legacy: Boolean = false): Either[Any, List[String]] = {
     val source = SourceReader.read(path).toOption.get
+    val lexer = new Lexer(LexerOptions(allowLegacySyntax = legacy))
+    val parser = new Parser()
+    val analyzer = new SemanticAnalyzer()
+    val interpreter = new Interpreter()
+
     for {
       tokens <- lexer.tokenize(source)
       program <- parser.parse(tokens)
@@ -23,11 +23,11 @@ final class EndToEndSpec extends AnyFunSuite {
     } yield outputs
   }
 
-  test("ejecuta basic-routine.gym.txt") {
+  test("basic-routine") {
     assert(runFile("examples/basic-routine.gym.txt") == Right(List("0", "1", "2", "Rutina completada")))
   }
 
-  test("ejecuta exhaustive-routine.gym.txt") {
+  test("exhaustive-routine") {
     assert(
       runFile("examples/exhaustive-routine.gym.txt") ==
         Right(
@@ -52,10 +52,11 @@ final class EndToEndSpec extends AnyFunSuite {
     )
   }
 
-  test("ejecuta advanced-routine.gym.txt") {
-    assert(
-      runFile("examples/advanced-routine.gym.txt") ==
-        Right(List("[curl, sentadilla, press]", "3", "sentadilla", "Ejercicio: curl", "Alta carga", "Bloque avanzado"))
-    )
+  test("advanced-routine") {
+    assert(runFile("examples/advanced-routine.gym.txt") == Right(List("7", "12", "[press banca, sentadilla, dominadas]", "sentadilla", "3", "[press banca, sentadilla]", "Meta superada", "1", "2")))
+  }
+
+  test("legacy-example en modo legacy") {
+    assert(runFile("examples/legacy-example.gym.txt", legacy = true) == Right(List("7", "legacy activo")))
   }
 }

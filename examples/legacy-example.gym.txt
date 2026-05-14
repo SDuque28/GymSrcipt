@@ -1,0 +1,7 @@
+# Ejemplo legacy: operadores y parentesis antiguos, bloques tematicos
+peso total = 1 + 2 * 3
+mostrar(total)
+
+si_fuerza total > 5 inicio_rutina
+  mostrar("legacy activo")
+fin_rutina

@@ -18,7 +18,7 @@ final case class BooleanValue(value: Boolean) extends Value {
   override def render: String = value.toString
 }
 
-final case class ListValue(values: Vector[Value]) extends Value {
+final case class ListValue(values: Vector[Value], elementTypeName: Option[String] = None) extends Value {
   override def render: String = values.map(_.render).mkString("[", ", ", "]")
 }
 

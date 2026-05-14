@@ -1,22 +1,45 @@
-# Rutinas, listas y llamadas con sintaxis GymScript
-rutina reportar_ejercicio abre_set nombre separa repeticiones cierra_set inicio_rutina
-  mostrar abre_set "Ejercicio: " mas_reps nombre cierra_set
-  si_fuerza repeticiones levanta_mas_que 10 inicio_rutina
-    mostrar abre_set "Alta carga" cierra_set
-  descanso inicio_rutina
-    mostrar abre_set "Carga estable" cierra_set
-  fin_rutina
+# GymScript avanzado con retornos, listas y mutaciones
+rutina sumar abre_set a separa b cierra_set inicio_rutina
+  entregar_resultado a mas_reps b
 fin_rutina
 
+rutina es_fuerte abre_set total cierra_set inicio_rutina
+  entregar_resultado total levanta_mas_que 5
+fin_rutina
+
+rutina ajustar_local abre_set base separa incremento cierra_set inicio_rutina
+  peso temporal cargar base
+  subir_peso temporal por incremento
+  entregar_resultado temporal
+fin_rutina
+
+peso repeticiones cargar 1
+subir_peso repeticiones
+bajar_peso repeticiones por 1
+
+peso total cargar llamar sumar abre_set 3 separa 4 cierra_set
+peso combinado cargar llamar sumar abre_set total separa llamar ajustar_local abre_set 2 separa 3 cierra_set cierra_set
+
 peso ejercicios cargar lista abre_set "curl" separa "sentadilla" separa "press" cierra_set
-peso total_ejercicios cargar largo abre_set ejercicios cierra_set
+agregar_set abre_set ejercicios separa "dominadas" cierra_set
+cambiar_set abre_set ejercicios separa 0 separa "press banca" cierra_set
+quitar_set abre_set ejercicios separa 2 cierra_set
 
+peso primeros cargar rango_set abre_set ejercicios separa 0 separa 2 cierra_set
+
+mostrar abre_set total cierra_set
+mostrar abre_set combinado cierra_set
 mostrar abre_set ejercicios cierra_set
-mostrar abre_set total_ejercicios cierra_set
 mostrar abre_set tomar abre_set ejercicios separa 1 cierra_set cierra_set
-llamar reportar_ejercicio abre_set tomar abre_set ejercicios separa 0 cierra_set separa 12 cierra_set
+mostrar abre_set largo abre_set ejercicios cierra_set cierra_set
+mostrar abre_set primeros cierra_set
 
-si_fuerza total_ejercicios levanta_mas_que 2 inicio_rutina
-  peso mensaje cargar "Bloque avanzado"
+si_fuerza llamar es_fuerte abre_set total cierra_set inicio_rutina
+  peso mensaje cargar "Meta superada"
   mostrar abre_set mensaje cierra_set
+fin_rutina
+
+mientras_entrenas repeticiones levanta_menos_que 3 inicio_rutina
+  mostrar abre_set repeticiones cierra_set
+  subir_peso repeticiones
 fin_rutina

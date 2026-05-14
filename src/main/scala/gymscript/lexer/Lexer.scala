@@ -4,7 +4,7 @@ import gymscript.util.Position
 
 import scala.collection.mutable.ListBuffer
 
-final class Lexer {
+final class Lexer(options: LexerOptions = LexerOptions()) {
   def tokenize(source: String): Either[List[LexicalError], List[Token]] = {
     val tokens = ListBuffer.empty[Token]
     val errors = ListBuffer.empty[LexicalError]
@@ -34,84 +34,180 @@ final class Lexer {
           position = outcome.nextPosition
 
         case '(' =>
-          tokens += Token(TokenType.LeftParen, "(", start)
-          index += 1
-          position = position.advance()
+          if (options.allowLegacySyntax) {
+            tokens += Token(TokenType.LeftParen, "(", start)
+            index += 1
+            position = position.advance()
+          } else {
+            errors += legacySyntaxError("(", "'abre_set'", start)
+            index += 1
+            position = position.advance()
+          }
 
         case ')' =>
-          tokens += Token(TokenType.RightParen, ")", start)
-          index += 1
-          position = position.advance()
+          if (options.allowLegacySyntax) {
+            tokens += Token(TokenType.RightParen, ")", start)
+            index += 1
+            position = position.advance()
+          } else {
+            errors += legacySyntaxError(")", "'cierra_set'", start)
+            index += 1
+            position = position.advance()
+          }
 
         case '{' =>
-          tokens += Token(TokenType.LeftBrace, "{", start)
-          index += 1
-          position = position.advance()
+          if (options.allowLegacySyntax) {
+            tokens += Token(TokenType.LeftBrace, "{", start)
+            index += 1
+            position = position.advance()
+          } else {
+            errors += legacySyntaxError("{", "'inicio_rutina'", start)
+            index += 1
+            position = position.advance()
+          }
 
         case '}' =>
-          tokens += Token(TokenType.RightBrace, "}", start)
-          index += 1
-          position = position.advance()
+          if (options.allowLegacySyntax) {
+            tokens += Token(TokenType.RightBrace, "}", start)
+            index += 1
+            position = position.advance()
+          } else {
+            errors += legacySyntaxError("}", "'fin_rutina'", start)
+            index += 1
+            position = position.advance()
+          }
 
         case ',' =>
-          tokens += Token(TokenType.Comma, ",", start)
-          index += 1
-          position = position.advance()
+          if (options.allowLegacySyntax) {
+            tokens += Token(TokenType.Comma, ",", start)
+            index += 1
+            position = position.advance()
+          } else {
+            errors += legacySyntaxError(",", "'separa'", start)
+            index += 1
+            position = position.advance()
+          }
 
         case '+' =>
-          tokens += Token(TokenType.Plus, "+", start)
-          index += 1
-          position = position.advance()
+          if (options.allowLegacySyntax) {
+            tokens += Token(TokenType.Plus, "+", start)
+            index += 1
+            position = position.advance()
+          } else {
+            errors += legacySyntaxError("+", "'mas_reps'", start)
+            index += 1
+            position = position.advance()
+          }
 
         case '-' =>
-          tokens += Token(TokenType.Minus, "-", start)
-          index += 1
-          position = position.advance()
+          if (options.allowLegacySyntax) {
+            tokens += Token(TokenType.Minus, "-", start)
+            index += 1
+            position = position.advance()
+          } else {
+            errors += legacySyntaxError("-", "'menos_reps'", start)
+            index += 1
+            position = position.advance()
+          }
 
         case '*' =>
-          tokens += Token(TokenType.Star, "*", start)
-          index += 1
-          position = position.advance()
+          if (options.allowLegacySyntax) {
+            tokens += Token(TokenType.Star, "*", start)
+            index += 1
+            position = position.advance()
+          } else {
+            errors += legacySyntaxError("*", "'series_de'", start)
+            index += 1
+            position = position.advance()
+          }
 
         case '/' =>
-          tokens += Token(TokenType.Slash, "/", start)
-          index += 1
-          position = position.advance()
+          if (options.allowLegacySyntax) {
+            tokens += Token(TokenType.Slash, "/", start)
+            index += 1
+            position = position.advance()
+          } else {
+            errors += legacySyntaxError("/", "'dividir_rutina'", start)
+            index += 1
+            position = position.advance()
+          }
 
         case '>' if peek(source, index + 1).contains('=') =>
-          tokens += Token(TokenType.GreaterEqual, ">=", start)
-          index += 2
-          position = position.advance(2)
+          if (options.allowLegacySyntax) {
+            tokens += Token(TokenType.GreaterEqual, ">=", start)
+            index += 2
+            position = position.advance(2)
+          } else {
+            errors += legacySyntaxError(">=", "'levanta_minimo'", start)
+            index += 2
+            position = position.advance(2)
+          }
 
         case '>' =>
-          tokens += Token(TokenType.GreaterThan, ">", start)
-          index += 1
-          position = position.advance()
+          if (options.allowLegacySyntax) {
+            tokens += Token(TokenType.GreaterThan, ">", start)
+            index += 1
+            position = position.advance()
+          } else {
+            errors += legacySyntaxError(">", "'levanta_mas_que'", start)
+            index += 1
+            position = position.advance()
+          }
 
         case '<' if peek(source, index + 1).contains('=') =>
-          tokens += Token(TokenType.LessEqual, "<=", start)
-          index += 2
-          position = position.advance(2)
+          if (options.allowLegacySyntax) {
+            tokens += Token(TokenType.LessEqual, "<=", start)
+            index += 2
+            position = position.advance(2)
+          } else {
+            errors += legacySyntaxError("<=", "'levanta_maximo'", start)
+            index += 2
+            position = position.advance(2)
+          }
 
         case '<' =>
-          tokens += Token(TokenType.LessThan, "<", start)
-          index += 1
-          position = position.advance()
+          if (options.allowLegacySyntax) {
+            tokens += Token(TokenType.LessThan, "<", start)
+            index += 1
+            position = position.advance()
+          } else {
+            errors += legacySyntaxError("<", "'levanta_menos_que'", start)
+            index += 1
+            position = position.advance()
+          }
 
         case '=' if peek(source, index + 1).contains('=') =>
-          tokens += Token(TokenType.EqualEqual, "==", start)
-          index += 2
-          position = position.advance(2)
+          if (options.allowLegacySyntax) {
+            tokens += Token(TokenType.EqualEqual, "==", start)
+            index += 2
+            position = position.advance(2)
+          } else {
+            errors += legacySyntaxError("==", "'levanta_igual_que'", start)
+            index += 2
+            position = position.advance(2)
+          }
 
         case '=' =>
-          tokens += Token(TokenType.Assign, "=", start)
-          index += 1
-          position = position.advance()
+          if (options.allowLegacySyntax) {
+            tokens += Token(TokenType.Assign, "=", start)
+            index += 1
+            position = position.advance()
+          } else {
+            errors += legacySyntaxError("=", "'cargar'", start)
+            index += 1
+            position = position.advance()
+          }
 
         case '!' if peek(source, index + 1).contains('=') =>
-          tokens += Token(TokenType.BangEqual, "!=", start)
-          index += 2
-          position = position.advance(2)
+          if (options.allowLegacySyntax) {
+            tokens += Token(TokenType.BangEqual, "!=", start)
+            index += 2
+            position = position.advance(2)
+          } else {
+            errors += legacySyntaxError("!=", "'no_levanta_igual'", start)
+            index += 2
+            position = position.advance(2)
+          }
 
         case '!' =>
           errors += LexicalError(
@@ -307,8 +403,15 @@ final class Lexer {
     }
 
     val lexeme = builder.toString()
-    val tokenType = TokenType.keywords.getOrElse(lexeme, TokenType.Identifier)
+    val tokenType = resolveIdentifierTokenType(lexeme)
     new IdentifierOutcome(Token(tokenType, lexeme, startPosition, Some(lexeme)), index, position)
+  }
+
+  private def resolveIdentifierTokenType(lexeme: String): TokenType = {
+    TokenType.thematicKeywords
+      .get(lexeme)
+      .orElse(if (options.allowLegacySyntax) TokenType.legacyKeywords.get(lexeme) else None)
+      .getOrElse(TokenType.Identifier)
   }
 
   private def invalidNumericLexeme(
@@ -373,6 +476,14 @@ final class Lexer {
   private def isIdentifierStart(ch: Char): Boolean = ch.isLetter || ch == '_'
 
   private def isIdentifierPart(ch: Char): Boolean = ch.isLetterOrDigit || ch == '_'
+
+  private def legacySyntaxError(found: String, expected: String, position: Position): LexicalError = {
+    LexicalError(
+      s"El modo estricto no permite '$found'. Usa $expected.",
+      position,
+      Some(found)
+    )
+  }
 
   private def peek(source: String, index: Int): Option[Char] = {
     if (index >= 0 && index < source.length) Some(source.charAt(index)) else None

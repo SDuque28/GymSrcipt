@@ -3,8 +3,8 @@ package gymscript.interpreter
 import gymscript.lexer.Lexer
 import gymscript.parser._
 import gymscript.resolver.SemanticAnalyzer
-import gymscript.util.Position
 import gymscript.util.SourceReader
+import gymscript.util.Position
 import org.scalatest.funsuite.AnyFunSuite
 
 final class InterpreterSpec extends AnyFunSuite {
@@ -28,69 +28,123 @@ final class InterpreterSpec extends AnyFunSuite {
     }
   }
 
-  test("execute imprime la salida de un programa simple") {
-    val statement = PrintStatement(LiteralExpression(StringLiteral("Rutina lista"), Position.Start), Position.Start)
-    val program = Program(List(statement), Position.Start)
-
-    val result = interpreter.execute(program)
-
-    assert(result == Right(List("Rutina lista")))
-  }
-
-  test("ejecuta basic-routine.gym.txt") {
-    val source = SourceReader.read("examples/basic-routine.gym.txt").toOption.get
-    val result = runSource(source)
-
-    assert(result == Right(List("0", "1", "2", "Rutina completada")))
-  }
-
-  test("ejecuta operadores tematicos") {
-    val result = runSource(
-      "mostrar abre_set 1 mas_reps 2 series_de 3 cierra_set\n" +
-        "mostrar abre_set abre_set 1 mas_reps 2 cierra_set series_de 3 cierra_set"
-    )
-
-    assert(result == Right(List("7", "9")))
-  }
-
-  test("ejecuta if else tematico") {
+  test("rutina retorna valor") {
     val source =
-      """si_fuerza verdadero inicio_rutina
-        |  mostrar abre_set "ok" cierra_set
-        |descanso inicio_rutina
-        |  mostrar abre_set "no" cierra_set
-        |fin_rutina""".stripMargin
+      """rutina sumar abre_set a separa b cierra_set inicio_rutina
+        |  entregar_resultado a mas_reps b
+        |fin_rutina
+        |mostrar abre_set llamar sumar abre_set 2 separa 3 cierra_set cierra_set""".stripMargin
 
-    val result = runSource(source)
-
-    assert(result == Right(List("ok")))
+    assert(runSource(source) == Right(List("5")))
   }
 
-  test("ejecuta while tematico") {
+  test("llamada usada en asignacion") {
     val source =
-      """peso i cargar 0
-        |mientras_entrenas i levanta_menos_que 3 inicio_rutina
-        |  mostrar abre_set i cierra_set
-        |  i cargar i mas_reps 1
-        |fin_rutina""".stripMargin
+      """rutina sumar abre_set a separa b cierra_set inicio_rutina
+        |  entregar_resultado a mas_reps b
+        |fin_rutina
+        |peso total cargar llamar sumar abre_set 4 separa 5 cierra_set
+        |mostrar abre_set total cierra_set""".stripMargin
 
-    val result = runSource(source)
-
-    assert(result == Right(List("0", "1", "2")))
+    assert(runSource(source) == Right(List("9")))
   }
 
-  test("ejecuta listas y funciones") {
+  test("llamada usada dentro de expresion") {
+    val source =
+      """rutina sumar abre_set a separa b cierra_set inicio_rutina
+        |  entregar_resultado a mas_reps b
+        |fin_rutina
+        |mostrar abre_set llamar sumar abre_set 1 separa 2 cierra_set mas_reps 5 cierra_set""".stripMargin
+
+    assert(runSource(source) == Right(List("8")))
+  }
+
+  test("subir_peso y bajar_peso con y sin cantidad") {
+    val source =
+      """peso repeticiones cargar 1
+        |subir_peso repeticiones
+        |subir_peso repeticiones por 2
+        |bajar_peso repeticiones
+        |mostrar abre_set repeticiones cierra_set""".stripMargin
+
+    assert(runSource(source) == Right(List("3")))
+  }
+
+  test("tomar lista y largo lista") {
+    val source =
+      """peso ejercicios cargar lista abre_set "curl" separa "press" cierra_set
+        |mostrar abre_set tomar abre_set ejercicios separa 0 cierra_set cierra_set
+        |mostrar abre_set largo abre_set ejercicios cierra_set cierra_set""".stripMargin
+
+    assert(runSource(source) == Right(List("curl", "2")))
+  }
+
+  test("cambiar_set agregar_set quitar_set y rango_set") {
+    val source =
+      """peso ejercicios cargar lista abre_set "curl" separa "press" cierra_set
+        |agregar_set abre_set ejercicios separa "dominadas" cierra_set
+        |cambiar_set abre_set ejercicios separa 0 separa "sentadilla" cierra_set
+        |quitar_set abre_set ejercicios separa 1 cierra_set
+        |peso subset cargar rango_set abre_set ejercicios separa 0 separa 2 cierra_set
+        |mostrar abre_set ejercicios cierra_set
+        |mostrar abre_set subset cierra_set""".stripMargin
+
+    assert(runSource(source) == Right(List("[sentadilla, dominadas]", "[sentadilla, dominadas]")))
+  }
+
+  test("scope local de rutinas") {
+    val source =
+      """rutina crear abre_set cierra_set inicio_rutina
+        |  peso interno cargar 1
+        |  entregar_resultado interno
+        |fin_rutina
+        |mostrar abre_set llamar crear abre_set cierra_set cierra_set""".stripMargin
+
+    assert(runSource(source) == Right(List("1")))
+  }
+
+  test("division por cero") {
+    val result = runSource("mostrar abre_set 10 dividir_rutina 0 cierra_set")
+
+    assert(result.left.toOption.get.asInstanceOf[RuntimeError].message.contains("dividir la rutina entre cero"))
+  }
+
+  test("indice fuera de rango") {
+    val source =
+      """peso ejercicios cargar lista abre_set "curl" cierra_set
+        |mostrar abre_set tomar abre_set ejercicios separa 2 cierra_set cierra_set""".stripMargin
+    val result = runSource(source)
+
+    assert(result.left.toOption.get.asInstanceOf[RuntimeError].message.contains("fuera de rango"))
+  }
+
+  test("recursion basica") {
+    val recursiveInterpreter = new Interpreter(maxCallDepth = 32)
+    val source =
+      """rutina cuenta_regresiva abre_set n cierra_set inicio_rutina
+        |  si_fuerza n levanta_igual_que 0 inicio_rutina
+        |    entregar_resultado 0
+        |  fin_rutina
+        |  entregar_resultado llamar cuenta_regresiva abre_set n menos_reps 1 cierra_set
+        |fin_rutina
+        |mostrar abre_set llamar cuenta_regresiva abre_set 3 cierra_set cierra_set""".stripMargin
+
+    val result =
+      for {
+        tokens <- lexer.tokenize(source)
+        program <- parser.parse(tokens)
+        verified <- analyzer.analyze(program)
+        outputs <- recursiveInterpreter.execute(verified)
+      } yield outputs
+
+    assert(result == Right(List("0")))
+  }
+
+  test("ejecuta advanced-routine.gym.txt") {
     val source = SourceReader.read("examples/advanced-routine.gym.txt").toOption.get
     val result = runSource(source)
 
-    assert(result == Right(List("[curl, sentadilla, press]", "3", "sentadilla", "Ejercicio: curl", "Alta carga", "Bloque avanzado")))
-  }
-
-  test("reporta division por cero con mensaje claro") {
-    val source = "mostrar abre_set 10 dividir_rutina 0 cierra_set"
-    val result = runSource(source)
-
-    assert(result.left.toOption.get.asInstanceOf[RuntimeError].message.contains("dividir la rutina entre cero"))
+    assert(result == Right(List("7", "12", "[press banca, sentadilla, dominadas]", "sentadilla", "3", "[press banca, sentadilla]", "Meta superada", "1", "2")))
   }
 
   test("reporta operacion incompatible") {

@@ -14,9 +14,18 @@ object TokenType {
   case object FinRutina extends TokenType { val lexemeName = "fin_rutina" }
   case object Rutina extends TokenType { val lexemeName = "rutina" }
   case object Llamar extends TokenType { val lexemeName = "llamar" }
+  case object EntregarResultado extends TokenType { val lexemeName = "entregar_resultado" }
+  case object SubirPeso extends TokenType { val lexemeName = "subir_peso" }
+  case object BajarPeso extends TokenType { val lexemeName = "bajar_peso" }
+  case object Por extends TokenType { val lexemeName = "por" }
   case object Lista extends TokenType { val lexemeName = "lista" }
   case object Tomar extends TokenType { val lexemeName = "tomar" }
   case object Largo extends TokenType { val lexemeName = "largo" }
+  case object CambiarSet extends TokenType { val lexemeName = "cambiar_set" }
+  case object AgregarSet extends TokenType { val lexemeName = "agregar_set" }
+  case object QuitarSet extends TokenType { val lexemeName = "quitar_set" }
+  case object RangoSet extends TokenType { val lexemeName = "rango_set" }
+  case object SinResultado extends TokenType { val lexemeName = "sin_resultado" }
   case object Verdadero extends TokenType { val lexemeName = "verdadero" }
   case object Falso extends TokenType { val lexemeName = "falso" }
 
@@ -48,7 +57,7 @@ object TokenType {
   case object Comment extends TokenType { val lexemeName = "comment" }
   case object EOF extends TokenType { val lexemeName = "eof" }
 
-  val keywords: Map[String, TokenType] = Map(
+  val thematicKeywords: Map[String, TokenType] = Map(
     "peso" -> Peso,
     "mostrar" -> Mostrar,
     "si_fuerza" -> SiFuerza,
@@ -58,9 +67,18 @@ object TokenType {
     "fin_rutina" -> FinRutina,
     "rutina" -> Rutina,
     "llamar" -> Llamar,
+    "entregar_resultado" -> EntregarResultado,
+    "subir_peso" -> SubirPeso,
+    "bajar_peso" -> BajarPeso,
+    "por" -> Por,
     "lista" -> Lista,
     "tomar" -> Tomar,
     "largo" -> Largo,
+    "cambiar_set" -> CambiarSet,
+    "agregar_set" -> AgregarSet,
+    "quitar_set" -> QuitarSet,
+    "rango_set" -> RangoSet,
+    "sin_resultado" -> SinResultado,
     "verdadero" -> Verdadero,
     "falso" -> Falso,
     "mas_reps" -> Plus,
@@ -79,7 +97,10 @@ object TokenType {
     "sin_energia" -> Not,
     "abre_set" -> LeftParen,
     "cierra_set" -> RightParen,
-    "separa" -> Comma,
+    "separa" -> Comma
+  )
+
+  val legacyKeywords: Map[String, TokenType] = Map(
     "mayor_que" -> GreaterThan,
     "menor_que" -> LessThan,
     "mayor_igual" -> GreaterEqual,

@@ -40,6 +40,12 @@ final class Parser {
           case TokenType.MientrasEntrenas => Some(parseWhileStatement())
           case TokenType.Rutina => Some(parseRoutineDeclaration())
           case TokenType.Llamar => Some(parseCallStatement())
+          case TokenType.EntregarResultado => Some(parseReturnStatement())
+          case TokenType.SubirPeso => Some(parseAdjustWeightStatement(isIncrease = true))
+          case TokenType.BajarPeso => Some(parseAdjustWeightStatement(isIncrease = false))
+          case TokenType.CambiarSet => Some(parseChangeSetStatement())
+          case TokenType.AgregarSet => Some(parseAddSetStatement())
+          case TokenType.QuitarSet => Some(parseRemoveSetStatement())
           case TokenType.LeftBrace => Some(parseLegacyBraceBlock())
           case TokenType.Descanso if topLevel =>
             reportAndAdvance("Se encontro 'descanso' sin un bloque 'si_fuerza' activo.")
@@ -65,7 +71,7 @@ final class Parser {
       val initializer =
         if (matchType(TokenType.Assign)) Some(parseExpression())
         else {
-          error(peek.position, "Se esperaba 'cargar' despues del nombre de la variable.")
+          error(peek.position, "Se esperaba 'cargar' despues del nombre de la variable.", Some(peek.lexeme))
           None
         }
       VariableDeclaration(nameToken.lexeme, initializer, keyword.position)
@@ -74,8 +80,7 @@ final class Parser {
     private def parseAssignment(): Statement = {
       val nameToken = consume(TokenType.Identifier, "Se esperaba el nombre de la variable.")
       consume(TokenType.Assign, "Se esperaba 'cargar' en la asignacion.")
-      val expression = parseExpression()
-      Assignment(nameToken.lexeme, expression, nameToken.position)
+      Assignment(nameToken.lexeme, parseExpression(), nameToken.position)
     }
 
     private def parsePrintStatement(): Statement = {
@@ -86,17 +91,66 @@ final class Parser {
       PrintStatement(expression, keyword.position)
     }
 
+    private def parseReturnStatement(): Statement = {
+      val keyword = advance()
+      val expression =
+        if (isReturnWithoutExpression) None
+        else Some(parseExpression())
+      ReturnStatement(expression, keyword.position)
+    }
+
+    private def parseAdjustWeightStatement(isIncrease: Boolean): Statement = {
+      val keyword = advance()
+      val nameToken = consume(TokenType.Identifier, s"Se esperaba una variable despues de '${keyword.tokenType.lexemeName}'.")
+      val amount =
+        if (matchType(TokenType.Por)) Some(parseExpression())
+        else None
+      AdjustWeightStatement(nameToken.lexeme, amount, isIncrease, keyword.position)
+    }
+
+    private def parseChangeSetStatement(): Statement = {
+      val keyword = advance()
+      consume(TokenType.LeftParen, "Se esperaba 'abre_set' despues de 'cambiar_set'.")
+      val listName = consume(TokenType.Identifier, "Se esperaba el nombre de la lista a modificar.")
+      consume(TokenType.Comma, "Se esperaba 'separa' despues del nombre de la lista.")
+      val index = parseExpression()
+      consume(TokenType.Comma, "Se esperaba 'separa' antes del nuevo valor.")
+      val value = parseExpression()
+      consume(TokenType.RightParen, "Se esperaba 'cierra_set' para cerrar 'cambiar_set'.")
+      ChangeSetStatement(listName.lexeme, index, value, keyword.position)
+    }
+
+    private def parseAddSetStatement(): Statement = {
+      val keyword = advance()
+      consume(TokenType.LeftParen, "Se esperaba 'abre_set' despues de 'agregar_set'.")
+      val listName = consume(TokenType.Identifier, "Se esperaba el nombre de la lista a ampliar.")
+      consume(TokenType.Comma, "Se esperaba 'separa' despues del nombre de la lista.")
+      val value = parseExpression()
+      consume(TokenType.RightParen, "Se esperaba 'cierra_set' para cerrar 'agregar_set'.")
+      AddSetStatement(listName.lexeme, value, keyword.position)
+    }
+
+    private def parseRemoveSetStatement(): Statement = {
+      val keyword = advance()
+      consume(TokenType.LeftParen, "Se esperaba 'abre_set' despues de 'quitar_set'.")
+      val listName = consume(TokenType.Identifier, "Se esperaba el nombre de la lista a recortar.")
+      consume(TokenType.Comma, "Se esperaba 'separa' despues del nombre de la lista.")
+      val index = parseExpression()
+      consume(TokenType.RightParen, "Se esperaba 'cierra_set' para cerrar 'quitar_set'.")
+      RemoveSetStatement(listName.lexeme, index, keyword.position)
+    }
+
     private def parseIfStatement(): Statement = {
       val keyword = advance()
       val condition = parseExpression()
-      consume(TokenType.InicioRutina, "Se esperaba 'inicio_rutina' despues de la condicion de 'si_fuerza'.")
+      consumeBlockStart("Se esperaba 'inicio_rutina' despues de la condicion de 'si_fuerza'.")
       val thenStatements = parseRequiredBlockStatements(Set(TokenType.Descanso, TokenType.FinRutina), "si_fuerza")
       val thenBranch = Block(thenStatements, keyword.position)
 
       val elseBranch =
         if (matchType(TokenType.Descanso)) {
           val elsePosition = previous.position
-          consume(TokenType.InicioRutina, "Se esperaba 'inicio_rutina' despues de 'descanso'.")
+          consumeBlockStart("Se esperaba 'inicio_rutina' despues de 'descanso'.")
           Some(Block(parseRequiredBlockStatements(Set(TokenType.FinRutina), "descanso"), elsePosition))
         } else {
           None
@@ -109,7 +163,7 @@ final class Parser {
     private def parseWhileStatement(): Statement = {
       val keyword = advance()
       val condition = parseExpression()
-      consume(TokenType.InicioRutina, "Se esperaba 'inicio_rutina' despues de la condicion de 'mientras_entrenas'.")
+      consumeBlockStart("Se esperaba 'inicio_rutina' despues de la condicion de 'mientras_entrenas'.")
       val bodyStatements = parseRequiredBlockStatements(Set(TokenType.FinRutina), "mientras_entrenas")
       consume(TokenType.FinRutina, "Se esperaba 'fin_rutina' para cerrar el bloque de 'mientras_entrenas'.")
       WhileStatement(condition, Block(bodyStatements, keyword.position), keyword.position)
@@ -119,17 +173,15 @@ final class Parser {
       val keyword = advance()
       val nameToken = consume(TokenType.Identifier, "Se esperaba el nombre de la rutina.")
       val parameters = parseIdentifierList("Se esperaba 'abre_set' despues del nombre de la rutina.")
-      consume(TokenType.InicioRutina, "Se esperaba 'inicio_rutina' despues de la firma de la rutina.")
+      consumeBlockStart("Se esperaba 'inicio_rutina' despues de la firma de la rutina.")
       val bodyStatements = parseRequiredBlockStatements(Set(TokenType.FinRutina), s"rutina '${nameToken.lexeme}'")
       consume(TokenType.FinRutina, "Se esperaba 'fin_rutina' para cerrar la rutina.")
       RoutineDeclaration(nameToken.lexeme, parameters, Block(bodyStatements, keyword.position), keyword.position)
     }
 
     private def parseCallStatement(): Statement = {
-      val keyword = advance()
-      val nameToken = consume(TokenType.Identifier, "Se esperaba el nombre de la rutina a invocar.")
-      val arguments = parseArgumentList("Se esperaba 'abre_set' despues del nombre de la rutina.")
-      CallStatement(nameToken.lexeme, arguments, keyword.position)
+      val call = parseCallExpression()
+      CallStatement(call.name, call.arguments, call.position)
     }
 
     private def parseLegacyBraceBlock(): Statement = {
@@ -152,7 +204,7 @@ final class Parser {
     private def parseRequiredBlockStatements(terminators: Set[TokenType], owner: String): List[Statement] = {
       val statements = parseStatementsUntil(terminators)
       if (statements.isEmpty) {
-        error(previous.position, s"El bloque '$owner' no puede estar vacio.")
+        error(previous.position, s"El bloque '$owner' no puede estar vacio.", None)
       }
       statements
     }
@@ -236,6 +288,10 @@ final class Parser {
           val token = advance()
           LiteralExpression(BooleanLiteral(value = false), token.position)
 
+        case TokenType.SinResultado =>
+          val token = advance()
+          LiteralExpression(NullLiteral, token.position)
+
         case TokenType.Identifier =>
           val token = advance()
           VariableExpression(token.lexeme, token.position)
@@ -254,6 +310,12 @@ final class Parser {
 
         case TokenType.Largo =>
           parseLengthExpression()
+
+        case TokenType.RangoSet =>
+          parseRangeExpression()
+
+        case TokenType.Llamar =>
+          parseCallExpression()
 
         case TokenType.NewLine | TokenType.EOF | TokenType.FinRutina | TokenType.Descanso | TokenType.RightBrace =>
           fail("Se esperaba una expresion valida de entrenamiento.")
@@ -290,6 +352,25 @@ final class Parser {
       LengthExpression(collection, keyword.position)
     }
 
+    private def parseRangeExpression(): Expression = {
+      val keyword = advance()
+      consume(TokenType.LeftParen, "Se esperaba 'abre_set' despues de 'rango_set'.")
+      val collection = parseExpression()
+      consume(TokenType.Comma, "Se esperaba 'separa' despues de la lista en 'rango_set'.")
+      val start = parseExpression()
+      consume(TokenType.Comma, "Se esperaba 'separa' antes del indice final.")
+      val end = parseExpression()
+      consume(TokenType.RightParen, "Se esperaba 'cierra_set' para cerrar 'rango_set'.")
+      RangeExpression(collection, start, end, keyword.position)
+    }
+
+    private def parseCallExpression(): CallExpression = {
+      val keyword = advance()
+      val nameToken = consume(TokenType.Identifier, "Se esperaba el nombre de la rutina a invocar.")
+      val arguments = parseArgumentList("Se esperaba 'abre_set' despues del nombre de la rutina.")
+      CallExpression(nameToken.lexeme, arguments, keyword.position)
+    }
+
     private def parseIdentifierList(openingMessage: String): List[String] = {
       consume(TokenType.LeftParen, openingMessage)
       val parameters = ListBuffer.empty[String]
@@ -319,6 +400,14 @@ final class Parser {
       arguments.toList
     }
 
+    private def consumeBlockStart(message: String): Token = {
+      if (matchType(TokenType.InicioRutina, TokenType.LeftBrace)) previous
+      else {
+        error(peek.position, message, Some(peek.lexeme))
+        syntheticToken(TokenType.InicioRutina)
+      }
+    }
+
     private def skipNewLines(): Unit = {
       while (matchType(TokenType.NewLine)) {}
     }
@@ -338,6 +427,14 @@ final class Parser {
       }
     }
 
+    private def isReturnWithoutExpression: Boolean = {
+      isAtEnd ||
+      check(TokenType.NewLine) ||
+      check(TokenType.FinRutina) ||
+      check(TokenType.Descanso) ||
+      check(TokenType.RightBrace)
+    }
+
     private val statementStartTokens: Set[TokenType] = Set(
       TokenType.Peso,
       TokenType.Mostrar,
@@ -345,6 +442,12 @@ final class Parser {
       TokenType.MientrasEntrenas,
       TokenType.Rutina,
       TokenType.Llamar,
+      TokenType.EntregarResultado,
+      TokenType.SubirPeso,
+      TokenType.BajarPeso,
+      TokenType.CambiarSet,
+      TokenType.AgregarSet,
+      TokenType.QuitarSet,
       TokenType.LeftBrace,
       TokenType.Identifier,
       TokenType.Descanso,
@@ -365,7 +468,7 @@ final class Parser {
     private def consume(expected: TokenType, message: String): Token = {
       if (check(expected)) advance()
       else {
-        error(peek.position, message)
+        error(peek.position, message, Some(peek.lexeme))
         syntheticToken(expected)
       }
     }
@@ -373,17 +476,17 @@ final class Parser {
     private def syntheticToken(tokenType: TokenType): Token = Token(tokenType, "", peek.position)
 
     private def reportAndAdvance(message: String): Unit = {
-      error(peek.position, message)
+      error(peek.position, message, Some(peek.lexeme))
       advance()
     }
 
     private def fail(message: String): Nothing = {
-      error(peek.position, message)
+      error(peek.position, message, Some(peek.lexeme))
       throw ParserFailure
     }
 
-    private def error(position: Position, message: String): Unit = {
-      errors += ParseError(message, position)
+    private def error(position: Position, message: String, context: Option[String]): Unit = {
+      errors += ParseError(message, position, context)
     }
 
     private def check(expected: TokenType): Boolean = peek.tokenType == expected

@@ -1,16 +1,9 @@
 [debug] Created transactional ClassFileManager with tempDir = C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\test-classes.bak
 [debug] About to delete class files:
-[debug] 	EndToEndSpec.class
-[debug] 	LexerSpec.class
-[debug] 	SemanticAnalyzerSpec.class
-[debug] 	InterpreterSpec.class
-[debug] 	ParserSpec.class
 [debug] We backup class files:
-[debug] 	EndToEndSpec.class
-[debug] 	LexerSpec.class
-[debug] 	SemanticAnalyzerSpec.class
-[debug] 	InterpreterSpec.class
-[debug] 	ParserSpec.class
+[debug] Created transactional ClassFileManager with tempDir = C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\test-classes.bak
+[debug] About to delete class files:
+[debug] We backup class files:
 [debug] Registering generated classes:
 [debug] 	EndToEndSpec.class
 [debug] 	LexerSpec.class

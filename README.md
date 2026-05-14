@@ -1,92 +1,21 @@
 # GymScript
 
-GymScript es un mini-lenguaje academico inspirado en gimnasio, rutinas, ejercicios y repeticiones. En esta fase ya funciona de punta a punta con una sintaxis tematica orientada a entrenamiento:
+GymScript es un mini-lenguaje academico inspirado en gimnasio, rutinas y repeticiones. La implementacion actual ya cubre el flujo completo:
 
 `source .txt -> lexer -> parser -> analisis semantico -> interprete -> salida`
 
-## Estado implementado
+## Estado final implementado
 
-- Lexer con operadores y delimitadores tematicos.
-- Parser descendente recursivo con precedencia.
-- Bloques estrictos con `inicio_rutina` y `fin_rutina`.
-- Analisis semantico con alcance por bloque.
-- Rutinas simples con parametros y llamadas.
-- Listas simples con `lista`, `tomar` y `largo`.
-- Compatibilidad temporal con parte de la sintaxis legacy: `+ - * / = == != > < >= <= ( ) ,`.
+- Sintaxis tematica estricta por defecto.
+- Modo `legacy` opcional para operadores y delimitadores antiguos.
+- Rutinas con parametros, llamadas y `entregar_resultado`.
+- `llamar` como expresion o como sentencia.
+- Listas homogeneas con acceso, largo, mutacion, agregar, quitar y slicing.
+- `subir_peso` y `bajar_peso` con cantidad opcional.
+- CLI con `--legacy`, `--strict`, `--tokens`, `--ast` y `--help`.
+- Errores uniformes: lexical, parse, semantic y runtime.
 
-## Sintaxis principal
-
-- Declaracion: `peso nombre cargar expresion`
-- Reasignacion: `nombre cargar expresion`
-- Impresion: `mostrar abre_set expresion cierra_set`
-- Condicional:
-
-```text
-si_fuerza condicion inicio_rutina
-  ...
-descanso inicio_rutina
-  ...
-fin_rutina
-```
-
-- Ciclo:
-
-```text
-mientras_entrenas condicion inicio_rutina
-  ...
-fin_rutina
-```
-
-- Rutina:
-
-```text
-rutina nombre abre_set parametro1 separa parametro2 cierra_set inicio_rutina
-  ...
-fin_rutina
-```
-
-- Llamada:
-
-```text
-llamar nombre abre_set valor1 separa valor2 cierra_set
-```
-
-## Operadores tematicos
-
-| Operacion | Sintaxis |
-| --- | --- |
-| suma | `mas_reps` |
-| resta | `menos_reps` |
-| multiplicacion | `series_de` |
-| division | `dividir_rutina` |
-| asignacion | `cargar` |
-| mayor que | `levanta_mas_que` |
-| menor que | `levanta_menos_que` |
-| igual | `levanta_igual_que` |
-| diferente | `no_levanta_igual` |
-| mayor o igual | `levanta_minimo` |
-| menor o igual | `levanta_maximo` |
-| and | `y_entrena` |
-| or | `o_descansa` |
-| not | `sin_energia` |
-
-## Delimitadores tematicos
-
-- `abre_set`
-- `cierra_set`
-- `separa`
-- `inicio_rutina`
-- `fin_rutina`
-
-## Alcance
-
-GymScript usa alcance por bloque:
-
-- Scope global para declaraciones top-level.
-- Scope hijo para `si_fuerza`, `descanso`, `mientras_entrenas` y `rutina`.
-- Los parametros de rutina viven solo dentro de la rutina.
-
-## Como ejecutar
+## Ejecucion
 
 ```bash
 sbt "run examples/basic-routine.gym.txt"
@@ -94,15 +23,40 @@ sbt "run examples/exhaustive-routine.gym.txt"
 sbt "run examples/advanced-routine.gym.txt"
 ```
 
-## Como validar
+## CLI
 
 ```bash
-sbt compile
-sbt test
+sbt "run <archivo.gym.txt> [--strict] [--legacy] [--tokens] [--ast]"
 ```
 
-## Ejemplos incluidos
+- `--strict`: modo tematico estricto. Es el default.
+- `--legacy`: habilita compatibilidad parcial con `+ - * / = == != > < >= <= ( ) ,`.
+- `--tokens`: imprime la secuencia de tokens.
+- `--ast`: imprime el AST generado.
+- `--help`: muestra la ayuda.
 
-- `examples/basic-routine.gym.txt`
-- `examples/exhaustive-routine.gym.txt`
-- `examples/advanced-routine.gym.txt`
+## Reglas principales
+
+- Declaracion: `peso nombre cargar expresion`
+- Asignacion: `nombre cargar expresion`
+- Salida: `mostrar abre_set expresion cierra_set`
+- Return: `entregar_resultado expresion`
+- Incremento: `subir_peso variable [por expresion]`
+- Decremento: `bajar_peso variable [por expresion]`
+
+## Operaciones de lista
+
+- Crear: `lista abre_set ... cierra_set`
+- Tomar: `tomar abre_set lista separa indice cierra_set`
+- Largo: `largo abre_set lista cierra_set`
+- Cambiar: `cambiar_set abre_set lista separa indice separa valor cierra_set`
+- Agregar: `agregar_set abre_set lista separa valor cierra_set`
+- Quitar: `quitar_set abre_set lista separa indice cierra_set`
+- Rango: `rango_set abre_set lista separa inicio separa fin cierra_set`
+
+## Validacion
+
+```bash
+sbt clean compile
+sbt test
+```

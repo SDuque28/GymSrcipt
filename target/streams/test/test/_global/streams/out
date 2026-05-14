@@ -1,49 +1,54 @@
-[debug] Running TaskDef(gymscript.resolver.SemanticAnalyzerSpec, org.scalatest.tools.Framework$$anon$1@64fc407a, false, [SuiteSelector])
-[debug] Running TaskDef(gymscript.parser.ParserSpec, org.scalatest.tools.Framework$$anon$1@64fc407a, false, [SuiteSelector])
-[debug] Running TaskDef(gymscript.interpreter.InterpreterSpec, org.scalatest.tools.Framework$$anon$1@64fc407a, false, [SuiteSelector])
-[debug] Running TaskDef(gymscript.EndToEndSpec, org.scalatest.tools.Framework$$anon$1@64fc407a, false, [SuiteSelector])
-[info] EndToEndSpec:
-[info] - ejecuta basic-routine.gym.txt
-[info] - ejecuta exhaustive-routine.gym.txt
-[info] - ejecuta advanced-routine.gym.txt
-[info] SemanticAnalyzerSpec:
-[info] - valida variables declaradas
-[info] - valida scopes de bloque
-[info] - valida funciones y parametros
-[info] - detecta aridad invalida en rutina
-[info] - valida listas si se implementan
-[info] ParserSpec:
-[info] - parsea declaracion con cargar
-[info] - parsea mostrar con abre_set y cierra_set
-[info] - parsea if con inicio_rutina y fin_rutina
-[info] - parsea while con inicio_rutina y fin_rutina
-[info] - respeta precedencia con operadores tematicos
-[info] - parsea expresiones anidadas
-[info] - parsea rutina y llamada
-[info] - parsea listas y accesos tematicos
-[info] - reporta error si falta inicio_rutina
-[info] InterpreterSpec:
-[info] - execute imprime la salida de un programa simple
-[info] - ejecuta basic-routine.gym.txt
-[info] - ejecuta operadores tematicos
-[info] - ejecuta if else tematico
-[info] - ejecuta while tematico
-[info] - ejecuta listas y funciones
-[info] - reporta division por cero con mensaje claro
-[info] - reporta operacion incompatible
-[debug] Running TaskDef(gymscript.lexer.LexerSpec, org.scalatest.tools.Framework$$anon$1@64fc407a, false, [SuiteSelector])
+[debug] Running TaskDef(gymscript.parser.ParserSpec, org.scalatest.tools.Framework$$anon$1@6cd59f27, false, [SuiteSelector])
+[debug] Running TaskDef(gymscript.resolver.SemanticAnalyzerSpec, org.scalatest.tools.Framework$$anon$1@6cd59f27, false, [SuiteSelector])
+[debug] Running TaskDef(gymscript.interpreter.InterpreterSpec, org.scalatest.tools.Framework$$anon$1@6cd59f27, false, [SuiteSelector])
+[debug] Running TaskDef(gymscript.lexer.LexerSpec, org.scalatest.tools.Framework$$anon$1@6cd59f27, false, [SuiteSelector])
+[debug] Running TaskDef(gymscript.EndToEndSpec, org.scalatest.tools.Framework$$anon$1@6cd59f27, false, [SuiteSelector])
 [info] LexerSpec:
-[info] - reconoce operadores tematicos
-[info] - reconoce delimitadores tematicos
-[info] - reconoce cargar como asignacion
+[info] - reconoce nuevas palabras reservadas
+[info] - reconoce operadores y delimitadores tematicos
+[info] - rechaza simbolos legacy en modo estricto
+[info] - permite simbolos legacy en modo legacy
 [info] - ignora comentarios
-[info] - mantiene compatibilidad temporal con simbolos legacy
-[info] - detecta string no cerrado
 [info] - mantiene linea y columna con sintaxis tematica
-[info] Run completed in 806 milliseconds.
-[info] Total number of tests run: 32
+[info] ParserSpec:
+[info] - parsea rutina con retorno
+[info] - parsea llamada como expresion
+[info] - parsea llamada anidada
+[info] - parsea subir_peso y bajar_peso
+[info] - parsea operaciones de lista
+[info] - reporta error por argumentos faltantes
+[info] - reporta error por bloque mal cerrado
+[info] SemanticAnalyzerSpec:
+[info] - detecta return fuera de rutina
+[info] - detecta rutina no declarada
+[info] - detecta numero incorrecto de argumentos
+[info] - detecta parametros duplicados
+[info] - detecta variable no declarada
+[info] - detecta redeclaracion
+[info] - detecta lista con tipos incompatibles
+[info] - detecta operaciones invalidas sobre no listas
+[info] EndToEndSpec:
+[info] - basic-routine
+[info] - exhaustive-routine
+[info] - advanced-routine
+[info] - legacy-example en modo legacy
+[info] InterpreterSpec:
+[info] - rutina retorna valor
+[info] - llamada usada en asignacion
+[info] - llamada usada dentro de expresion
+[info] - subir_peso y bajar_peso con y sin cantidad
+[info] - tomar lista y largo lista
+[info] - cambiar_set agregar_set quitar_set y rango_set
+[info] - scope local de rutinas
+[info] - division por cero
+[info] - indice fuera de rango
+[info] - recursion basica
+[info] - ejecuta advanced-routine.gym.txt
+[info] - reporta operacion incompatible
+[info] Run completed in 1 second, 69 milliseconds.
+[info] Total number of tests run: 37
 [info] Suites: completed 5, aborted 0
-[info] Tests: succeeded 32, failed 0, canceled 0, ignored 0, pending 0
+[info] Tests: succeeded 37, failed 0, canceled 0, ignored 0, pending 0
 [info] All tests passed.
 [debug] Passed tests:
 [debug] 	gymscript.EndToEndSpec

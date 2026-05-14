@@ -1,49 +1,34 @@
-# GymScript: vision general
+# GymScript: especificacion final
 
-GymScript es un DSL tematico para describir metas, repeticiones y rutinas de entrenamiento. La sintaxis prioriza palabras de gimnasio sobre simbolos genericos.
+GymScript es un DSL tematico para expresar rutinas, metas y transformaciones de entrenamiento.
 
-## Pipeline
+## Caracteristicas implementadas
 
-1. Analisis lexico
-2. Analisis sintactico
-3. Analisis semantico
-4. Evaluacion
-
-## Construcciones implementadas
-
-- Variables con `peso`
-- Reasignacion con `cargar`
-- Impresion con `mostrar`
-- Condicional `si_fuerza`
-- Rama alternativa `descanso`
-- Ciclo `mientras_entrenas`
-- Rutinas `rutina` y llamadas `llamar`
-- Listas con `lista`, `tomar` y `largo`
+- Variables y expresiones
+- Condicionales y ciclos
+- Rutinas con parametros
+- Retorno temprano con `entregar_resultado`
+- Llamadas como expresion
+- Listas homogeneas
+- Mutaciones seguras de listas
+- Ajustes numericos con `subir_peso` y `bajar_peso`
 
 ## Tipos de valor
 
-- Numero
-- String
-- Booleano
-- Lista
-- Rutina
-- Null
+- `numero`
+- `texto`
+- `booleano`
+- `lista`
+- `rutina`
+- `nulo`
 
-## Reglas semanticas
+## Alcance
 
-- Una variable debe declararse antes de usarse.
-- No se puede redeclarar una variable en el mismo alcance.
-- Una rutina debe existir antes de invocarse.
-- La aridad de una rutina debe coincidir con los argumentos recibidos.
-- Las condiciones de `si_fuerza` y `mientras_entrenas` deben ser booleanas.
-- `tomar` y `largo` operan solo sobre listas.
+- Scope global para declaraciones top-level.
+- Scope por bloque en `si_fuerza`, `descanso` y `mientras_entrenas`.
+- Scope local por rutina.
+- Los parametros viven solo dentro de su rutina.
 
-## Compatibilidad legacy
+## Legacy
 
-Se mantiene compatibilidad temporal con estos simbolos para no romper migraciones existentes:
-
-- `+ - * /`
-- `= == != > < >= <=`
-- `(` `)` `,`
-
-La sintaxis recomendada y documentada es exclusivamente la tematica.
+GymScript corre en modo estricto por defecto. El modo `legacy` es opcional y solo habilita compatibilidad con simbolos y aliases anteriores.
