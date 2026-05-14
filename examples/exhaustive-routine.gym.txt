@@ -1,0 +1,26 @@
+# Programa de ejemplo más amplio para pruebas futuras
+peso repeticiones = 1
+peso meta = 4
+peso nombre = "Sentadilla frontal"
+peso activo = verdadero
+
+mostrar("Inicio de rutina")
+mostrar(nombre)
+
+mientras_entrenas repeticiones menor_igual meta
+  mostrar("Serie actual")
+  mostrar(repeticiones)
+  repeticiones = repeticiones + 1
+fin_rutina
+
+si_fuerza activo y meta mayor_que 3
+  mostrar("Rutina avanzada")
+descanso
+  mostrar("Rutina basica")
+fin_rutina
+
+# Expresiones booleanas y comparaciones
+mostrar(verdadero)
+mostrar(falso)
+mostrar("Fin del entrenamiento")
+

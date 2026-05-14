@@ -1,0 +1,227 @@
+[0m[[0m[0mdebug[0m] [0m[0mPackaging C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\gym-script_2.13-0.1.0-SNAPSHOT.jar ...[0m
+[0m[[0m[0mdebug[0m] [0m[0mInput file mappings:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\cli[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\cli[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\cli\CliApp$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\cli\CliApp$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\cli\CliApp.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\cli\CliApp.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\interpreter[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\interpreter\BooleanValue$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\BooleanValue$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\interpreter\BooleanValue.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\BooleanValue.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\interpreter\Environment$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\Environment$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\interpreter\Environment.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\Environment.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\interpreter\Interpreter.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\Interpreter.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\interpreter\NullValue$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\NullValue$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\interpreter\NullValue.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\NullValue.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\interpreter\NumberValue$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\NumberValue$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\interpreter\NumberValue.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\NumberValue.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\interpreter\RuntimeError$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\RuntimeError$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\interpreter\RuntimeError.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\RuntimeError.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\interpreter\StringValue$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\StringValue$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\interpreter\StringValue.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\StringValue.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\interpreter\Value.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\interpreter\Value.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\Lexer.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\Lexer.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\LexicalError$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\LexicalError$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\LexicalError.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\LexicalError.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\Token$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\Token$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\Token.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\Token.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$And$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$And$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$Assign$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Assign$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$BangEqual$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$BangEqual$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$Comma$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Comma$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$Comment$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Comment$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$Descanso$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Descanso$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$EOF$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$EOF$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$EqualEqual$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$EqualEqual$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$Falso$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Falso$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$FinRutina$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$FinRutina$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$GreaterEqual$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$GreaterEqual$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$GreaterThan$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$GreaterThan$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$Identifier$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Identifier$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$LeftBrace$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$LeftBrace$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$LeftParen$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$LeftParen$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$LessEqual$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$LessEqual$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$LessThan$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$LessThan$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$MientrasEntrenas$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$MientrasEntrenas$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$Minus$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Minus$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$Mostrar$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Mostrar$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$NewLine$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$NewLine$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$Not$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Not$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$Number$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Number$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$Or$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Or$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$Peso$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Peso$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$Plus$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Plus$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$RightBrace$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$RightBrace$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$RightParen$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$RightParen$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$SiFuerza$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$SiFuerza$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$Slash$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Slash$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$Star$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Star$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$StringLiteral$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$StringLiteral$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType$Verdadero$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType$Verdadero$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\lexer\TokenType.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\lexer\TokenType.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\Main$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\Main$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\Main.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\Main.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\Assignment$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\Assignment$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\Assignment.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\Assignment.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\BinaryExpression$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\BinaryExpression$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\BinaryExpression.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\BinaryExpression.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\Block$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\Block$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\Block.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\Block.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\BooleanLiteral$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\BooleanLiteral$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\BooleanLiteral.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\BooleanLiteral.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\Expression.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\Expression.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\ExpressionStatement$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\ExpressionStatement$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\ExpressionStatement.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\ExpressionStatement.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\GroupingExpression$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\GroupingExpression$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\GroupingExpression.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\GroupingExpression.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\IfStatement$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\IfStatement$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\IfStatement.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\IfStatement.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\LiteralExpression$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\LiteralExpression$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\LiteralExpression.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\LiteralExpression.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\LiteralValue.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\LiteralValue.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\NullLiteral$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\NullLiteral$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\NullLiteral.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\NullLiteral.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\NumberLiteral$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\NumberLiteral$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\NumberLiteral.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\NumberLiteral.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\ParseError$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\ParseError$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\ParseError.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\ParseError.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\Parser.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\Parser.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\PrintStatement$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\PrintStatement$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\PrintStatement.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\PrintStatement.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\Program$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\Program$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\Program.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\Program.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\Statement.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\Statement.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\StringLiteral$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\StringLiteral$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\StringLiteral.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\StringLiteral.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\UnaryExpression$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\UnaryExpression$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\UnaryExpression.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\UnaryExpression.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\VariableDeclaration$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\VariableDeclaration$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\VariableDeclaration.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\VariableDeclaration.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\VariableExpression$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\VariableExpression$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\VariableExpression.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\VariableExpression.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\WhileStatement$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\WhileStatement$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\parser\WhileStatement.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\parser\WhileStatement.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\resolver[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\resolver[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\resolver\SemanticAnalyzer.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\resolver\SemanticAnalyzer.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\resolver\SemanticError$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\resolver\SemanticError$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\resolver\SemanticError.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\resolver\SemanticError.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\util[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\util[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\util\Position$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\util\Position$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\util\Position.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\util\Position.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\util\SourceReader$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\util\SourceReader$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	gymscript\util\SourceReader.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\target\scala-2.13\classes\gymscript\util\SourceReader.class[0m
+[0m[[0m[0mdebug[0m] [0m[0mDone packaging.[0m
