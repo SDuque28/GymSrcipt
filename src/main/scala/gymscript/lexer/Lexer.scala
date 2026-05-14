@@ -13,10 +13,8 @@ final class Lexer {
     var position = Position.Start
 
     while (index < source.length) {
-      val current = source.charAt(index)
       val start = position
-
-      current match {
+      source.charAt(index) match {
         case ' ' | '\t' =>
           index += 1
           position = position.advance()
@@ -31,16 +29,9 @@ final class Lexer {
           position = position.nextLine
 
         case '#' =>
-          val (comment, nextIndex, nextPosition) = readComment(source, index, position)
-          tokens += Token(TokenType.Comment, comment, start, Some(comment.drop(1).trim))
-          index = nextIndex
-          position = nextPosition
-
-        case '/' if peek(source, index + 1).contains('/') =>
-          val (comment, nextIndex, nextPosition) = readSlashComment(source, index, position)
-          tokens += Token(TokenType.Comment, comment, start, Some(comment.drop(2).trim))
-          index = nextIndex
-          position = nextPosition
+          val outcome = readComment(source, index, position)
+          index = outcome.nextIndex
+          position = outcome.nextPosition
 
         case '(' =>
           tokens += Token(TokenType.LeftParen, "(", start)
@@ -103,37 +94,36 @@ final class Lexer {
           position = position.advance(2)
 
         case '!' =>
-          errors += LexicalError("El simbolo '!' aislado no es valido. Usa 'no' o '!='.", start)
+          errors += LexicalError(
+            "El simbolo '!' aislado no es valido. Usa 'no' o '!='.",
+            start,
+            Some("!")
+          )
           index += 1
           position = position.advance()
 
         case '"' =>
-          readString(source, index, position) match {
-            case Left(error) =>
-              errors += error
-              index += 1
-              position = position.advance()
+          val outcome = readString(source, index, position)
+          tokens ++= outcome.tokens
+          errors ++= outcome.errors
+          index = outcome.nextIndex
+          position = outcome.nextPosition
 
-            case Right((token, nextIndex, nextPosition)) =>
-              tokens += token
-              index = nextIndex
-              position = nextPosition
-          }
+        case current if current.isDigit =>
+          val outcome = readNumber(source, index, position)
+          tokens ++= outcome.tokens
+          errors ++= outcome.errors
+          index = outcome.nextIndex
+          position = outcome.nextPosition
 
-        case ch if ch.isDigit =>
-          val (token, nextIndex, nextPosition) = readNumber(source, index, position)
-          tokens += token
-          index = nextIndex
-          position = nextPosition
-
-        case ch if isIdentifierStart(ch) =>
-          val (token, nextIndex, nextPosition) = readIdentifier(source, index, position)
-          tokens += token
-          index = nextIndex
-          position = nextPosition
+        case current if isIdentifierStart(current) =>
+          val outcome = readIdentifier(source, index, position)
+          tokens += outcome.token
+          index = outcome.nextIndex
+          position = outcome.nextPosition
 
         case other =>
-          errors += LexicalError(s"Caracter no reconocido: '$other'.", start)
+          errors += LexicalError(s"Caracter no reconocido: '$other'.", start, Some(other.toString))
           index += 1
           position = position.advance()
       }
@@ -144,87 +134,149 @@ final class Lexer {
     if (errors.nonEmpty) Left(errors.toList) else Right(tokens.toList)
   }
 
-  private def readComment(source: String, startIndex: Int, startPosition: Position): (String, Int, Position) = {
+  private final class ScanOutcome(
+      val nextIndex: Int,
+      val nextPosition: Position,
+      val tokens: List[Token] = Nil,
+      val errors: List[LexicalError] = Nil
+  )
+
+  private final class IdentifierOutcome(val token: Token, val nextIndex: Int, val nextPosition: Position)
+
+  private def readComment(source: String, startIndex: Int, startPosition: Position): ScanOutcome = {
     var index = startIndex
     var position = startPosition
-    val builder = new StringBuilder
 
     while (index < source.length && source.charAt(index) != '\n') {
-      builder.append(source.charAt(index))
       index += 1
       position = position.advance()
     }
 
-    (builder.toString(), index, position)
+    new ScanOutcome(index, position)
   }
 
-  private def readSlashComment(source: String, startIndex: Int, startPosition: Position): (String, Int, Position) = {
-    var index = startIndex
-    var position = startPosition
-    val builder = new StringBuilder
-
-    while (index < source.length && source.charAt(index) != '\n') {
-      builder.append(source.charAt(index))
-      index += 1
-      position = position.advance()
-    }
-
-    (builder.toString(), index, position)
-  }
-
-  private def readString(
-      source: String,
-      startIndex: Int,
-      startPosition: Position
-  ): Either[LexicalError, (Token, Int, Position)] = {
+  private def readString(source: String, startIndex: Int, startPosition: Position): ScanOutcome = {
     var index = startIndex + 1
     var position = startPosition.advance()
     val builder = new StringBuilder
+    var closed = false
 
-    while (index < source.length && source.charAt(index) != '"' && source.charAt(index) != '\n') {
+    while (index < source.length && !closed) {
+      source.charAt(index) match {
+        case '"' =>
+          closed = true
+          index += 1
+          position = position.advance()
+
+        case '\n' =>
+          val lexeme = "\"" + builder.toString()
+          return new ScanOutcome(index, position, errors = List(LexicalError("String sin cierre.", startPosition, Some(lexeme))))
+
+        case '\\' =>
+          if (index + 1 >= source.length) {
+            val lexeme = "\"" + builder.toString() + "\\"
+            return new ScanOutcome(
+              index + 1,
+              position.advance(),
+              errors = List(LexicalError("Secuencia de escape incompleta en string.", startPosition, Some(lexeme)))
+            )
+          }
+
+          val escaped = source.charAt(index + 1)
+          val translated = escaped match {
+            case '"' => Some('"')
+            case 'n' => Some('\n')
+            case 't' => Some('\t')
+            case '\\' => Some('\\')
+            case _ => None
+          }
+
+          translated match {
+            case Some(value) =>
+              builder.append(value)
+              index += 2
+              position = position.advance(2)
+
+            case None =>
+              val lexeme = s"\\$escaped"
+              return new ScanOutcome(
+                index + 2,
+                position.advance(2),
+                errors = List(
+                  LexicalError(
+                    s"Secuencia de escape no soportada: '\\$escaped'.",
+                    position,
+                    Some(lexeme)
+                  )
+                )
+              )
+          }
+
+        case current =>
+          builder.append(current)
+          index += 1
+          position = position.advance()
+      }
+    }
+
+    if (!closed) {
+      val lexeme = "\"" + builder.toString()
+      new ScanOutcome(index, position, errors = List(LexicalError("String sin cierre.", startPosition, Some(lexeme))))
+    } else {
+      val literal = builder.toString()
+      new ScanOutcome(
+        index,
+        position,
+        tokens = List(Token(TokenType.StringLiteral, "\"" + literal + "\"", startPosition, Some(literal)))
+      )
+    }
+  }
+
+  private def readNumber(source: String, startIndex: Int, startPosition: Position): ScanOutcome = {
+    var index = startIndex
+    var position = startPosition
+    val builder = new StringBuilder
+
+    while (peek(source, index).exists(_.isDigit)) {
       builder.append(source.charAt(index))
       index += 1
       position = position.advance()
     }
 
-    if (index >= source.length || source.charAt(index) != '"') {
-      Left(LexicalError("String sin cierre.", startPosition))
-    } else {
-      val lexeme = "\"" + builder.toString() + "\""
-      val token = Token(TokenType.StringLiteral, lexeme, startPosition, Some(builder.toString()))
-      Right((token, index + 1, position.advance()))
-    }
-  }
+    if (peek(source, index).contains('.')) {
+      if (peek(source, index + 1).exists(_.isDigit)) {
+        builder.append('.')
+        index += 1
+        position = position.advance()
 
-  private def readNumber(source: String, startIndex: Int, startPosition: Position): (Token, Int, Position) = {
-    var index = startIndex
-    var position = startPosition
-    val builder = new StringBuilder
-    var hasDot = false
-
-    while (index < source.length && {
-      val current = source.charAt(index)
-      current.isDigit || (!hasDot && current == '.')
-    }) {
-      val current = source.charAt(index)
-      if (current == '.') {
-        hasDot = true
+        while (peek(source, index).exists(_.isDigit)) {
+          builder.append(source.charAt(index))
+          index += 1
+          position = position.advance()
+        }
+      } else {
+        return invalidNumericLexeme(source, index, position, startPosition, builder.toString() + ".", "Numero decimal mal formado.")
       }
-      builder.append(current)
-      index += 1
-      position = position.advance()
+    }
+
+    if (peek(source, index).contains('.')) {
+      return invalidNumericLexeme(source, index, position, startPosition, builder.toString(), "Numero decimal mal formado.")
+    }
+
+    if (peek(source, index).exists(isIdentifierStart)) {
+      return invalidIdentifierAfterNumber(source, index, position, startPosition, builder.toString())
     }
 
     val lexeme = builder.toString()
-    (Token(TokenType.Number, lexeme, startPosition, Some(lexeme)), index, position)
+    new ScanOutcome(index, position, tokens = List(Token(TokenType.Number, lexeme, startPosition, Some(lexeme))))
   }
 
-  private def readIdentifier(source: String, startIndex: Int, startPosition: Position): (Token, Int, Position) = {
+  private def readIdentifier(source: String, startIndex: Int, startPosition: Position): IdentifierOutcome = {
     var index = startIndex
     var position = startPosition
     val builder = new StringBuilder
 
-    while (index < source.length && isIdentifierPart(source.charAt(index))) {
+    while (peek(source, index).exists(isIdentifierPart)) {
       builder.append(source.charAt(index))
       index += 1
       position = position.advance()
@@ -232,7 +284,66 @@ final class Lexer {
 
     val lexeme = builder.toString()
     val tokenType = TokenType.keywords.getOrElse(lexeme, TokenType.Identifier)
-    (Token(tokenType, lexeme, startPosition, Some(lexeme)), index, position)
+    new IdentifierOutcome(Token(tokenType, lexeme, startPosition, Some(lexeme)), index, position)
+  }
+
+  private def invalidNumericLexeme(
+      source: String,
+      index: Int,
+      position: Position,
+      startPosition: Position,
+      prefix: String,
+      message: String
+  ): ScanOutcome = {
+    val (lexeme, nextIndex, nextPosition) = readMalformedSequence(
+      source,
+      index,
+      position,
+      prefix,
+      ch => ch.isLetterOrDigit || ch == '_' || ch == '.'
+    )
+    new ScanOutcome(nextIndex, nextPosition, errors = List(LexicalError(message, startPosition, Some(lexeme))))
+  }
+
+  private def invalidIdentifierAfterNumber(
+      source: String,
+      index: Int,
+      position: Position,
+      startPosition: Position,
+      numericPrefix: String
+  ): ScanOutcome = {
+    val (lexeme, nextIndex, nextPosition) = readMalformedSequence(
+      source,
+      index,
+      position,
+      numericPrefix,
+      isIdentifierPart
+    )
+    new ScanOutcome(
+      nextIndex,
+      nextPosition,
+      errors = List(LexicalError("Identificador invalido: no puede iniciar con un numero.", startPosition, Some(lexeme)))
+    )
+  }
+
+  private def readMalformedSequence(
+      source: String,
+      startIndex: Int,
+      startPosition: Position,
+      prefix: String,
+      predicate: Char => Boolean
+  ): (String, Int, Position) = {
+    var index = startIndex
+    var position = startPosition
+    val builder = new StringBuilder(prefix)
+
+    while (peek(source, index).exists(predicate)) {
+      builder.append(source.charAt(index))
+      index += 1
+      position = position.advance()
+    }
+
+    (builder.toString(), index, position)
   }
 
   private def isIdentifierStart(ch: Char): Boolean = ch.isLetter || ch == '_'
@@ -243,4 +354,3 @@ final class Lexer {
     if (index >= 0 && index < source.length) Some(source.charAt(index)) else None
   }
 }
-

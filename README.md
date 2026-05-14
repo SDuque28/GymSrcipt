@@ -1,50 +1,73 @@
 # GymScript
 
-GymScript es un mini-lenguaje académico inspirado en gimnasio, rutinas, ejercicios y repeticiones. Este repositorio contiene la estructura base para construir un intérprete completo en Scala con etapas separadas de análisis léxico, análisis sintáctico, análisis semántico e interpretación.
+GymScript es un mini-lenguaje academico inspirado en gimnasio, rutinas, ejercicios y repeticiones. El proyecto implementa un flujo completo en Scala:
 
-## Estado actual
+`source .txt -> lexer -> parser -> analisis semantico -> interprete -> salida`
 
-La primera fase deja preparado el proyecto para crecer de forma ordenada:
+## Estado implementado
 
-- `lexer`: tokenización y reporte de errores léxicos.
-- `parser`: contrato y AST iniciales.
-- `interpreter`: valores, entorno y ejecución base de nodos del AST.
-- `resolver`: espacio para validaciones semánticas.
-- `docs` y `examples`: especificación y programas de referencia.
-- `src/test`: pruebas automatizadas iniciales con ScalaTest.
+- Lexer con acumulacion de errores, posiciones y soporte para strings, numeros, comentarios `#`, operadores y keywords.
+- Parser descendente recursivo con precedencia de operadores y recuperacion basica de errores.
+- Analisis semantico con alcance por bloque.
+- Interprete con variables, reasignacion, `mostrar`, `si_fuerza`, `descanso`, `mientras_entrenas` y expresiones.
+- Pruebas unitarias y prueba end-to-end con ScalaTest.
 
 ## Requisitos
 
-- Java 17 o superior recomendado.
-- `sbt` instalado en el sistema.
+- Java 17 o superior.
+- `sbt`.
 
-## Cómo ejecutar
+## Como ejecutar
 
 ```bash
 sbt "run examples/basic-routine.gym.txt"
+sbt "run examples/exhaustive-routine.gym.txt"
 ```
 
-En esta fase el flujo CLI ya carga el archivo, ejecuta el lexer y conecta parser e intérprete con una base extensible. El parser todavía está en modo esqueleto, por lo que la ejecución completa del lenguaje se implementará en la siguiente fase.
-
-## Cómo correr pruebas
+## Como correr validaciones
 
 ```bash
+sbt compile
 sbt test
 ```
+
+## Reglas principales del lenguaje
+
+- Declaracion: `peso nombre = expresion`
+- Reasignacion: `nombre = expresion`
+- Impresion: `mostrar(expresion)`
+- Condicional:
+
+```text
+si_fuerza condicion
+  ...
+descanso
+  ...
+fin_rutina
+```
+
+- Ciclo:
+
+```text
+mientras_entrenas condicion
+  ...
+fin_rutina
+```
+
+## Alcance
+
+GymScript usa alcance por bloque:
+
+- El scope global contiene las variables top-level.
+- Cada bloque de `si_fuerza`, `descanso`, `mientras_entrenas` y `{ ... }` abre un scope hijo.
+- Se permite reasignar variables ya declaradas en scopes visibles.
+- No se permite redeclarar una variable en el mismo scope.
 
 ## Estructura
 
 ```text
-examples/   Programas GymScript de referencia
-docs/       Especificación inicial del lenguaje
-src/main/   Implementación del intérprete
-src/test/   Pruebas automatizadas
+examples/   Programas GymScript ejecutables
+docs/       Especificacion sincronizada con la implementacion
+src/main/   Lexer, parser, analisis semantico, interprete y CLI
+src/test/   Pruebas unitarias e integracion
 ```
-
-## Próximos incrementos recomendados
-
-1. Completar el lexer con más casos límite y recuperación de errores.
-2. Implementar parser descendente recursivo con precedencia de operadores.
-3. Añadir análisis semántico para variables y alcance.
-4. Conectar parser e intérprete para ejecutar ejemplos end-to-end.
-

@@ -1,1 +1,1 @@
-["gymscript.parser.ParserSpec","gymscript.interpreter.InterpreterSpec","gymscript.lexer.LexerSpec"]
+["gymscript.EndToEndSpec","gymscript.lexer.LexerSpec","gymscript.resolver.SemanticAnalyzerSpec","gymscript.interpreter.InterpreterSpec","gymscript.parser.ParserSpec"]

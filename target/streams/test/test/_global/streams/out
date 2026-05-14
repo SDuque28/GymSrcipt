@@ -1,19 +1,49 @@
-[debug] Running TaskDef(gymscript.parser.ParserSpec, org.scalatest.tools.Framework$$anon$1@70b97a56, false, [SuiteSelector])
-[debug] Running TaskDef(gymscript.lexer.LexerSpec, org.scalatest.tools.Framework$$anon$1@70b97a56, false, [SuiteSelector])
-[debug] Running TaskDef(gymscript.interpreter.InterpreterSpec, org.scalatest.tools.Framework$$anon$1@70b97a56, false, [SuiteSelector])
-[info] ParserSpec:
-[info] InterpreterSpec:
-[info] - parse devuelve un programa base con una secuencia minima de tokens
-[info] - execute imprime la salida de un programa simple
-[info] - execute evalua booleanos como valores literales
+[debug] Running TaskDef(gymscript.interpreter.InterpreterSpec, org.scalatest.tools.Framework$$anon$1@6e488eae, false, [SuiteSelector])
+[debug] Running TaskDef(gymscript.resolver.SemanticAnalyzerSpec, org.scalatest.tools.Framework$$anon$1@6e488eae, false, [SuiteSelector])
+[debug] Running TaskDef(gymscript.lexer.LexerSpec, org.scalatest.tools.Framework$$anon$1@6e488eae, false, [SuiteSelector])
+[debug] Running TaskDef(gymscript.EndToEndSpec, org.scalatest.tools.Framework$$anon$1@6e488eae, false, [SuiteSelector])
+[debug] Running TaskDef(gymscript.parser.ParserSpec, org.scalatest.tools.Framework$$anon$1@6e488eae, false, [SuiteSelector])
+[info] EndToEndSpec:
+[info] - ejecuta un source completo hasta obtener salida final
+[info] SemanticAnalyzerSpec:
+[info] - detecta variable no declarada
+[info] - detecta redeclaracion en el mismo alcance
+[info] - permite reasignacion valida
+[info] - valida variables dentro de bloques
 [info] LexerSpec:
 [info] - tokenize reconoce una declaracion simple
-[info] Run completed in 764 milliseconds.
-[info] Total number of tests run: 4
-[info] Suites: completed 3, aborted 0
-[info] Tests: succeeded 4, failed 0, canceled 0, ignored 0, pending 0
+[info] - tokenize strings con escapes basicos
+[info] - ignora comentarios de linea
+[info] - detecta string no cerrado
+[info] - detecta caracter invalido
+[info] - detecta decimal invalido
+[info] - mantiene linea y columna
+[info] InterpreterSpec:
+[info] - execute imprime la salida de un programa simple
+[info] - execute evalua booleanos como valores literales
+[info] - ejecuta basic-routine.gym.txt
+[info] - ejecuta operaciones aritmeticas
+[info] - ejecuta if else
+[info] - ejecuta while
+[info] - reporta division por cero
+[info] - reporta operacion incompatible
+[info] ParserSpec:
+[info] - parsea declaracion
+[info] - parsea asignacion
+[info] - parsea mostrar
+[info] - parsea if con descanso
+[info] - parsea if sin descanso
+[info] - parsea while
+[info] - respeta precedencia de operadores
+[info] - reporta error por bloque sin fin_rutina
+[info] Run completed in 1 second, 88 milliseconds.
+[info] Total number of tests run: 28
+[info] Suites: completed 5, aborted 0
+[info] Tests: succeeded 28, failed 0, canceled 0, ignored 0, pending 0
 [info] All tests passed.
 [debug] Passed tests:
-[debug] 	gymscript.parser.ParserSpec
-[debug] 	gymscript.interpreter.InterpreterSpec
+[debug] 	gymscript.EndToEndSpec
 [debug] 	gymscript.lexer.LexerSpec
+[debug] 	gymscript.resolver.SemanticAnalyzerSpec
+[debug] 	gymscript.interpreter.InterpreterSpec
+[debug] 	gymscript.parser.ParserSpec

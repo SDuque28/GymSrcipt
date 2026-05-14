@@ -1,4 +1,4 @@
-# Gramática inicial (BNF de trabajo)
+# Gramatica implementada (BNF de trabajo)
 
 ```bnf
 <programa> ::= <sentencia>* EOF
@@ -9,29 +9,32 @@
               | <si>
               | <mientras>
               | <bloque>
+              | <expresion>
 
-<declaracion> ::= "peso" <identificador> "=" <expresion>
-                | "peso" <identificador>
+<declaracion> ::= "peso" <identificador> ["=" <expresion>]
 
 <asignacion> ::= <identificador> "=" <expresion>
 
 <mostrar> ::= "mostrar" "(" <expresion> ")"
 
-<si> ::= "si_fuerza" <expresion> <bloque_inline> ["descanso" <bloque_inline>] "fin_rutina"
+<si> ::= "si_fuerza" <expresion> NEWLINE <sentencia>* ["descanso" NEWLINE <sentencia>*] "fin_rutina"
 
-<mientras> ::= "mientras_entrenas" <expresion> <bloque_inline> "fin_rutina"
+<mientras> ::= "mientras_entrenas" <expresion> NEWLINE <sentencia>* "fin_rutina"
 
 <bloque> ::= "{" <sentencia>* "}"
 
-<expresion> ::= <literal>
-              | <identificador>
-              | <expresion> <operador_binario> <expresion>
-              | <operador_unario> <expresion>
-              | "(" <expresion> ")"
+<expresion> ::= <or>
+<or> ::= <and> ("o" <and>)*
+<and> ::= <igualdad> ("y" <igualdad>)*
+<igualdad> ::= <comparacion> (("==" | "!=") <comparacion>)*
+<comparacion> ::= <termino> (("mayor_que" | "menor_que" | "mayor_igual" | "menor_igual") <termino>)*
+<termino> ::= <factor> (("+" | "-") <factor>)*
+<factor> ::= <unario> (("*" | "/") <unario>)*
+<unario> ::= ("no" | "-") <unario> | <primario>
+<primario> ::= <literal> | <identificador> | "(" <expresion> ")"
 ```
 
 Notas:
 
-- Esta gramática es una base de diseño, no la versión final.
-- El parser definitivo deberá formalizar precedencia y asociatividad.
-
+- Los comentarios se eliminan en el lexer.
+- Los saltos de linea son relevantes para separar cabeceras de bloques.

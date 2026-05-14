@@ -1,0 +1,31 @@
+[error] C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\src\main\scala\gymscript\lexer\Lexer.scala:155:16: Lexer.this.ScanOutcome.type does not take parameters
+[error]     ScanOutcome(index, position)
+[error]                ^
+[error] C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\src\main\scala\gymscript\lexer\Lexer.scala:173:29: Lexer.this.ScanOutcome.type does not take parameters
+[error]           return ScanOutcome(index, position, errors = List(LexicalError("String sin cierre.", startPosition, Some(lexeme))))
+[error]                             ^
+[error] C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\src\main\scala\gymscript\lexer\Lexer.scala:178:31: Lexer.this.ScanOutcome.type does not take parameters
+[error]             return ScanOutcome(
+[error]                               ^
+[error] C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\src\main\scala\gymscript\lexer\Lexer.scala:202:33: Lexer.this.ScanOutcome.type does not take parameters
+[error]               return ScanOutcome(
+[error]                                 ^
+[error] C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\src\main\scala\gymscript\lexer\Lexer.scala:224:18: Lexer.this.ScanOutcome.type does not take parameters
+[error]       ScanOutcome(index, position, errors = List(LexicalError("String sin cierre.", startPosition, Some(lexeme))))
+[error]                  ^
+[error] C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\src\main\scala\gymscript\lexer\Lexer.scala:227:18: Lexer.this.ScanOutcome.type does not take parameters
+[error]       ScanOutcome(
+[error]                  ^
+[error] C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\src\main\scala\gymscript\lexer\Lexer.scala:271:16: Lexer.this.ScanOutcome.type does not take parameters
+[error]     ScanOutcome(index, position, tokens = List(Token(TokenType.Number, lexeme, startPosition, Some(lexeme))))
+[error]                ^
+[error] C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\src\main\scala\gymscript\lexer\Lexer.scala:287:5: not found: value IdentifierOutcome
+[error]     IdentifierOutcome(Token(tokenType, lexeme, startPosition, Some(lexeme)), index, position)
+[error]     ^
+[error] C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\src\main\scala\gymscript\lexer\Lexer.scala:305:16: Lexer.this.ScanOutcome.type does not take parameters
+[error]     ScanOutcome(nextIndex, nextPosition, errors = List(LexicalError(message, startPosition, Some(lexeme))))
+[error]                ^
+[error] C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\src\main\scala\gymscript\lexer\Lexer.scala:322:16: Lexer.this.ScanOutcome.type does not take parameters
+[error]     ScanOutcome(
+[error]                ^
+[error] 10 errors found

@@ -3,11 +3,13 @@ package gymscript.cli
 import gymscript.interpreter.Interpreter
 import gymscript.lexer.Lexer
 import gymscript.parser.Parser
+import gymscript.resolver.SemanticAnalyzer
 import gymscript.util.SourceReader
 
 final class CliApp(
     lexer: Lexer = new Lexer(),
     parser: Parser = new Parser(),
+    semanticAnalyzer: SemanticAnalyzer = new SemanticAnalyzer(),
     interpreter: Interpreter = new Interpreter()
 ) {
 
@@ -37,18 +39,21 @@ final class CliApp(
                 1
 
               case Right(program) =>
-                interpreter.execute(program) match {
-                  case Left(error) =>
-                    Console.err.println(error.render)
+                semanticAnalyzer.analyze(program) match {
+                  case Left(errors) =>
+                    printLines(errors.map(_.render))
                     1
 
-                  case Right(outputs) =>
-                    if (outputs.nonEmpty) {
-                      outputs.foreach(println)
-                    } else {
-                      println("GymScript scaffold listo: lexer operativo y parser base conectado.")
+                  case Right(validProgram) =>
+                    interpreter.execute(validProgram) match {
+                      case Left(error) =>
+                        Console.err.println(error.render)
+                        1
+
+                      case Right(outputs) =>
+                        outputs.foreach(println)
+                        0
                     }
-                    0
                 }
             }
         }

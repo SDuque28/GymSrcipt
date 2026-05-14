@@ -1,0 +1,7 @@
+[error] C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\src\test\scala\gymscript\lexer\LexerSpec.scala:24:88: value value is not a member of Option[gymscript.lexer.Token]
+[error]     val stringToken = result.toOption.get.find(_.tokenType == TokenType.StringLiteral).value
+[error]                                                                                        ^
+[error] C:\Users\SANTIAGO DUQUE\Documents\Universidad\2026-1\procesadores\GymSript\src\test\scala\gymscript\lexer\LexerSpec.scala:62:83: value value is not a member of Option[gymscript.lexer.Token]
+[error]     val mostrarToken = result.toOption.get.find(_.tokenType == TokenType.Mostrar).value
+[error]                                                                                   ^
+[error] two errors found

@@ -1,28 +1,41 @@
-# GymScript: visión general
+# GymScript: vision general
 
-GymScript es un mini-lenguaje temático para modelar rutinas, metas y decisiones de entrenamiento. Su diseño busca ser legible para estudiantes y lo bastante riguroso para implementar un pipeline clásico de intérprete.
+GymScript es un mini-lenguaje tematico para modelar rutinas, metas y decisiones de entrenamiento. La implementacion actual sigue una arquitectura clasica de interprete con cuatro etapas:
 
-## Objetivos
+1. Analisis lexico
+2. Analisis sintactico
+3. Analisis semantico
+4. Evaluacion
 
-- Declarar variables con sintaxis inspirada en el gimnasio.
-- Evaluar expresiones numéricas, booleanas y de texto.
-- Ejecutar condicionales y ciclos.
-- Producir salidas verificables desde pruebas automatizadas.
+## Construcciones implementadas
 
-## Palabras clave iniciales
+- Declaracion de variable con `peso`
+- Reasignacion
+- Impresion con `mostrar(...)`
+- Condicional `si_fuerza ... descanso ... fin_rutina`
+- Condicional sin `descanso`
+- Ciclo `mientras_entrenas ... fin_rutina`
+- Expresiones numericas, booleanas y de texto
+- Agrupacion con parentesis
 
-- `peso`: declaración de variable.
-- `mostrar(...)`: impresión.
-- `si_fuerza`: condicional.
-- `descanso`: rama alternativa.
-- `mientras_entrenas`: ciclo while.
-- `fin_rutina`: cierre de bloque.
-- `verdadero`, `falso`: booleanos.
+## Tipos de valor
 
-## Convenciones iniciales
+- Numero
+- String
+- Booleano
+- Null
 
-- Comentarios de línea con `#`.
-- Una línea puede contener una instrucción principal.
-- Los errores deben reportar línea, columna e índice absoluto.
-- La semántica final debe ser determinista y fácil de probar.
+## Reglas semanticas activas
 
+- Una variable debe declararse antes de usarse.
+- No se puede redeclarar una variable en el mismo scope.
+- La reasignacion exige que la variable ya exista.
+- Las condiciones de `si_fuerza` y `mientras_entrenas` deben ser booleanas.
+- Los operadores aritmeticos y logicos validan tipos compatibles.
+
+## Convenciones
+
+- Comentarios de linea con `#`.
+- Los saltos de linea separan sentencias.
+- Los errores reportan linea, columna e indice absoluto.
+- El lenguaje usa alcance por bloque.

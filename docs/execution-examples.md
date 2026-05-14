@@ -1,6 +1,6 @@
-# Ejemplos de ejecución
+# Ejemplos de ejecucion
 
-## Ciclo básico
+## Ciclo basico
 
 ```gymscript
 peso repeticiones = 0
@@ -10,31 +10,36 @@ mientras_entrenas repeticiones menor_que meta
   mostrar(repeticiones)
   repeticiones = repeticiones + 1
 fin_rutina
-```
 
-Salida esperada cuando el parser e intérprete estén completos:
-
-```text
-0
-1
-2
-```
-
-## Condicional
-
-```gymscript
-si_fuerza verdadero
+si_fuerza meta mayor_que 2
   mostrar("Rutina completada")
 descanso
   mostrar("Rutina incompleta")
 fin_rutina
 ```
 
-## Comentarios
+Salida:
 
-```gymscript
-# Comentario de preparación
-peso activo = verdadero
-mostrar("Inicio de sesión")
+```text
+0
+1
+2
+Rutina completada
 ```
 
+## Condicional sin else
+
+```gymscript
+si_fuerza verdadero y no falso
+  mostrar("Condicion valida")
+fin_rutina
+```
+
+## Comentarios y aritmetica
+
+```gymscript
+# Comentario de preparacion
+peso total = 1 + 2 * 3
+mostrar(total)
+mostrar((1 + 2) * 3)
+```

@@ -35,28 +35,19 @@ final class Interpreter {
           case Some(expression) => evaluate(expression, environment)
           case None => Right(NullValue: Value)
         }
-
-        valueEither.map { value =>
-          environment.define(name, value) -> Nil
-        }
+        valueEither.map(value => environment.define(name, value) -> Nil)
 
       case Assignment(name, expression, position) =>
-        evaluate(expression, environment).flatMap { value =>
-          environment.assign(name, value, position).map(_ -> Nil)
-        }
+        evaluate(expression, environment).flatMap(value => environment.assign(name, value, position).map(_ -> Nil))
 
       case PrintStatement(expression, _) =>
         evaluate(expression, environment).map(value => environment -> List(value.render))
 
       case IfStatement(condition, thenBranch, elseBranch, _) =>
-        evaluate(condition, environment).flatMap { conditionValue =>
-          if (isTruthy(conditionValue)) {
-            executeBlock(thenBranch, environment)
-          } else {
-            elseBranch match {
-              case Some(block) => executeBlock(block, environment)
-              case None => Right(environment -> Nil)
-            }
+        evaluate(condition, environment).flatMap { value =>
+          asBoolean(value, condition.position).flatMap { boolean =>
+            if (boolean) executeBlock(thenBranch, environment)
+            else elseBranch.map(executeBlock(_, environment)).getOrElse(Right(environment -> Nil))
           }
         }
 
@@ -83,13 +74,15 @@ final class Interpreter {
       environment: Environment,
       outputs: List[String]
   ): Either[RuntimeError, (Environment, List[String])] = {
-    evaluate(condition, environment).flatMap { conditionValue =>
-      if (!isTruthy(conditionValue)) {
-        Right(environment -> outputs)
-      } else {
-        executeBlock(body, environment).flatMap {
-          case (nextEnvironment, loopOutputs) =>
-            executeWhile(condition, body, nextEnvironment, outputs ++ loopOutputs)
+    evaluate(condition, environment).flatMap { value =>
+      asBoolean(value, condition.position).flatMap { boolean =>
+        if (!boolean) {
+          Right(environment -> outputs)
+        } else {
+          executeBlock(body, environment).flatMap {
+            case (nextEnvironment, loopOutputs) =>
+              executeWhile(condition, body, nextEnvironment, outputs ++ loopOutputs)
+          }
         }
       }
     }
@@ -127,7 +120,7 @@ final class Interpreter {
         }
 
       case TokenType.Not =>
-        Right(BooleanValue(!isTruthy(value)))
+        asBoolean(value, position).map(boolean => BooleanValue(!boolean))
 
       case _ =>
         Left(RuntimeError(s"Operador unario no soportado: ${operator.lexemeName}.", position))
@@ -183,10 +176,16 @@ final class Interpreter {
         numericComparison(left, right, position, _ <= _)
 
       case TokenType.And =>
-        Right(BooleanValue(isTruthy(left) && isTruthy(right)))
+        for {
+          leftBoolean <- asBoolean(left, position)
+          rightBoolean <- asBoolean(right, position)
+        } yield BooleanValue(leftBoolean && rightBoolean)
 
       case TokenType.Or =>
-        Right(BooleanValue(isTruthy(left) || isTruthy(right)))
+        for {
+          leftBoolean <- asBoolean(left, position)
+          rightBoolean <- asBoolean(right, position)
+        } yield BooleanValue(leftBoolean || rightBoolean)
 
       case _ =>
         Left(RuntimeError(s"Operador binario no soportado: ${operator.lexemeName}.", position))
@@ -217,12 +216,10 @@ final class Interpreter {
     }
   }
 
-  private def isTruthy(value: Value): Boolean = {
+  private def asBoolean(value: Value, position: Position): Either[RuntimeError, Boolean] = {
     value match {
-      case BooleanValue(boolean) => boolean
-      case NullValue => false
-      case NumberValue(number) => number != 0
-      case StringValue(text) => text.nonEmpty
+      case BooleanValue(boolean) => Right(boolean)
+      case _ => Left(RuntimeError("Se esperaba un valor booleano.", position))
     }
   }
 
@@ -235,4 +232,3 @@ final class Interpreter {
     }
   }
 }
-
