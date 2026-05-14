@@ -1,33 +1,33 @@
-# Programa mas amplio para pruebas end-to-end
-peso repeticiones = 1
-peso meta = 3
-peso incremento = 0.5
-peso nombre = "Sentadilla frontal"
-peso activo = verdadero
-peso total = 0
+# Programa exhaustivo con sintaxis tematica
+peso repeticiones cargar 1
+peso meta cargar 3
+peso incremento cargar 0.5
+peso nombre cargar "Sentadilla frontal"
+peso activo cargar verdadero
+peso total cargar 0
 
-mostrar("Inicio de rutina")
-mostrar(nombre + " listo")
-mostrar(1 + 2 * 3)
-mostrar((1 + 2) * 3)
+mostrar abre_set "Inicio de rutina" cierra_set
+mostrar abre_set nombre mas_reps " listo" cierra_set
+mostrar abre_set 1 mas_reps 2 series_de 3 cierra_set
+mostrar abre_set abre_set 1 mas_reps 2 cierra_set series_de 3 cierra_set
 
-mientras_entrenas repeticiones menor_igual meta
-  mostrar("Serie actual")
-  mostrar(repeticiones)
-  total = total + repeticiones
-  repeticiones = repeticiones + 1
+mientras_entrenas repeticiones levanta_maximo meta inicio_rutina
+  mostrar abre_set "Serie actual" cierra_set
+  mostrar abre_set repeticiones cierra_set
+  total cargar total mas_reps repeticiones
+  repeticiones cargar repeticiones mas_reps 1
 fin_rutina
 
-si_fuerza activo y (meta mayor_que 2)
-  mostrar("Rutina avanzada")
+si_fuerza activo y_entrena abre_set meta levanta_mas_que 2 cierra_set inicio_rutina
+  mostrar abre_set "Rutina avanzada" cierra_set
 fin_rutina
 
-si_fuerza no falso o (incremento mayor_que 0.25)
-  mostrar("Condicion verdadera")
-descanso
-  mostrar("Condicion falsa")
+si_fuerza sin_energia falso o_descansa abre_set incremento levanta_mas_que 0.25 cierra_set inicio_rutina
+  mostrar abre_set "Condicion verdadera" cierra_set
+descanso inicio_rutina
+  mostrar abre_set "Condicion falsa" cierra_set
 fin_rutina
 
-mostrar(total)
-mostrar("Incremento: " + incremento)
-mostrar("Fin del entrenamiento")
+mostrar abre_set total cierra_set
+mostrar abre_set "Incremento: " mas_reps incremento cierra_set
+mostrar abre_set "Fin del entrenamiento" cierra_set

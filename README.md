@@ -1,47 +1,30 @@
 # GymScript
 
-GymScript es un mini-lenguaje academico inspirado en gimnasio, rutinas, ejercicios y repeticiones. El proyecto implementa un flujo completo en Scala:
+GymScript es un mini-lenguaje academico inspirado en gimnasio, rutinas, ejercicios y repeticiones. En esta fase ya funciona de punta a punta con una sintaxis tematica orientada a entrenamiento:
 
 `source .txt -> lexer -> parser -> analisis semantico -> interprete -> salida`
 
 ## Estado implementado
 
-- Lexer con acumulacion de errores, posiciones y soporte para strings, numeros, comentarios `#`, operadores y keywords.
-- Parser descendente recursivo con precedencia de operadores y recuperacion basica de errores.
+- Lexer con operadores y delimitadores tematicos.
+- Parser descendente recursivo con precedencia.
+- Bloques estrictos con `inicio_rutina` y `fin_rutina`.
 - Analisis semantico con alcance por bloque.
-- Interprete con variables, reasignacion, `mostrar`, `si_fuerza`, `descanso`, `mientras_entrenas` y expresiones.
-- Pruebas unitarias y prueba end-to-end con ScalaTest.
+- Rutinas simples con parametros y llamadas.
+- Listas simples con `lista`, `tomar` y `largo`.
+- Compatibilidad temporal con parte de la sintaxis legacy: `+ - * / = == != > < >= <= ( ) ,`.
 
-## Requisitos
+## Sintaxis principal
 
-- Java 17 o superior.
-- `sbt`.
-
-## Como ejecutar
-
-```bash
-sbt "run examples/basic-routine.gym.txt"
-sbt "run examples/exhaustive-routine.gym.txt"
-```
-
-## Como correr validaciones
-
-```bash
-sbt compile
-sbt test
-```
-
-## Reglas principales del lenguaje
-
-- Declaracion: `peso nombre = expresion`
-- Reasignacion: `nombre = expresion`
-- Impresion: `mostrar(expresion)`
+- Declaracion: `peso nombre cargar expresion`
+- Reasignacion: `nombre cargar expresion`
+- Impresion: `mostrar abre_set expresion cierra_set`
 - Condicional:
 
 ```text
-si_fuerza condicion
+si_fuerza condicion inicio_rutina
   ...
-descanso
+descanso inicio_rutina
   ...
 fin_rutina
 ```
@@ -49,25 +32,77 @@ fin_rutina
 - Ciclo:
 
 ```text
-mientras_entrenas condicion
+mientras_entrenas condicion inicio_rutina
   ...
 fin_rutina
 ```
+
+- Rutina:
+
+```text
+rutina nombre abre_set parametro1 separa parametro2 cierra_set inicio_rutina
+  ...
+fin_rutina
+```
+
+- Llamada:
+
+```text
+llamar nombre abre_set valor1 separa valor2 cierra_set
+```
+
+## Operadores tematicos
+
+| Operacion | Sintaxis |
+| --- | --- |
+| suma | `mas_reps` |
+| resta | `menos_reps` |
+| multiplicacion | `series_de` |
+| division | `dividir_rutina` |
+| asignacion | `cargar` |
+| mayor que | `levanta_mas_que` |
+| menor que | `levanta_menos_que` |
+| igual | `levanta_igual_que` |
+| diferente | `no_levanta_igual` |
+| mayor o igual | `levanta_minimo` |
+| menor o igual | `levanta_maximo` |
+| and | `y_entrena` |
+| or | `o_descansa` |
+| not | `sin_energia` |
+
+## Delimitadores tematicos
+
+- `abre_set`
+- `cierra_set`
+- `separa`
+- `inicio_rutina`
+- `fin_rutina`
 
 ## Alcance
 
 GymScript usa alcance por bloque:
 
-- El scope global contiene las variables top-level.
-- Cada bloque de `si_fuerza`, `descanso`, `mientras_entrenas` y `{ ... }` abre un scope hijo.
-- Se permite reasignar variables ya declaradas en scopes visibles.
-- No se permite redeclarar una variable en el mismo scope.
+- Scope global para declaraciones top-level.
+- Scope hijo para `si_fuerza`, `descanso`, `mientras_entrenas` y `rutina`.
+- Los parametros de rutina viven solo dentro de la rutina.
 
-## Estructura
+## Como ejecutar
 
-```text
-examples/   Programas GymScript ejecutables
-docs/       Especificacion sincronizada con la implementacion
-src/main/   Lexer, parser, analisis semantico, interprete y CLI
-src/test/   Pruebas unitarias e integracion
+```bash
+sbt "run examples/basic-routine.gym.txt"
+sbt "run examples/exhaustive-routine.gym.txt"
+sbt "run examples/advanced-routine.gym.txt"
 ```
+
+## Como validar
+
+```bash
+sbt compile
+sbt test
+```
+
+## Ejemplos incluidos
+
+- `examples/basic-routine.gym.txt`
+- `examples/exhaustive-routine.gym.txt`
+- `examples/advanced-routine.gym.txt`

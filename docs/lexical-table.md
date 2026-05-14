@@ -1,45 +1,54 @@
 # Tabla lexica implementada
 
-| Categoria | Lexema(s) | Token |
+| Categoria | Lexema principal | Token |
 | --- | --- | --- |
 | Declaracion | `peso` | `Peso` |
 | Salida | `mostrar` | `Mostrar` |
 | If | `si_fuerza` | `SiFuerza` |
 | Else | `descanso` | `Descanso` |
 | While | `mientras_entrenas` | `MientrasEntrenas` |
+| Inicio de bloque | `inicio_rutina` | `InicioRutina` |
 | Fin de bloque | `fin_rutina` | `FinRutina` |
+| Declaracion de rutina | `rutina` | `Rutina` |
+| Llamada de rutina | `llamar` | `Llamar` |
+| Lista | `lista` | `Lista` |
+| Acceso a lista | `tomar` | `Tomar` |
+| Largo de lista | `largo` | `Largo` |
 | Booleano | `verdadero` | `Verdadero` |
 | Booleano | `falso` | `Falso` |
-| Identificador | `meta`, `repeticiones`, `_contador` | `Identifier` |
-| Numero | `10`, `3.5` | `Number` |
-| String | `"Rutina completada"` | `StringLiteral` |
-| Suma | `+` | `Plus` |
-| Resta | `-` | `Minus` |
-| Multiplicacion | `*` | `Star` |
-| Division | `/` | `Slash` |
-| Asignacion | `=` | `Assign` |
-| Igualdad | `==` | `EqualEqual` |
-| Diferente | `!=` | `BangEqual` |
-| Mayor | `mayor_que` | `GreaterThan` |
-| Menor | `menor_que` | `LessThan` |
-| Mayor o igual | `mayor_igual` | `GreaterEqual` |
-| Menor o igual | `menor_igual` | `LessEqual` |
-| Conjuncion | `y` | `And` |
-| Disyuncion | `o` | `Or` |
-| Negacion | `no` | `Not` |
-| Delimitador | `(` | `LeftParen` |
-| Delimitador | `)` | `RightParen` |
-| Delimitador | `{` | `LeftBrace` |
-| Delimitador | `}` | `RightBrace` |
-| Separador | `,` | `Comma` |
-| Comentario | `# comentario` | ignorado por el lexer |
+| Suma | `mas_reps` | `Plus` |
+| Resta | `menos_reps` | `Minus` |
+| Multiplicacion | `series_de` | `Star` |
+| Division | `dividir_rutina` | `Slash` |
+| Asignacion | `cargar` | `Assign` |
+| Mayor | `levanta_mas_que` | `GreaterThan` |
+| Menor | `levanta_menos_que` | `LessThan` |
+| Igual | `levanta_igual_que` | `EqualEqual` |
+| Diferente | `no_levanta_igual` | `BangEqual` |
+| Mayor o igual | `levanta_minimo` | `GreaterEqual` |
+| Menor o igual | `levanta_maximo` | `LessEqual` |
+| Conjuncion | `y_entrena` | `And` |
+| Disyuncion | `o_descansa` | `Or` |
+| Negacion | `sin_energia` | `Not` |
+| Abre delimitador | `abre_set` | `LeftParen` |
+| Cierra delimitador | `cierra_set` | `RightParen` |
+| Separador | `separa` | `Comma` |
+| Comentario | `# comentario` | ignorado |
 | Fin de linea | `\n` | `NewLine` |
 | Fin de archivo | EOF | `EOF` |
 
-## Casos de error lexico detectados
+## Alias legacy soportados
 
-- Caracter desconocido
+- `+ - * /`
+- `= == != > < >= <=`
+- `(` `)` `,`
+- `mayor_que`, `menor_que`, `mayor_igual`, `menor_igual`
+- `y`, `o`, `no`
+
+## Errores lexicos detectados
+
+- Token desconocido
 - String no cerrado
-- Secuencia de escape no soportada
-- Decimal mal formado, por ejemplo `10.5.3`
-- Identificador invalido que inicia con numero, por ejemplo `1variable`
+- Escape no soportado
+- Decimal mal formado
+- Identificador invalido que inicia con numero

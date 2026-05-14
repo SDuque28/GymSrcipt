@@ -1,14 +1,14 @@
-peso repeticiones = 0
-peso meta = 3
+peso repeticiones cargar 0
+peso meta cargar 3
+peso energia cargar verdadero
 
-mientras_entrenas repeticiones menor_que meta
-  mostrar(repeticiones)
-  repeticiones = repeticiones + 1
+mientras_entrenas repeticiones levanta_menos_que meta inicio_rutina
+  mostrar abre_set repeticiones cierra_set
+  repeticiones cargar repeticiones mas_reps 1
 fin_rutina
 
-si_fuerza meta mayor_que 2
-  mostrar("Rutina completada")
-descanso
-  mostrar("Rutina incompleta")
+si_fuerza energia y_entrena repeticiones levanta_igual_que meta inicio_rutina
+  mostrar abre_set "Rutina completada" cierra_set
+descanso inicio_rutina
+  mostrar abre_set "Rutina incompleta" cierra_set
 fin_rutina
-

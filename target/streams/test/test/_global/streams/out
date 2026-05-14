@@ -1,45 +1,49 @@
-[debug] Running TaskDef(gymscript.interpreter.InterpreterSpec, org.scalatest.tools.Framework$$anon$1@6e488eae, false, [SuiteSelector])
-[debug] Running TaskDef(gymscript.resolver.SemanticAnalyzerSpec, org.scalatest.tools.Framework$$anon$1@6e488eae, false, [SuiteSelector])
-[debug] Running TaskDef(gymscript.lexer.LexerSpec, org.scalatest.tools.Framework$$anon$1@6e488eae, false, [SuiteSelector])
-[debug] Running TaskDef(gymscript.EndToEndSpec, org.scalatest.tools.Framework$$anon$1@6e488eae, false, [SuiteSelector])
-[debug] Running TaskDef(gymscript.parser.ParserSpec, org.scalatest.tools.Framework$$anon$1@6e488eae, false, [SuiteSelector])
+[debug] Running TaskDef(gymscript.resolver.SemanticAnalyzerSpec, org.scalatest.tools.Framework$$anon$1@64fc407a, false, [SuiteSelector])
+[debug] Running TaskDef(gymscript.parser.ParserSpec, org.scalatest.tools.Framework$$anon$1@64fc407a, false, [SuiteSelector])
+[debug] Running TaskDef(gymscript.interpreter.InterpreterSpec, org.scalatest.tools.Framework$$anon$1@64fc407a, false, [SuiteSelector])
+[debug] Running TaskDef(gymscript.EndToEndSpec, org.scalatest.tools.Framework$$anon$1@64fc407a, false, [SuiteSelector])
 [info] EndToEndSpec:
-[info] - ejecuta un source completo hasta obtener salida final
+[info] - ejecuta basic-routine.gym.txt
+[info] - ejecuta exhaustive-routine.gym.txt
+[info] - ejecuta advanced-routine.gym.txt
 [info] SemanticAnalyzerSpec:
-[info] - detecta variable no declarada
-[info] - detecta redeclaracion en el mismo alcance
-[info] - permite reasignacion valida
-[info] - valida variables dentro de bloques
-[info] LexerSpec:
-[info] - tokenize reconoce una declaracion simple
-[info] - tokenize strings con escapes basicos
-[info] - ignora comentarios de linea
-[info] - detecta string no cerrado
-[info] - detecta caracter invalido
-[info] - detecta decimal invalido
-[info] - mantiene linea y columna
+[info] - valida variables declaradas
+[info] - valida scopes de bloque
+[info] - valida funciones y parametros
+[info] - detecta aridad invalida en rutina
+[info] - valida listas si se implementan
+[info] ParserSpec:
+[info] - parsea declaracion con cargar
+[info] - parsea mostrar con abre_set y cierra_set
+[info] - parsea if con inicio_rutina y fin_rutina
+[info] - parsea while con inicio_rutina y fin_rutina
+[info] - respeta precedencia con operadores tematicos
+[info] - parsea expresiones anidadas
+[info] - parsea rutina y llamada
+[info] - parsea listas y accesos tematicos
+[info] - reporta error si falta inicio_rutina
 [info] InterpreterSpec:
 [info] - execute imprime la salida de un programa simple
-[info] - execute evalua booleanos como valores literales
 [info] - ejecuta basic-routine.gym.txt
-[info] - ejecuta operaciones aritmeticas
-[info] - ejecuta if else
-[info] - ejecuta while
-[info] - reporta division por cero
+[info] - ejecuta operadores tematicos
+[info] - ejecuta if else tematico
+[info] - ejecuta while tematico
+[info] - ejecuta listas y funciones
+[info] - reporta division por cero con mensaje claro
 [info] - reporta operacion incompatible
-[info] ParserSpec:
-[info] - parsea declaracion
-[info] - parsea asignacion
-[info] - parsea mostrar
-[info] - parsea if con descanso
-[info] - parsea if sin descanso
-[info] - parsea while
-[info] - respeta precedencia de operadores
-[info] - reporta error por bloque sin fin_rutina
-[info] Run completed in 1 second, 88 milliseconds.
-[info] Total number of tests run: 28
+[debug] Running TaskDef(gymscript.lexer.LexerSpec, org.scalatest.tools.Framework$$anon$1@64fc407a, false, [SuiteSelector])
+[info] LexerSpec:
+[info] - reconoce operadores tematicos
+[info] - reconoce delimitadores tematicos
+[info] - reconoce cargar como asignacion
+[info] - ignora comentarios
+[info] - mantiene compatibilidad temporal con simbolos legacy
+[info] - detecta string no cerrado
+[info] - mantiene linea y columna con sintaxis tematica
+[info] Run completed in 806 milliseconds.
+[info] Total number of tests run: 32
 [info] Suites: completed 5, aborted 0
-[info] Tests: succeeded 28, failed 0, canceled 0, ignored 0, pending 0
+[info] Tests: succeeded 32, failed 0, canceled 0, ignored 0, pending 0
 [info] All tests passed.
 [debug] Passed tests:
 [debug] 	gymscript.EndToEndSpec

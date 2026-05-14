@@ -38,12 +38,14 @@ final class Parser {
           case TokenType.Mostrar => Some(parsePrintStatement())
           case TokenType.SiFuerza => Some(parseIfStatement())
           case TokenType.MientrasEntrenas => Some(parseWhileStatement())
-          case TokenType.LeftBrace => Some(parseBraceBlock())
+          case TokenType.Rutina => Some(parseRoutineDeclaration())
+          case TokenType.Llamar => Some(parseCallStatement())
+          case TokenType.LeftBrace => Some(parseLegacyBraceBlock())
           case TokenType.Descanso if topLevel =>
-            reportAndAdvance("Token 'descanso' inesperado fuera de un bloque 'si_fuerza'.")
+            reportAndAdvance("Se encontro 'descanso' sin un bloque 'si_fuerza' activo.")
             None
           case TokenType.FinRutina if topLevel =>
-            reportAndAdvance("Token 'fin_rutina' inesperado.")
+            reportAndAdvance("Se encontro 'fin_rutina' sin un bloque de entrenamiento abierto.")
             None
           case TokenType.Identifier if checkNext(TokenType.Assign) =>
             Some(parseAssignment())
@@ -62,55 +64,75 @@ final class Parser {
       val nameToken = consume(TokenType.Identifier, "Se esperaba el nombre de la variable despues de 'peso'.")
       val initializer =
         if (matchType(TokenType.Assign)) Some(parseExpression())
-        else None
+        else {
+          error(peek.position, "Se esperaba 'cargar' despues del nombre de la variable.")
+          None
+        }
       VariableDeclaration(nameToken.lexeme, initializer, keyword.position)
     }
 
     private def parseAssignment(): Statement = {
       val nameToken = consume(TokenType.Identifier, "Se esperaba el nombre de la variable.")
-      consume(TokenType.Assign, "Se esperaba '=' en la asignacion.")
+      consume(TokenType.Assign, "Se esperaba 'cargar' en la asignacion.")
       val expression = parseExpression()
       Assignment(nameToken.lexeme, expression, nameToken.position)
     }
 
     private def parsePrintStatement(): Statement = {
       val keyword = advance()
-      consume(TokenType.LeftParen, "Se esperaba '(' despues de 'mostrar'.")
+      consume(TokenType.LeftParen, "Se esperaba 'abre_set' despues de 'mostrar'.")
       val expression = parseExpression()
-      consume(TokenType.RightParen, "Se esperaba ')' para cerrar 'mostrar(...)'.")
+      consume(TokenType.RightParen, "Se esperaba 'cierra_set' para cerrar 'mostrar'.")
       PrintStatement(expression, keyword.position)
     }
 
     private def parseIfStatement(): Statement = {
       val keyword = advance()
       val condition = parseExpression()
-      requireNewLine("Se esperaba un salto de linea despues de la condicion de 'si_fuerza'.")
-      val thenStatements = parseStatementsUntil(Set(TokenType.Descanso, TokenType.FinRutina))
+      consume(TokenType.InicioRutina, "Se esperaba 'inicio_rutina' despues de la condicion de 'si_fuerza'.")
+      val thenStatements = parseRequiredBlockStatements(Set(TokenType.Descanso, TokenType.FinRutina), "si_fuerza")
       val thenBranch = Block(thenStatements, keyword.position)
 
       val elseBranch =
         if (matchType(TokenType.Descanso)) {
           val elsePosition = previous.position
-          requireNewLine("Se esperaba un salto de linea despues de 'descanso'.")
-          Some(Block(parseStatementsUntil(Set(TokenType.FinRutina)), elsePosition))
+          consume(TokenType.InicioRutina, "Se esperaba 'inicio_rutina' despues de 'descanso'.")
+          Some(Block(parseRequiredBlockStatements(Set(TokenType.FinRutina), "descanso"), elsePosition))
         } else {
           None
         }
 
-      consume(TokenType.FinRutina, "Se esperaba 'fin_rutina' para cerrar el bloque 'si_fuerza'.")
+      consume(TokenType.FinRutina, "Se esperaba 'fin_rutina' para cerrar el bloque de 'si_fuerza'.")
       IfStatement(condition, thenBranch, elseBranch, keyword.position)
     }
 
     private def parseWhileStatement(): Statement = {
       val keyword = advance()
       val condition = parseExpression()
-      requireNewLine("Se esperaba un salto de linea despues de la condicion de 'mientras_entrenas'.")
-      val body = parseStatementsUntil(Set(TokenType.FinRutina))
-      consume(TokenType.FinRutina, "Se esperaba 'fin_rutina' para cerrar el bloque 'mientras_entrenas'.")
-      WhileStatement(condition, Block(body, keyword.position), keyword.position)
+      consume(TokenType.InicioRutina, "Se esperaba 'inicio_rutina' despues de la condicion de 'mientras_entrenas'.")
+      val bodyStatements = parseRequiredBlockStatements(Set(TokenType.FinRutina), "mientras_entrenas")
+      consume(TokenType.FinRutina, "Se esperaba 'fin_rutina' para cerrar el bloque de 'mientras_entrenas'.")
+      WhileStatement(condition, Block(bodyStatements, keyword.position), keyword.position)
     }
 
-    private def parseBraceBlock(): Statement = {
+    private def parseRoutineDeclaration(): Statement = {
+      val keyword = advance()
+      val nameToken = consume(TokenType.Identifier, "Se esperaba el nombre de la rutina.")
+      val parameters = parseIdentifierList("Se esperaba 'abre_set' despues del nombre de la rutina.")
+      consume(TokenType.InicioRutina, "Se esperaba 'inicio_rutina' despues de la firma de la rutina.")
+      val bodyStatements = parseRequiredBlockStatements(Set(TokenType.FinRutina), s"rutina '${nameToken.lexeme}'")
+      consume(TokenType.FinRutina, "Se esperaba 'fin_rutina' para cerrar la rutina.")
+      RoutineDeclaration(nameToken.lexeme, parameters, Block(bodyStatements, keyword.position), keyword.position)
+    }
+
+    private def parseCallStatement(): Statement = {
+      val keyword = advance()
+      val nameToken = consume(TokenType.Identifier, "Se esperaba el nombre de la rutina a invocar.")
+      val arguments = parseArgumentList("Se esperaba 'abre_set' despues del nombre de la rutina.")
+      CallStatement(nameToken.lexeme, arguments, keyword.position)
+    }
+
+    private def parseLegacyBraceBlock(): Statement = {
       val opening = consume(TokenType.LeftBrace, "Se esperaba '{'.")
       val statements = ListBuffer.empty[Statement]
       skipNewLines()
@@ -123,8 +145,16 @@ final class Parser {
         skipNewLines()
       }
 
-      consume(TokenType.RightBrace, "Se esperaba '}' para cerrar el bloque.")
+      consume(TokenType.RightBrace, "Se esperaba '}' para cerrar el bloque legacy.")
       Block(statements.toList, opening.position)
+    }
+
+    private def parseRequiredBlockStatements(terminators: Set[TokenType], owner: String): List[Statement] = {
+      val statements = parseStatementsUntil(terminators)
+      if (statements.isEmpty) {
+        error(previous.position, s"El bloque '$owner' no puede estar vacio.")
+      }
+      statements
     }
 
     private def parseStatementsUntil(terminators: Set[TokenType]): List[Statement] = {
@@ -213,23 +243,80 @@ final class Parser {
         case TokenType.LeftParen =>
           val opening = advance()
           val expression = parseExpression()
-          consume(TokenType.RightParen, "Se esperaba ')' para cerrar la expresion agrupada.")
+          consume(TokenType.RightParen, "Se esperaba 'cierra_set' para cerrar la expresion.")
           GroupingExpression(expression, opening.position)
 
+        case TokenType.Lista =>
+          parseListExpression()
+
+        case TokenType.Tomar =>
+          parseTakeExpression()
+
+        case TokenType.Largo =>
+          parseLengthExpression()
+
         case TokenType.NewLine | TokenType.EOF | TokenType.FinRutina | TokenType.Descanso | TokenType.RightBrace =>
-          fail("Se esperaba una expresion valida.")
+          fail("Se esperaba una expresion valida de entrenamiento.")
+
+        case TokenType.InicioRutina =>
+          fail("Se encontro 'inicio_rutina' donde GymScript esperaba una expresion.")
 
         case _ =>
           fail(s"Token inesperado en expresion: '${peek.lexeme}'.")
       }
     }
 
-    private def requireNewLine(message: String): Unit = {
-      if (!matchType(TokenType.NewLine)) {
-        error(peek.position, message)
-      } else {
-        while (matchType(TokenType.NewLine)) {}
+    private def parseListExpression(): Expression = {
+      val keyword = advance()
+      val elements = parseArgumentList("Se esperaba 'abre_set' despues de 'lista'.")
+      ListExpression(elements, keyword.position)
+    }
+
+    private def parseTakeExpression(): Expression = {
+      val keyword = advance()
+      consume(TokenType.LeftParen, "Se esperaba 'abre_set' despues de 'tomar'.")
+      val collection = parseExpression()
+      consume(TokenType.Comma, "Se esperaba 'separa' para indicar la posicion en 'tomar'.")
+      val index = parseExpression()
+      consume(TokenType.RightParen, "Se esperaba 'cierra_set' para cerrar 'tomar'.")
+      TakeExpression(collection, index, keyword.position)
+    }
+
+    private def parseLengthExpression(): Expression = {
+      val keyword = advance()
+      consume(TokenType.LeftParen, "Se esperaba 'abre_set' despues de 'largo'.")
+      val collection = parseExpression()
+      consume(TokenType.RightParen, "Se esperaba 'cierra_set' para cerrar 'largo'.")
+      LengthExpression(collection, keyword.position)
+    }
+
+    private def parseIdentifierList(openingMessage: String): List[String] = {
+      consume(TokenType.LeftParen, openingMessage)
+      val parameters = ListBuffer.empty[String]
+
+      if (!check(TokenType.RightParen)) {
+        do {
+          val parameter = consume(TokenType.Identifier, "Se esperaba el nombre de un parametro.")
+          parameters += parameter.lexeme
+        } while (matchType(TokenType.Comma))
       }
+
+      consume(TokenType.RightParen, "Se esperaba 'cierra_set' para cerrar la lista de parametros.")
+      parameters.toList
+    }
+
+    private def parseArgumentList(openingMessage: String): List[Expression] = {
+      consume(TokenType.LeftParen, openingMessage)
+      val arguments = ListBuffer.empty[Expression]
+
+      if (!check(TokenType.RightParen)) {
+        do {
+          arguments += parseExpression()
+        } while (matchType(TokenType.Comma))
+      }
+
+      consume(TokenType.RightParen, "Se esperaba 'cierra_set' para cerrar la lista de argumentos.")
+      arguments.toList
     }
 
     private def skipNewLines(): Unit = {
@@ -237,8 +324,12 @@ final class Parser {
     }
 
     private def synchronize(stopTokens: Set[TokenType] = Set.empty): Unit = {
-      while (!isAtEnd && !check(TokenType.NewLine) && !statementStartTokens.contains(peek.tokenType) && !stopTokens
-          .contains(peek.tokenType)) {
+      while (
+        !isAtEnd &&
+        !check(TokenType.NewLine) &&
+        !statementStartTokens.contains(peek.tokenType) &&
+        !stopTokens.contains(peek.tokenType)
+      ) {
         advance()
       }
 
@@ -252,6 +343,8 @@ final class Parser {
       TokenType.Mostrar,
       TokenType.SiFuerza,
       TokenType.MientrasEntrenas,
+      TokenType.Rutina,
+      TokenType.Llamar,
       TokenType.LeftBrace,
       TokenType.Identifier,
       TokenType.Descanso,
@@ -293,13 +386,9 @@ final class Parser {
       errors += ParseError(message, position)
     }
 
-    private def check(expected: TokenType): Boolean = {
-      peek.tokenType == expected
-    }
+    private def check(expected: TokenType): Boolean = peek.tokenType == expected
 
-    private def checkNext(expected: TokenType): Boolean = {
-      tokens.lift(current + 1).exists(_.tokenType == expected)
-    }
+    private def checkNext(expected: TokenType): Boolean = tokens.lift(current + 1).exists(_.tokenType == expected)
 
     private def checkAny(expected: Set[TokenType]): Boolean = expected.contains(peek.tokenType)
 
@@ -313,13 +402,9 @@ final class Parser {
 
     private def isAtEnd: Boolean = peek.tokenType == TokenType.EOF
 
-    private def peek: Token = {
-      tokens.lift(current).getOrElse(tokens.lastOption.getOrElse(Token(TokenType.EOF, "", Position.Start)))
-    }
+    private def peek: Token = tokens.lift(current).getOrElse(tokens.lastOption.getOrElse(Token(TokenType.EOF, "", Position.Start)))
 
-    private def previous: Token = {
-      tokens.lift(math.max(current - 1, 0)).getOrElse(Token(TokenType.EOF, "", Position.Start))
-    }
+    private def previous: Token = tokens.lift(math.max(current - 1, 0)).getOrElse(Token(TokenType.EOF, "", Position.Start))
 
     private object ParserFailure extends RuntimeException
   }

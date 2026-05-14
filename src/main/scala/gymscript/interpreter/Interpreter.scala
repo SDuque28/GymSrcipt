@@ -54,11 +54,56 @@ final class Interpreter {
       case WhileStatement(condition, body, _) =>
         executeWhile(condition, body, environment, Nil)
 
+      case RoutineDeclaration(name, parameters, body, _) =>
+        val routine = RoutineValue(name, parameters, body, environment)
+        Right(environment.define(name, routine) -> Nil)
+
+      case CallStatement(name, arguments, position) =>
+        executeCall(name, arguments, environment, position)
+
       case block: Block =>
         executeBlock(block, environment)
 
       case ExpressionStatement(expression, _) =>
         evaluate(expression, environment).map(_ => environment -> Nil)
+    }
+  }
+
+  private def executeCall(
+      name: String,
+      arguments: List[Expression],
+      environment: Environment,
+      position: Position
+  ): Either[RuntimeError, (Environment, List[String])] = {
+    for {
+      callee <- environment.resolve(name, position)
+      values <- evaluateAll(arguments, environment)
+      result <- callee match {
+        case routine: RoutineValue =>
+          callRoutine(routine, values, position).map(outputs => environment -> outputs)
+        case _ =>
+          Left(RuntimeError(s"'$name' no es una rutina invocable.", position))
+      }
+    } yield result
+  }
+
+  private def callRoutine(
+      routine: RoutineValue,
+      arguments: List[Value],
+      position: Position
+  ): Either[RuntimeError, List[String]] = {
+    if (routine.parameters.length != arguments.length) {
+      Left(
+        RuntimeError(
+          s"La rutina '${routine.name}' esperaba ${routine.parameters.length} argumento(s) y recibio ${arguments.length}.",
+          position
+        )
+      )
+    } else {
+      val localEnvironment = routine.parameters.zip(arguments).foldLeft(routine.closure.child) {
+        case (env, (parameter, argument)) => env.define(parameter, argument)
+      }
+      executeStatements(routine.body.statements, localEnvironment).map(_._2)
     }
   }
 
@@ -99,6 +144,20 @@ final class Interpreter {
       case GroupingExpression(inner, _) =>
         evaluate(inner, environment)
 
+      case ListExpression(elements, _) =>
+        evaluateAll(elements, environment).map(values => ListValue(values.toVector))
+
+      case TakeExpression(collection, indexExpression, position) =>
+        for {
+          collectionValue <- evaluate(collection, environment)
+          indexValue <- evaluate(indexExpression, environment)
+          index <- asWholeNumber(indexValue, position)
+          result <- takeFromList(collectionValue, index, position)
+        } yield result
+
+      case LengthExpression(collection, position) =>
+        evaluate(collection, environment).flatMap(lengthOfList(_, position))
+
       case UnaryExpression(operator, inner, position) =>
         evaluate(inner, environment).flatMap(value => applyUnary(operator, value, position))
 
@@ -111,12 +170,22 @@ final class Interpreter {
     }
   }
 
+  private def evaluateAll(expressions: List[Expression], environment: Environment): Either[RuntimeError, List[Value]] = {
+    expressions.foldLeft[Either[RuntimeError, List[Value]]](Right(Nil)) {
+      case (accEither, expression) =>
+        for {
+          acc <- accEither
+          value <- evaluate(expression, environment)
+        } yield acc :+ value
+    }
+  }
+
   private def applyUnary(operator: TokenType, value: Value, position: Position): Either[RuntimeError, Value] = {
     operator match {
       case TokenType.Minus =>
         value match {
           case NumberValue(number) => Right(NumberValue(-number))
-          case _ => Left(RuntimeError("El operador '-' unario requiere un numero.", position))
+          case _ => Left(RuntimeError("El operador 'menos_reps' requiere un numero.", position))
         }
 
       case TokenType.Not =>
@@ -140,21 +209,21 @@ final class Interpreter {
           case (StringValue(a), StringValue(b)) => Right(StringValue(a + b))
           case (StringValue(a), value) => Right(StringValue(a + value.render))
           case (value, StringValue(b)) => Right(StringValue(value.render + b))
-          case _ => Left(RuntimeError("El operador '+' requiere numeros o strings.", position))
+          case _ => Left(RuntimeError("El operador 'mas_reps' requiere numeros o strings.", position))
         }
 
       case TokenType.Minus =>
-        numericBinary(left, right, position, _ - _)
+        numericBinary(left, right, position, "menos_reps", _ - _)
 
       case TokenType.Star =>
-        numericBinary(left, right, position, _ * _)
+        numericBinary(left, right, position, "series_de", _ * _)
 
       case TokenType.Slash =>
         (left, right) match {
           case (_, NumberValue(divisor)) if divisor == 0 =>
-            Left(RuntimeError("Division por cero.", position))
+            Left(RuntimeError("No se puede dividir la rutina entre cero.", position))
           case _ =>
-            numericBinary(left, right, position, _ / _)
+            numericBinary(left, right, position, "dividir_rutina", _ / _)
         }
 
       case TokenType.EqualEqual =>
@@ -164,16 +233,16 @@ final class Interpreter {
         Right(BooleanValue(left != right))
 
       case TokenType.GreaterThan =>
-        numericComparison(left, right, position, _ > _)
+        numericComparison(left, right, position, "levanta_mas_que", _ > _)
 
       case TokenType.LessThan =>
-        numericComparison(left, right, position, _ < _)
+        numericComparison(left, right, position, "levanta_menos_que", _ < _)
 
       case TokenType.GreaterEqual =>
-        numericComparison(left, right, position, _ >= _)
+        numericComparison(left, right, position, "levanta_minimo", _ >= _)
 
       case TokenType.LessEqual =>
-        numericComparison(left, right, position, _ <= _)
+        numericComparison(left, right, position, "levanta_maximo", _ <= _)
 
       case TokenType.And =>
         for {
@@ -196,11 +265,12 @@ final class Interpreter {
       left: Value,
       right: Value,
       position: Position,
+      operatorName: String,
       operation: (BigDecimal, BigDecimal) => BigDecimal
   ): Either[RuntimeError, Value] = {
     (left, right) match {
       case (NumberValue(a), NumberValue(b)) => Right(NumberValue(operation(a, b)))
-      case _ => Left(RuntimeError("La operacion requiere dos numeros.", position))
+      case _ => Left(RuntimeError(s"La operacion '$operatorName' requiere dos numeros.", position))
     }
   }
 
@@ -208,18 +278,44 @@ final class Interpreter {
       left: Value,
       right: Value,
       position: Position,
+      operatorName: String,
       operation: (BigDecimal, BigDecimal) => Boolean
   ): Either[RuntimeError, Value] = {
     (left, right) match {
       case (NumberValue(a), NumberValue(b)) => Right(BooleanValue(operation(a, b)))
-      case _ => Left(RuntimeError("La comparacion requiere dos numeros.", position))
+      case _ => Left(RuntimeError(s"La comparacion '$operatorName' requiere dos numeros.", position))
     }
   }
 
   private def asBoolean(value: Value, position: Position): Either[RuntimeError, Boolean] = {
     value match {
       case BooleanValue(boolean) => Right(boolean)
-      case _ => Left(RuntimeError("Se esperaba un valor booleano.", position))
+      case _ => Left(RuntimeError("La condicion del entrenamiento debe evaluarse a verdadero o falso.", position))
+    }
+  }
+
+  private def asWholeNumber(value: Value, position: Position): Either[RuntimeError, Int] = {
+    value match {
+      case NumberValue(number) if number.isValidInt && number == BigDecimal(number.toInt) =>
+        Right(number.toInt)
+      case _ =>
+        Left(RuntimeError("La posicion de 'tomar' debe ser un numero entero.", position))
+    }
+  }
+
+  private def takeFromList(value: Value, index: Int, position: Position): Either[RuntimeError, Value] = {
+    value match {
+      case ListValue(values) =>
+        values.lift(index).toRight(RuntimeError(s"La posicion $index esta fuera de la rutina de lista.", position))
+      case _ =>
+        Left(RuntimeError("La operacion 'tomar' solo funciona sobre listas.", position))
+    }
+  }
+
+  private def lengthOfList(value: Value, position: Position): Either[RuntimeError, Value] = {
+    value match {
+      case ListValue(values) => Right(NumberValue(values.length))
+      case _ => Left(RuntimeError("La operacion 'largo' solo funciona sobre listas.", position))
     }
   }
 

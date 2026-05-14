@@ -78,6 +78,26 @@ final class Lexer {
           index += 1
           position = position.advance()
 
+        case '>' if peek(source, index + 1).contains('=') =>
+          tokens += Token(TokenType.GreaterEqual, ">=", start)
+          index += 2
+          position = position.advance(2)
+
+        case '>' =>
+          tokens += Token(TokenType.GreaterThan, ">", start)
+          index += 1
+          position = position.advance()
+
+        case '<' if peek(source, index + 1).contains('=') =>
+          tokens += Token(TokenType.LessEqual, "<=", start)
+          index += 2
+          position = position.advance(2)
+
+        case '<' =>
+          tokens += Token(TokenType.LessThan, "<", start)
+          index += 1
+          position = position.advance()
+
         case '=' if peek(source, index + 1).contains('=') =>
           tokens += Token(TokenType.EqualEqual, "==", start)
           index += 2
@@ -123,7 +143,11 @@ final class Lexer {
           position = outcome.nextPosition
 
         case other =>
-          errors += LexicalError(s"Caracter no reconocido: '$other'.", start, Some(other.toString))
+          errors += LexicalError(
+            s"Token desconocido: '$other'. GymScript esperaba una palabra valida de entrenamiento.",
+            start,
+            Some(other.toString)
+          )
           index += 1
           position = position.advance()
       }

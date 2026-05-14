@@ -1,6 +1,8 @@
 # GymScript: vision general
 
-GymScript es un mini-lenguaje tematico para modelar rutinas, metas y decisiones de entrenamiento. La implementacion actual sigue una arquitectura clasica de interprete con cuatro etapas:
+GymScript es un DSL tematico para describir metas, repeticiones y rutinas de entrenamiento. La sintaxis prioriza palabras de gimnasio sobre simbolos genericos.
+
+## Pipeline
 
 1. Analisis lexico
 2. Analisis sintactico
@@ -9,33 +11,39 @@ GymScript es un mini-lenguaje tematico para modelar rutinas, metas y decisiones 
 
 ## Construcciones implementadas
 
-- Declaracion de variable con `peso`
-- Reasignacion
-- Impresion con `mostrar(...)`
-- Condicional `si_fuerza ... descanso ... fin_rutina`
-- Condicional sin `descanso`
-- Ciclo `mientras_entrenas ... fin_rutina`
-- Expresiones numericas, booleanas y de texto
-- Agrupacion con parentesis
+- Variables con `peso`
+- Reasignacion con `cargar`
+- Impresion con `mostrar`
+- Condicional `si_fuerza`
+- Rama alternativa `descanso`
+- Ciclo `mientras_entrenas`
+- Rutinas `rutina` y llamadas `llamar`
+- Listas con `lista`, `tomar` y `largo`
 
 ## Tipos de valor
 
 - Numero
 - String
 - Booleano
+- Lista
+- Rutina
 - Null
 
-## Reglas semanticas activas
+## Reglas semanticas
 
 - Una variable debe declararse antes de usarse.
-- No se puede redeclarar una variable en el mismo scope.
-- La reasignacion exige que la variable ya exista.
+- No se puede redeclarar una variable en el mismo alcance.
+- Una rutina debe existir antes de invocarse.
+- La aridad de una rutina debe coincidir con los argumentos recibidos.
 - Las condiciones de `si_fuerza` y `mientras_entrenas` deben ser booleanas.
-- Los operadores aritmeticos y logicos validan tipos compatibles.
+- `tomar` y `largo` operan solo sobre listas.
 
-## Convenciones
+## Compatibilidad legacy
 
-- Comentarios de linea con `#`.
-- Los saltos de linea separan sentencias.
-- Los errores reportan linea, columna e indice absoluto.
-- El lenguaje usa alcance por bloque.
+Se mantiene compatibilidad temporal con estos simbolos para no romper migraciones existentes:
+
+- `+ - * /`
+- `= == != > < >= <=`
+- `(` `)` `,`
+
+La sintaxis recomendada y documentada es exclusivamente la tematica.

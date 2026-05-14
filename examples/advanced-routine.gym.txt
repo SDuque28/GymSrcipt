@@ -1,0 +1,22 @@
+# Rutinas, listas y llamadas con sintaxis GymScript
+rutina reportar_ejercicio abre_set nombre separa repeticiones cierra_set inicio_rutina
+  mostrar abre_set "Ejercicio: " mas_reps nombre cierra_set
+  si_fuerza repeticiones levanta_mas_que 10 inicio_rutina
+    mostrar abre_set "Alta carga" cierra_set
+  descanso inicio_rutina
+    mostrar abre_set "Carga estable" cierra_set
+  fin_rutina
+fin_rutina
+
+peso ejercicios cargar lista abre_set "curl" separa "sentadilla" separa "press" cierra_set
+peso total_ejercicios cargar largo abre_set ejercicios cierra_set
+
+mostrar abre_set ejercicios cierra_set
+mostrar abre_set total_ejercicios cierra_set
+mostrar abre_set tomar abre_set ejercicios separa 1 cierra_set cierra_set
+llamar reportar_ejercicio abre_set tomar abre_set ejercicios separa 0 cierra_set separa 12 cierra_set
+
+si_fuerza total_ejercicios levanta_mas_que 2 inicio_rutina
+  peso mensaje cargar "Bloque avanzado"
+  mostrar abre_set mensaje cierra_set
+fin_rutina

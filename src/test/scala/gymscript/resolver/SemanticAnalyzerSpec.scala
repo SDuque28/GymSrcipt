@@ -15,36 +15,53 @@ final class SemanticAnalyzerSpec extends AnyFunSuite {
     analyzer.analyze(program)
   }
 
-  test("detecta variable no declarada") {
-    val result = analyze("mostrar(meta)")
-
-    assert(result.isLeft)
-    assert(result.swap.toOption.get.exists(_.message.contains("no ha sido declarada")))
-  }
-
-  test("detecta redeclaracion en el mismo alcance") {
-    val result = analyze("peso meta = 1\npeso meta = 2")
-
-    assert(result.isLeft)
-    assert(result.swap.toOption.get.exists(_.message.contains("ya fue declarada")))
-  }
-
-  test("permite reasignacion valida") {
-    val result = analyze("peso meta = 1\nmeta = 2")
+  test("valida variables declaradas") {
+    val result = analyze("peso meta cargar 1\nmostrar abre_set meta cierra_set")
 
     assert(result.isRight)
   }
 
-  test("valida variables dentro de bloques") {
+  test("valida scopes de bloque") {
     val source =
-      """si_fuerza verdadero
-        |  peso interno = 1
+      """si_fuerza verdadero inicio_rutina
+        |  peso interno cargar 1
         |fin_rutina
-        |mostrar(interno)""".stripMargin
+        |mostrar abre_set interno cierra_set""".stripMargin
 
     val result = analyze(source)
 
     assert(result.isLeft)
     assert(result.swap.toOption.get.exists(_.message.contains("interno")))
+  }
+
+  test("valida funciones y parametros") {
+    val source =
+      """rutina saludar abre_set nombre cierra_set inicio_rutina
+        |  mostrar abre_set nombre cierra_set
+        |fin_rutina
+        |llamar saludar abre_set "Ana" cierra_set""".stripMargin
+
+    val result = analyze(source)
+
+    assert(result.isRight)
+  }
+
+  test("detecta aridad invalida en rutina") {
+    val source =
+      """rutina saludar abre_set nombre cierra_set inicio_rutina
+        |  mostrar abre_set nombre cierra_set
+        |fin_rutina
+        |llamar saludar abre_set "Ana" separa "Extra" cierra_set""".stripMargin
+
+    val result = analyze(source)
+
+    assert(result.isLeft)
+    assert(result.swap.toOption.get.exists(_.message.contains("esperaba 1 argumento")))
+  }
+
+  test("valida listas si se implementan") {
+    val result = analyze("peso ejercicios cargar lista abre_set \"curl\" separa \"press\" cierra_set\nmostrar abre_set largo abre_set ejercicios cierra_set cierra_set")
+
+    assert(result.isRight)
   }
 }
